@@ -1,0 +1,55 @@
+@import "palette";
+
+html {
+  font-family: sans-serif;
+  background-color: #fafafa;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  color: #727272;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+h1, h2 {
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+}
+
+#root {
+  flex-grow: 1;
+}
+
+.home {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.Adsenese {
+  text-align: center;
+  align: center;
+}
