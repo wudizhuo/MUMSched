@@ -4,7 +4,7 @@ import AppBar from "material-ui/AppBar";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
-import {deepOrange300, pink400, purple500} from "material-ui/styles/colors";
+import {deepOrange300, purple500} from "material-ui/styles/colors";
 const style = {margin: 5};
 
 class Header extends Component {
@@ -34,6 +34,8 @@ class Header extends Component {
         <AppBar
           style={styles.label}
           title="MUMSched"
+          onLeftIconButtonTouchTap={this.props.onTouchTap}
+          onTitleTouchTap={this.props.onTouchTap}
           showMenuIconButton={true}>
           <IconMenu
             iconButtonElement={

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Header from './Header';
 import Login from './Login';
+import Courses from './Courses';
+import AppNav from './AppNav';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {
@@ -9,8 +11,10 @@ class App extends Component {
     return (
     <MuiThemeProvider>
       <div className="home">
+        <AppNav ref="leftNav" />
         <Header onTouchTap={this._onLeftIconButtonTouchTap.bind(this)} onLogin={this._showSnackbar.bind(this)}/>
-        <Login/>
+        {/*<Login/>*/}
+        <Courses/>
       </div>
     </MuiThemeProvider>
     );
