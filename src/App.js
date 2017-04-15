@@ -3,6 +3,7 @@ import Header from './pages/Header';
 import Login from './pages/Login';
 import Courses from './pages/Courses';
 import CreateCourses from './pages/CreateCourses';
+import EditCourses from './pages/EditCourses';
 import AppNav from './pages/AppNav';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -15,8 +16,9 @@ class App extends Component {
         <AppNav ref="leftNav" />
         <Header onTouchTap={this._onLeftIconButtonTouchTap.bind(this)} onLogin={this._showSnackbar.bind(this)}/>
         {/*<Login/>*/}
-        <Courses/>
+        {/*<Courses/>*/}
         {/*<CreateCourses/>*/}
+        <EditCourses/>
       </div>
     </MuiThemeProvider>
     );

@@ -3,13 +3,13 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 
-class CreateCourses extends Component {
+class EditCourses extends Component {
   render() {
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-            title="Create Course"
+            title="Edit Course"
           />
           <div style={styles.content}>
             <TextField style={styles.content}
@@ -31,7 +31,7 @@ class CreateCourses extends Component {
           </div>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Create"/>
+            <FlatButton label="Submit"/>
           </CardActions>
         </Card>
       </div>
@@ -69,4 +69,4 @@ var styles = {
   },
 }
 
-export default CreateCourses;
+export default EditCourses;
