@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/lib/text-field';
-import {primaryColor, primaryColorText, primaryColorLight, accentColor, primaryColorDark} from './colors';
-import {baseUrl, ERROR_CODE_FROM_EMAIL, ERROR_CODE_TO_EMAIL, ERROR_CODE_INVALID_URL} from './Const';
+import {primaryColor, primaryColorText, primaryColorLight, accentColor, primaryColorDark} from '../colors';
+import {baseUrl, ERROR_CODE_FROM_EMAIL, ERROR_CODE_TO_EMAIL, ERROR_CODE_INVALID_URL} from '../Const';
 import RaisedButton from 'material-ui/lib/raised-button';
 import CircularProgress from 'material-ui/lib/circular-progress';
 import axios from 'axios';

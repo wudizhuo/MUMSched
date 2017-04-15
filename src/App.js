@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import Header from './Header';
-import Login from './Login';
-import Courses from './Courses';
-import CreateCourses from './CreateCourses';
-import AppNav from './AppNav';
+import Header from './pages/Header';
+import Login from './pages/Login';
+import Courses from './pages/Courses';
+import CreateCourses from './pages/CreateCourses';
+import AppNav from './pages/AppNav';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {

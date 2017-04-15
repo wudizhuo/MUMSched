@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import TextField from "material-ui/TextField";
-import {primaryColor, primaryColorText} from "./colors";
+import {primaryColor, primaryColorText} from "../colors";
 import CircularProgress from "material-ui/CircularProgress";
 import Snackbar from "material-ui/Snackbar";
 import RaisedButton from "material-ui/RaisedButton";

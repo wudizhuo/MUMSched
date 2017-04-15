@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {primaryColor, secondaryTextColor} from "./colors";
+import {primaryColor, secondaryTextColor} from "../colors";
 import Drawer from "material-ui/Drawer";
 import MenuItem from "material-ui/MenuItem";
 
