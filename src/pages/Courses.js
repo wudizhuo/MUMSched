@@ -2,26 +2,34 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
-
-const tableData = [
-  {
-    id: 'CS545',
-    name: 'Web Application Architecture',
-    prereqCourse: 'Web Programming',
-    entryBlock: 'June 2017 - B2 B4',
-    faculty: 'Arrocha, Xing',
-    selected: true,
-  },
-  {
-    id: 'CS435',
-    name: 'Algorithms',
-    prereqCourse: 'n/a',
-    entryBlock: 'June 2017 - B1 B2 B3 B4',
-    faculty: 'Ruby, Xing, Li',
-  },
-];
+import axios from "axios";
+import {baseUrl} from "../Const";
 
 class Courses extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tableData: [],
+    };
+  }
+
+  componentWillMount() {
+    this.getCourses();
+  }
+
+  getCourses() {
+    const url = baseUrl + 'course-service/courses';
+
+    axios.get(url)
+      .then((response) => {
+        console.log(response);
+        this.setState({tableData: response.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   render() {
     return (
@@ -47,7 +55,7 @@ class Courses extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map((row, index) => (
+              {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
@@ -80,7 +88,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width:'90%',
+    width: '90%',
   },
   cardAction: {
     display: 'flex',
