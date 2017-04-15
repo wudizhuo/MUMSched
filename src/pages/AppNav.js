@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import {primaryColor, secondaryTextColor} from "../colors";
 import Drawer from "material-ui/Drawer";
 import MenuItem from "material-ui/MenuItem";
+import createHistory from 'history/createBrowserHistory'
+
+const history = createHistory();
 
 class AppNav extends Component {
 
@@ -15,7 +18,8 @@ class AppNav extends Component {
   }
 
   _course() {
-
+    history.push('/courses');
+    history.go();
   }
 
   render() {
