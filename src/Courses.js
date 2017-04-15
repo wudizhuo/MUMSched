@@ -26,8 +26,8 @@ class Courses extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <Card>
-          <CardHeader style={styles.header}
+        <Card style={styles.card}>
+          <CardHeader titleStyle={styles.header}
                       title="Courses"
           />
           <Table>
@@ -60,7 +60,7 @@ class Courses extends Component {
             </TableBody>
           </Table>
 
-          <CardActions>
+          <CardActions style={styles.cardAction}>
             <FlatButton label="Delete"/>
             <FlatButton label="Create"/>
           </CardActions>
@@ -78,8 +78,15 @@ var styles = {
     alignItems: 'center',
     paddingTop: '2%',
   },
+  card: {
+    width:'90%',
+  },
+  cardAction: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   header: {
-    fontSize: '',
+    fontSize: '20px',
   }
 
 }
