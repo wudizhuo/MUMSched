@@ -15,8 +15,8 @@ class App extends Component {
         <AppNav ref="leftNav" />
         <Header onTouchTap={this._onLeftIconButtonTouchTap.bind(this)} onLogin={this._showSnackbar.bind(this)}/>
         {/*<Login/>*/}
-        {/*<Courses/>*/}
-        <CreateCourses/>
+        <Courses/>
+        {/*<CreateCourses/>*/}
       </div>
     </MuiThemeProvider>
     );

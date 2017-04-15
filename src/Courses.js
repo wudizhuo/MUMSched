@@ -62,6 +62,7 @@ class Courses extends Component {
 
           <CardActions style={styles.cardAction}>
             <FlatButton label="Delete"/>
+            <FlatButton label="Edit"/>
             <FlatButton label="Create"/>
           </CardActions>
         </Card>

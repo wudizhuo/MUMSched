@@ -7,27 +7,30 @@ class CreateCourses extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <Card>
-          <CardHeader
+        <Card style={styles.card}>
+          <CardHeader titleStyle={styles.header}
             title="CreateCourses"
           />
-          <div>
-            <TextField
-              hintText="Hint Text"
+          <div style={styles.content}>
+            <TextField style={styles.content}
+              hintText="Course ID"
             /><br />
-            <TextField
-              hintText="Hint Text"
+            <TextField style={styles.content}
+              hintText="Course Name"
             /><br />
-            <TextField
-              hintText="Hint Text"
+            <TextField style={styles.content}
+              hintText="Prereq Course"
             /><br />
-            <TextField
-              hintText="Hint Text"
+            <TextField style={styles.content}
+              hintText="Target Entry Course"
+            /><br />
+            <TextField style={styles.content}
+              hintText="Faculty"
             /><br />
 
           </div>
 
-          <CardActions>
+          <CardActions style={styles.cardAction}>
             <FlatButton label="Create"/>
           </CardActions>
         </Card>
@@ -44,10 +47,25 @@ var styles = {
     alignItems: 'center',
     paddingTop: '2%',
   },
+  card: {
+    width:'35%',
+  },
+  content: {
+    width:'88vh',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+  },
   listItem: {
     width: '60vw',
     display: 'flex',
     flexDirection: 'row',
+  },
+  header: {
+    fontSize: '20px',
+  },
+  cardAction: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }
 
