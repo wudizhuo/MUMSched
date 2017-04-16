@@ -6,7 +6,6 @@ import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
 import {deepOrange300, purple500} from "material-ui/styles/colors";
 import {browserHistory} from "react-router";
-const style = {margin: 5};
 
 class Header extends Component {
 
@@ -44,6 +43,7 @@ class Header extends Component {
           onTitleTouchTap={this.props.onTouchTap}
           showMenuIconButton={this.props.isLogin}>
           <IconMenu
+            style={styles.iconMenu}
             iconButtonElement={
               <Avatar
                 color={deepOrange300}
@@ -73,6 +73,9 @@ var styles = {
     backgroundColor: primaryColor,
     display: 'flex',
   },
+  iconMenu:{
+
+  },
   label: {
     textOverflow: 'ellipsis',
     backgroundColor: primaryColor,
@@ -101,5 +104,6 @@ var styles = {
     fontSize: '16px',
   },
 };
+const style = {margin: 5};
 
 export default Header;

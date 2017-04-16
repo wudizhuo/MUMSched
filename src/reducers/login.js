@@ -1,6 +1,6 @@
 import {LOGINED, LOGOUT} from "../actions";
 
-function isLogin(state = [], action) {
+function login(state = [], action) {
   switch (action.type) {
     case LOGINED :
       return Object.assign({}, state, {
@@ -15,4 +15,4 @@ function isLogin(state = [], action) {
   }
 }
 
-export default isLogin;
+export default login;

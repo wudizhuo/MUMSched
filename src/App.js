@@ -13,7 +13,8 @@ class App extends Component {
       <MuiThemeProvider>
         <div className="home">
           <AppNav ref="leftNav"/>
-          <Header logout={this.props.logout} onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
+          <Header isLogin={this.props.isLogin} logout={this.props.logout}
+                  onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
                   onLogin={this._showSnackbar.bind(this)}/>
           { React.cloneElement(this.props.children, this.props) }
         </div>
@@ -34,7 +35,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    isLogin: state.isLogin,
+    login: state.login,
+    isLogin: state.login.isLogin,
     course: state.course,
   }
 }
