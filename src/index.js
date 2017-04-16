@@ -21,7 +21,7 @@ const router = (
       <Route path="/" component={App}>
         <IndexRoute component={Login}/>
         <Route path="/courses" component={Courses}/>
-        <Route path="/create_courses" component={CreateCourses}/>
+        <Route path="/create_course" component={CreateCourse}/>
       </Route>
     </Router>
   </Provider>

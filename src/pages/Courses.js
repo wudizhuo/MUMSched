@@ -3,6 +3,7 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
+import {browserHistory} from "react-router";
 import {baseUrl} from "../Const";
 
 class Courses extends Component {
@@ -23,6 +24,10 @@ class Courses extends Component {
     this.setState({selectedIndex: items[0]});
     // this.setState({selectedIndex: 100});
     console.log("0000-------" + this.state.selectedIndex + "(------)" + items[0]);
+  }
+
+  create() {
+    browserHistory.push('/create_course');
   }
 
   delete() {
@@ -96,10 +101,10 @@ class Courses extends Component {
 
           <CardActions style={styles.cardAction}>
             <FlatButton label="Delete"
-                        onClick={this.delete.bind(this)}
-            />
+                        onClick={this.delete.bind(this)}/>
             <FlatButton label="Edit"/>
-            <FlatButton label="Create"/>
+            <FlatButton label="Create"
+                        onClick={this.create.bind(this)}/>
           </CardActions>
         </Card>
       </div>

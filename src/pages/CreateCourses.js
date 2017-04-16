@@ -3,7 +3,7 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 
-class CreateCourses extends Component {
+class CreateCourse extends Component {
   render() {
     return (
       <div style={styles.container}>
@@ -69,4 +69,4 @@ var styles = {
   },
 }
 
-export default CreateCourses;
+export default CreateCourse;
