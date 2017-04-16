@@ -11,11 +11,35 @@ class Courses extends Component {
 
     this.state = {
       tableData: [],
+      selectedIndex: -1,
     };
   }
 
   componentWillMount() {
     this.getCourses();
+  }
+
+  onRowSelection(items) {
+    this.setState({selectedIndex: items[0]});
+    // this.setState({selectedIndex: 100});
+    console.log("0000-------" + this.state.selectedIndex + "(------)" + items[0]);
+  }
+
+  delete() {
+    console.log("-----deldete---");
+    console.log(this.state.selectedIndex);
+    console.log(this.state.tableData[this.state.selectedIndex]);
+    // let courseId = this.state.tableData[this.state.selectedIndex].id;
+    // const url = baseUrl + 'course-service/courses/delete/' + courseId;
+    //
+    // axios.delete(url)
+    //   .then((response) => {
+    //     console.log(response);
+    //     this.setState({tableData: response.data});
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   }
 
   getCourses() {
@@ -38,7 +62,9 @@ class Courses extends Component {
           <CardHeader titleStyle={styles.header}
                       title="Courses"
           />
-          <Table>
+          <Table
+            onRowSelection={this.onRowSelection.bind(this)}
+          >
             <TableHeader
               height={'300px'}
               fixedHeader={true}
@@ -69,7 +95,9 @@ class Courses extends Component {
           </Table>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Delete"/>
+            <FlatButton label="Delete"
+                        onClick={this.delete.bind(this)}
+            />
             <FlatButton label="Edit"/>
             <FlatButton label="Create"/>
           </CardActions>
