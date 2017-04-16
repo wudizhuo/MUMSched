@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import {browserHistory} from "react-router";
+import axios from "axios";
+import {baseUrl} from "../Const";
 
 let courseID = "";
 let courseName = "";
@@ -12,44 +13,55 @@ let faculties = "";
 
 class CreateCourse extends Component {
   create() {
-        courseID = this.refs.courseID.getValue();
-        courseName = this.refs.courseName.getValue();
-        preCourseName = this.refs.preCourseName.getValue();
-        targetBlock = this.refs.targetBlock.getValue();
-        faculties = this.refs.faculties.getValue();
+    courseID = this.refs.courseID.getValue();
+    courseName = this.refs.courseName.getValue();
+    preCourseName = this.refs.preCourseName.getValue();
+    targetBlock = this.refs.targetBlock.getValue();
+    faculties = this.refs.faculties.getValue();
 
-        console.log(courseID + courseName + preCourseName + targetBlock + faculties);
-        if(true){
-            browserHistory.push('/');
-        }
-    }
+    console.log(courseID + courseName + preCourseName + targetBlock + faculties);
+
+    const url = baseUrl + 'course-service/courses/add';
+    axios.post(url, {
+      name: courseName,
+      prereqCourse: preCourseName,
+      entryBlock: targetBlock,
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-            title="Create Course"
+                      title="Create Course"
           />
           <div style={styles.content}>
             <TextField style={styles.content}
-              ref="courseID"
-              hintText="Course ID"
+                       ref="courseID"
+                       hintText="Course ID"
             /><br />
             <TextField style={styles.content}
-              ref="courseName"
-              hintText="Course Name"
+                       ref="courseName"
+                       hintText="Course Name"
             /><br />
             <TextField style={styles.content}
-              ref="preCourseName"
-              hintText="Prereq Course"
+                       ref="preCourseName"
+                       hintText="Prereq Course"
             /><br />
             <TextField style={styles.content}
-              ref="targetBlock"
-              hintText="Target Entry Block"
+                       ref="targetBlock"
+                       hintText="Target Entry Block"
             /><br />
             <TextField style={styles.content}
-              ref="faculties"
-              hintText="Faculty"
+                       ref="faculties"
+                       hintText="Faculty"
             /><br />
 
           </div>
@@ -76,10 +88,10 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width:'60%',
+    width: '60%',
   },
   content: {
-    width:'98%',
+    width: '98%',
     paddingLeft: '2%',
     paddingRight: '2%',
   },
