@@ -61,7 +61,6 @@ class Header extends Component {
           style={styles.label}
           title="MUMSched"
           onLeftIconButtonTouchTap={this.props.onTouchTap}
-          onTitleTouchTap={this.props.onTouchTap}
           showMenuIconButton={this.props.isLogin}>
           <Avatar
             color={deepOrange300}
