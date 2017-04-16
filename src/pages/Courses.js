@@ -29,9 +29,9 @@ class Courses extends Component {
   }
 
   edit() {
-      //let courseId = this.state.tableData[this.state.selectedIndex].id;
       // Want to send id for Edit Form
-        browserHistory.push('/edit_course');
+    this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
+    browserHistory.push('/edit_course');
   }
 
   delete() {
@@ -53,6 +53,7 @@ class Courses extends Component {
     axios.get(url)
       .then((response) => {
         console.log(response);
+        this.props.getCourses(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {

@@ -35,6 +35,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     isLogin: state.isLogin,
+    course: state.course,
   }
 }
 
