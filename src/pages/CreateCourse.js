@@ -2,8 +2,27 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
+import {browserHistory} from "react-router";
+
+let courseID = "";
+let courseName = "";
+let preCourseName = "";
+let targetBlock = "";
+let faculties = "";
 
 class CreateCourse extends Component {
+  create() {
+        courseID = this.refs.courseID.getValue();
+        courseName = this.refs.courseName.getValue();
+        preCourseName = this.refs.preCourseName.getValue();
+        targetBlock = this.refs.targetBlock.getValue();
+        faculties = this.refs.faculties.getValue();
+
+        console.log(courseID + courseName + preCourseName + targetBlock + faculties);
+        if(true){
+            browserHistory.push('/');
+        }
+    }
   render() {
     return (
       <div style={styles.container}>
@@ -13,30 +32,39 @@ class CreateCourse extends Component {
           />
           <div style={styles.content}>
             <TextField style={styles.content}
+              ref="courseID"
               hintText="Course ID"
             /><br />
             <TextField style={styles.content}
+              ref="courseName"
               hintText="Course Name"
             /><br />
             <TextField style={styles.content}
+              ref="preCourseName"
               hintText="Prereq Course"
             /><br />
             <TextField style={styles.content}
-              hintText="Target Entry Course"
+              ref="targetBlock"
+              hintText="Target Entry Block"
             /><br />
             <TextField style={styles.content}
+              ref="faculties"
               hintText="Faculty"
             /><br />
 
           </div>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Create" primary={true}/>
+            <FlatButton label="Create" primary={true}
+                        onClick={this.create.bind(this)}
+            />
           </CardActions>
         </Card>
       </div>
     )
   }
+
+
 }
 
 var styles = {
