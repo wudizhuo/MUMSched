@@ -28,6 +28,12 @@ class Courses extends Component {
     browserHistory.push('/create_course');
   }
 
+  edit() {
+      //let courseId = this.state.tableData[this.state.selectedIndex].id;
+      // Want to send id for Edit Form
+        browserHistory.push('/edit_course');
+  }
+
   delete() {
     let courseId = this.state.tableData[this.state.selectedIndex].id;
     const url = baseUrl + 'course-service/courses/delete/' + courseId;
@@ -98,7 +104,8 @@ class Courses extends Component {
           <CardActions style={styles.cardAction}>
             <FlatButton label="Delete"
                         onClick={this.delete.bind(this)}/>
-            <FlatButton label="Edit" secondary={true}/>
+            <FlatButton label="Edit" secondary={true}
+                        onClick={this.edit.bind(this)}/>
             <FlatButton label="Create" primary={true}
                         onClick={this.create.bind(this)}/>
           </CardActions>

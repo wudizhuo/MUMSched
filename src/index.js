@@ -7,6 +7,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 import Login from "./pages/Login";
 import Courses from "./pages/Courses";
 import CreateCourse from "./pages/CreateCourse";
+import EditCourses from "./pages/EditCourses";
 import Dashboard from "./pages/Dashboard";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
@@ -24,6 +25,7 @@ const router = (
         <Route path="/login" component={Login}/>
         <Route path="/courses" component={Courses}/>
         <Route path="/create_course" component={CreateCourse}/>
+        <Route path="/edit_course" component={EditCourses}/>
       </Route>
     </Router>
   </Provider>
