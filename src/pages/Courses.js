@@ -22,8 +22,6 @@ class Courses extends Component {
 
   onRowSelection(items) {
     this.setState({selectedIndex: items[0]});
-    // this.setState({selectedIndex: 100});
-    console.log("0000-------" + this.state.selectedIndex + "(------)" + items[0]);
   }
 
   create() {
@@ -31,20 +29,16 @@ class Courses extends Component {
   }
 
   delete() {
-    console.log("-----deldete---");
-    console.log(this.state.selectedIndex);
-    console.log(this.state.tableData[this.state.selectedIndex]);
-    // let courseId = this.state.tableData[this.state.selectedIndex].id;
-    // const url = baseUrl + 'course-service/courses/delete/' + courseId;
-    //
-    // axios.delete(url)
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.setState({tableData: response.data});
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    let courseId = this.state.tableData[this.state.selectedIndex].id;
+    const url = baseUrl + 'course-service/courses/delete/' + courseId;
+    axios.delete(url)
+      .then((response) => {
+        console.log(response);
+        // this.setState({tableData: response.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   getCourses() {
@@ -85,7 +79,9 @@ class Courses extends Component {
                 <TableHeaderColumn>Faculty</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody
+              deselectOnClickaway={false}
+            >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
