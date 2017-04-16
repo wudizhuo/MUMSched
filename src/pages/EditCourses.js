@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import axios from "axios";
 import {baseUrl} from "../Const";
 
-let courseID = "ABC";
+let courseID = "";
 let courseName = "";
 let preCourseName = "";
 let targetBlock = "";
@@ -17,8 +17,8 @@ class EditCourses extends Component {
   }
 
   getCourses() {
-    console.log(this.props.course.edit_course);
-  }
+     console.log(this.props.course.edit_course);
+   }
 
   update() {
     courseID = this.refs.courseID.getValue();
@@ -30,7 +30,7 @@ class EditCourses extends Component {
     console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
     const url = baseUrl + 'course-service/courses/update';
-    axios.post(url, {
+    axios.put(url, {
       id: courseID,
       name: courseName,
       prereqCourse: preCourseName,
@@ -45,6 +45,7 @@ class EditCourses extends Component {
   }
 
   render() {
+
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
@@ -54,19 +55,23 @@ class EditCourses extends Component {
           <div style={styles.content}>
             <TextField style={styles.content}
                        ref="courseID"
-              //hintText="Course ID"
+                       defaultValue = {this.props.course.edit_course.id}
+                       //hintText="Course ID"
             /><br />
             <TextField style={styles.content}
                        ref="courseName"
+                       defaultValue = {this.props.course.edit_course.name}
                        hintText="Course Name"
             /><br />
             <TextField style={styles.content}
                        ref="preCourseName"
                        hintText="Prereq Course"
+                       defaultValue = {this.props.course.edit_course.prereqCourse}
             /><br />
             <TextField style={styles.content}
                        ref="targetBlock"
                        hintText="Target Entry Block"
+                       defaultValue = {this.props.course.edit_course.entryBlock}
             /><br />
             <TextField style={styles.content}
                        ref="faculties"
