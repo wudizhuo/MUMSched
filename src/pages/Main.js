@@ -247,9 +247,9 @@ var styles = {
   container: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
     paddingTop: '2%',
-    alignItems: 'center',
   },
 
   input: {

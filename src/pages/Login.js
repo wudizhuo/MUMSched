@@ -4,8 +4,11 @@ import {primaryColor, primaryColorText} from "../colors";
 import CircularProgress from "material-ui/CircularProgress";
 import Snackbar from "material-ui/Snackbar";
 import RaisedButton from "material-ui/RaisedButton";
+import {browserHistory} from "react-router";
 
 let snackbar_msg = "";
+let username = "";
+let password = "";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +30,7 @@ class Login extends Component {
   }
 
   showSnackbar() {
-    snackbar_msg = "开发中的功能,暂不能用...";
+    snackbar_msg = "Test...";
     this.setState({showSnackbar: true});
   }
 
@@ -35,7 +38,13 @@ class Login extends Component {
     this.setState({showSnackbar: false});
   }
 
-  preview() {
+  login() {
+    username = this.refs.username.getValue();
+    password = this.refs.password.getValue();
+    console.log(username + password);
+    if(true){
+      browserHistory.push('/');
+    }
   }
 
   render() {
@@ -44,11 +53,13 @@ class Login extends Component {
         {this._progressBar()}
 
         <TextField style={styles.input}
+                   ref="username"
                    underlineFocusStyle={styles.underlineStyle}
                    floatingLabelText="UserName"
                    errorText={this.props.error_from_email}
         />
         <TextField style={styles.input}
+                   ref="password"
                    errorText={this.props.error_to_email}
                    underlineFocusStyle={styles.underlineStyle}
                    floatingLabelText="Password"
@@ -59,7 +70,7 @@ class Login extends Component {
           labelStyle={styles.buttonLabel}
           backgroundColor={primaryColor}
           labelColor={primaryColorText}
-          onClick={this.preview.bind(this)}
+          onClick={this.login.bind(this)}
           style={styles.button}
         />
 

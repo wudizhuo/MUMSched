@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import {browserHistory} from "react-router";
 
-class AppNav extends Component {
+class Dashboard extends Component {
+
+  componentWillMount() {
+    browserHistory.push('/login');
+  }
+
   render() {
     return (
       <div style={styles.container}>
-
+        Welcome
       </div>
     )
   }
@@ -18,4 +24,4 @@ var styles = {
   }
 }
 
-export default AppNav;
+export default Dashboard;
