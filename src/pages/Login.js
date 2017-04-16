@@ -43,6 +43,7 @@ class Login extends Component {
     password = this.refs.password.getValue();
     console.log(username + password);
     if(true){
+      this.props.login();
       browserHistory.push('/');
     }
   }

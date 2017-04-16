@@ -4,7 +4,9 @@ import {browserHistory} from "react-router";
 class Dashboard extends Component {
 
   componentWillMount() {
-    browserHistory.push('/login');
+    // if(this.prop.){
+      browserHistory.push('/login');
+    // }
   }
 
   render() {

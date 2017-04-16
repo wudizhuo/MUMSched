@@ -51,7 +51,7 @@ class Header extends Component {
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem primaryText="Logout"/>
+            <MenuItem onClick={this.props.logout} primaryText="Logout"/>
           </IconMenu>
         </AppBar>
 
