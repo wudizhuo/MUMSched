@@ -51,7 +51,7 @@ var styles = {
     width:'35%',
   },
   content: {
-    width:'88vh',
+    width:'55vh',
     paddingLeft: '2%',
     paddingRight: '2%',
   },
