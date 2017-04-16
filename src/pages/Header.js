@@ -6,6 +6,9 @@ import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
 import {deepOrange300, purple500} from "material-ui/styles/colors";
 import {browserHistory} from "react-router";
+import Menu from 'material-ui/Menu';
+import Popover from 'material-ui/Popover';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class Header extends Component {
 
@@ -14,6 +17,7 @@ class Header extends Component {
 
     this.state = {
       bigScreen: false,
+      open: false,
     };
 
   }
@@ -26,10 +30,27 @@ class Header extends Component {
     window.onresize = setBigScreen;
   }
 
-  logout(){
+  logout() {
     this.props.logout();
     browserHistory.push('login');
   }
+
+  handleTouchTap(event) {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose() {
+    this.setState({
+      open: false,
+    });
+  };
+
 
   render() {
     return (
@@ -42,23 +63,28 @@ class Header extends Component {
           onLeftIconButtonTouchTap={this.props.onTouchTap}
           onTitleTouchTap={this.props.onTouchTap}
           showMenuIconButton={this.props.isLogin}>
-          <IconMenu
-            iconButtonElement={
-              <Avatar
-                color={deepOrange300}
-                backgroundColor={purple500}
-                size={45}
-                style={style}
-              >
-                A
-              </Avatar>
-            }
-            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          <Avatar
+            color={deepOrange300}
+            backgroundColor={purple500}
+            size={45}
+            onTouchTap={this.handleTouchTap.bind(this)}
+            style={style}
           >
-            <MenuItem onClick={this.logout.bind(this)}
-                      primaryText="Logout"/>
-          </IconMenu>
+            A
+          </Avatar>
+          <Popover
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={this.handleRequestClose.bind(this)}
+          >
+            <Menu>
+              <MenuItem
+                onClick={this.logout.bind(this)}
+                primaryText="Sign out"/>
+            </Menu>
+          </Popover>
         </AppBar>
 
       </div>
@@ -72,9 +98,7 @@ var styles = {
     backgroundColor: primaryColor,
     display: 'flex',
   },
-  iconMenu:{
-
-  },
+  iconMenu: {},
   label: {
     textOverflow: 'ellipsis',
     backgroundColor: primaryColor,
