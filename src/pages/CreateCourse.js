@@ -28,9 +28,11 @@ class CreateCourse extends Component {
       entryBlock: targetBlock,
     })
       .then(function (response) {
+        //show snack bar
         console.log(response);
       })
       .catch(function (error) {
+        //show snack bar
         console.log(error);
       });
   }

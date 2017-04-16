@@ -5,6 +5,7 @@ import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
 import {deepOrange300, purple500} from "material-ui/styles/colors";
+import {browserHistory} from "react-router";
 const style = {margin: 5};
 
 class Header extends Component {
@@ -26,6 +27,11 @@ class Header extends Component {
     window.onresize = setBigScreen;
   }
 
+  logout(){
+    this.props.logout();
+    browserHistory.push('login');
+  }
+
   render() {
     return (
       <div
@@ -36,7 +42,7 @@ class Header extends Component {
           title="MUMSched"
           onLeftIconButtonTouchTap={this.props.onTouchTap}
           onTitleTouchTap={this.props.onTouchTap}
-          showMenuIconButton={true}>
+          showMenuIconButton={this.props.isLogin}>
           <IconMenu
             iconButtonElement={
               <Avatar
@@ -51,7 +57,8 @@ class Header extends Component {
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem onClick={this.props.logout} primaryText="Logout"/>
+            <MenuItem onClick={this.logout.bind(this)}
+                      primaryText="Logout"/>
           </IconMenu>
         </AppBar>
 

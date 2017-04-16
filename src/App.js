@@ -1,7 +1,10 @@
 import React, {Component} from "react";
 import Header from "./pages/Header";
-import AppNav from './pages/AppNav';
+import AppNav from "./pages/AppNav";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as actionCreators from "./actions/index";
 
 class App extends Component {
 
@@ -9,8 +12,9 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="home">
-          <AppNav ref="leftNav" />
-          <Header onTouchTap={this._onLeftIconButtonTouchTap.bind(this)} onLogin={this._showSnackbar.bind(this)}/>
+          <AppNav ref="leftNav"/>
+          <Header logout={this.props.logout} onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
+                  onLogin={this._showSnackbar.bind(this)}/>
           { React.cloneElement(this.props.children, this.props) }
         </div>
       </MuiThemeProvider>
@@ -27,10 +31,6 @@ class App extends Component {
 
 }
 
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actionCreators from './actions/index';
 
 function mapStateToProps(state) {
   return {

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import {browserHistory} from "react-router";
 
 class Dashboard extends Component {
 
   componentWillMount() {
-    // if(this.prop.){
+    if (!this.props.isLogin) {
       browserHistory.push('/login');
-    // }
+    }
   }
 
   render() {
