@@ -43,7 +43,6 @@ class Header extends Component {
           onTitleTouchTap={this.props.onTouchTap}
           showMenuIconButton={this.props.isLogin}>
           <IconMenu
-            style={styles.iconMenu}
             iconButtonElement={
               <Avatar
                 color={deepOrange300}
