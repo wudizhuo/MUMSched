@@ -6,7 +6,7 @@ import "./style/main.scss";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import Login from "./pages/Login";
 import Courses from "./pages/Courses";
-import CreateCourses from "./pages/CreateCourses";
+import CreateCourse from "./pages/CreateCourse";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
 import {Provider} from "react-redux";
