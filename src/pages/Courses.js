@@ -102,8 +102,8 @@ class Courses extends Component {
           <CardActions style={styles.cardAction}>
             <FlatButton label="Delete"
                         onClick={this.delete.bind(this)}/>
-            <FlatButton label="Edit"/>
-            <FlatButton label="Create"
+            <FlatButton label="Edit" secondary={true}/>
+            <FlatButton label="Create" primary={true}
                         onClick={this.create.bind(this)}/>
           </CardActions>
         </Card>
@@ -121,7 +121,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width: '90%',
+    width: '60%',
   },
   cardAction: {
     display: 'flex',

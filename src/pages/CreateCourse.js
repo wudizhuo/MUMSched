@@ -31,7 +31,7 @@ class CreateCourse extends Component {
           </div>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Create"/>
+            <FlatButton label="Create" primary={true}/>
           </CardActions>
         </Card>
       </div>
@@ -48,10 +48,10 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width:'35%',
+    width:'60%',
   },
   content: {
-    width:'55vh',
+    width:'98%',
     paddingLeft: '2%',
     paddingRight: '2%',
   },
