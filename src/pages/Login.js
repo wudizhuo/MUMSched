@@ -19,6 +19,10 @@ class Login extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.closeDrawer();
+  }
+
   _progressBar() {
     if (this.state.showProgressBar) {
       return (

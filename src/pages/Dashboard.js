@@ -13,7 +13,12 @@ class Dashboard extends Component {
   render() {
     return (
       <div style={styles.container}>
-        Welcome
+        <div style={styles.welcome}>
+          Welcome to MUMSched
+        </div>
+        <div style={styles.secondLine}>
+          JanBrain's Software Engineering Project
+        </div>
       </div>
     )
   }
@@ -24,7 +29,16 @@ var styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+    flexDirection: 'column',
+  },
+  welcome:{
+    marginTop: '15vh',
+    fontSize: '40px',
+  },
+  secondLine:{
+    marginTop: '5vh',
+    fontSize: '18px',
+  },
 }
 
 export default Dashboard;

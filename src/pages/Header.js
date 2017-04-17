@@ -1,14 +1,11 @@
 import React, {Component} from "react";
-import {primaryColor} from "../colors";
+import {primaryColor, secondaryTextColor} from "../colors";
 import AppBar from "material-ui/AppBar";
-import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
-import {deepOrange300, purple500} from "material-ui/styles/colors";
 import {browserHistory} from "react-router";
-import Menu from 'material-ui/Menu';
-import Popover from 'material-ui/Popover';
-import RaisedButton from 'material-ui/RaisedButton';
+import Menu from "material-ui/Menu";
+import Popover from "material-ui/Popover";
 
 class Header extends Component {
 
@@ -19,7 +16,6 @@ class Header extends Component {
       bigScreen: false,
       open: false,
     };
-
   }
 
   componentWillMount() {
@@ -31,6 +27,7 @@ class Header extends Component {
   }
 
   logout() {
+    this.handleRequestClose();
     this.props.logout();
     browserHistory.push('login');
   }
@@ -51,26 +48,19 @@ class Header extends Component {
     });
   };
 
-
-  render() {
+  avatar() {
+    if (!this.props.isLogin) {
+      return;
+    }
     return (
-      <div
-        style={styles.header}
-      >
-        <AppBar
-          style={styles.label}
-          title="MUMSched"
-          onLeftIconButtonTouchTap={this.props.onTouchTap}
-          showMenuIconButton={this.props.isLogin}>
-          <Avatar
-            color={deepOrange300}
-            backgroundColor={purple500}
-            size={45}
-            onTouchTap={this.handleTouchTap.bind(this)}
-            style={style}
-          >
-            A
-          </Avatar>
+      <div>
+        <Avatar
+          backgroundColor={secondaryTextColor}
+          size={45}
+          onTouchTap={this.handleTouchTap.bind(this)}
+          style={styles.avatar}
+        >
+          A
           <Popover
             open={this.state.open}
             anchorEl={this.state.anchorEl}
@@ -84,6 +74,23 @@ class Header extends Component {
                 primaryText="Sign out"/>
             </Menu>
           </Popover>
+        </Avatar>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div
+        style={styles.header}
+      >
+        <AppBar
+          style={styles.label}
+          title="MUMSched"
+          onLeftIconButtonTouchTap={this.props.onTouchTap}
+          showMenuIconButton={this.props.isLogin}>
+
+          {this.avatar()}
         </AppBar>
 
       </div>
@@ -125,7 +132,9 @@ var styles = {
     color: '#ffffff',
     fontSize: '16px',
   },
+  avatar: {
+    margin: 5
+  }
 };
-const style = {margin: 5};
 
 export default Header;
