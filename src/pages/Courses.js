@@ -96,7 +96,7 @@ class Courses extends Component {
                   <TableRowColumn>{row.name}</TableRowColumn>
                   <TableRowColumn>{row.prereqCourse}</TableRowColumn>
                   <TableRowColumn>{row.entryBlock}</TableRowColumn>
-                  <TableRowColumn>{row.faculty}</TableRowColumn>
+                  {/*<TableRowColumn>{row.faculty}</TableRowColumn>*/}
                 </TableRow>
               ))}
 
