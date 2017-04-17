@@ -65,6 +65,7 @@ class Login extends Component {
         />
         <TextField style={styles.input}
                    ref="password"
+                   type="password"
                    errorText={this.props.error_to_email}
                    underlineFocusStyle={styles.underlineStyle}
                    floatingLabelText="Password"
