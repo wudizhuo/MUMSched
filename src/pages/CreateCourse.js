@@ -14,13 +14,13 @@ let faculties = "";
 
 class CreateCourse extends Component {
   create() {
-    courseID = this.refs.courseID.getValue();
+    // courseID = this.refs.courseID.getValue();
     courseName = this.refs.courseName.getValue();
     preCourseName = this.refs.preCourseName.getValue();
     targetBlock = this.refs.targetBlock.getValue();
-    faculties = this.refs.faculties.getValue();
+    // faculties = this.refs.faculties.getValue();
 
-    console.log(courseID + courseName + preCourseName + targetBlock + faculties);
+    // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
     const url = baseUrl + 'course-service/courses/add';
     axios.post(url, {
@@ -48,10 +48,10 @@ class CreateCourse extends Component {
                       title="Create Course"
           />
           <div style={styles.content}>
-            <TextField style={styles.content}
-                       ref="courseID"
-                       hintText="Course ID"
-            /><br />
+            {/*<TextField style={styles.content}*/}
+                       {/*ref="courseID"*/}
+                       {/*hintText="Course ID"*/}
+            {/*/><br />*/}
             <TextField style={styles.content}
                        ref="courseName"
                        hintText="Course Name"
@@ -64,10 +64,10 @@ class CreateCourse extends Component {
                        ref="targetBlock"
                        hintText="Target Entry Block"
             /><br />
-            <TextField style={styles.content}
-                       ref="faculties"
-                       hintText="Faculty"
-            /><br />
+            {/*<TextField style={styles.content}*/}
+                       {/*ref="faculties"*/}
+                       {/*hintText="Faculty"*/}
+            {/*/><br />*/}
 
           </div>
 

@@ -26,9 +26,9 @@ class EditCourses extends Component {
     courseName = this.refs.courseName.getValue();
     preCourseName = this.refs.preCourseName.getValue();
     targetBlock = this.refs.targetBlock.getValue();
-    faculties = this.refs.faculties.getValue();
+    // faculties = this.refs.faculties.getValue();
 
-    console.log(courseID + courseName + preCourseName + targetBlock + faculties);
+    // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
     const url = baseUrl + 'course-service/courses/update';
     axios.put(url, {
@@ -75,10 +75,10 @@ class EditCourses extends Component {
                        hintText="Target Entry Block"
                        defaultValue = {this.props.course.edit_course.entryBlock}
             /><br />
-            <TextField style={styles.content}
-                       ref="faculties"
-                       hintText="Faculty"
-            /><br />
+            {/*<TextField style={styles.content}*/}
+                       {/*ref="faculties"*/}
+                       {/*hintText="Faculty"*/}
+            {/*/><br />*/}
 
           </div>
 

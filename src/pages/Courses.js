@@ -84,7 +84,7 @@ class Courses extends Component {
                 <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Prereq Courses</TableHeaderColumn>
                 <TableHeaderColumn>Entry & Blocks</TableHeaderColumn>
-                <TableHeaderColumn>Faculty</TableHeaderColumn>
+                {/*<TableHeaderColumn>Faculty</TableHeaderColumn>*/}
               </TableRow>
             </TableHeader>
             <TableBody
