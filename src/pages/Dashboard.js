@@ -19,6 +19,9 @@ class Dashboard extends Component {
         <div style={styles.secondLine}>
           JanBrain's Software Engineering Project
         </div>
+        <div style={styles.secondLine}>
+          We love Software Engineering
+        </div>
       </div>
     )
   }
