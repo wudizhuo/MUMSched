@@ -7,6 +7,7 @@ class Dashboard extends Component {
     if (!this.props.isLogin) {
       browserHistory.push('/login');
     }
+    this.props.openDrawer();
   }
 
   render() {

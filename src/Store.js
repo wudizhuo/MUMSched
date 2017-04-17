@@ -1,11 +1,13 @@
 import {createStore, compose} from "redux";
-import {syncHistoryWithStore} from "react-router-redux";
 import rootReducer from "./reducers/index";
 
 const defaultState = {
   login: {
     isLogin: false,
-  }
+  },
+  others: {
+    isOpendrawer: false,
+  },
 };
 
 const enhancers = compose(

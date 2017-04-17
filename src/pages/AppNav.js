@@ -8,11 +8,10 @@ class AppNav extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: false};
   }
 
   handleToggle() {
-    this.setState({open: !this.state.open});
+    this.props.openDrawer();
   }
 
   _course() {
@@ -21,8 +20,8 @@ class AppNav extends Component {
 
   render() {
     return (
-      <Drawer style={styles.container} open={this.state.open} docked={false}
-              onRequestChange={open => this.setState({open})}>
+      <Drawer style={styles.container} open={this.props.isOpendrawer} docked={false}
+              onRequestChange={this.props.openDrawer}>
         <div style={styles.label}>MUMSched</div>
         <MenuItem style={styles.item} onTouchTap={this._course}>
           Courses</MenuItem>

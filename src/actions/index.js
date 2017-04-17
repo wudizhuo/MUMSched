@@ -3,6 +3,7 @@ export const LOGINED = 'Logined';
 export const LOGOUT = 'LOGOUT';
 export const GETCOURSES = 'getCourses';
 export const EDITCOURSES = 'editcourses';
+export const OPENDRAWER = 'opendrawer';
 
 // action creators
 export function login() {
@@ -19,4 +20,8 @@ export function getCourses(courses) {
 
 export function editCourses(course) {
   return {type: EDITCOURSES, course}
+}
+
+export function openDrawer() {
+  return {type: OPENDRAWER}
 }

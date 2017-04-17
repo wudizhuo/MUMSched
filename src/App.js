@@ -12,7 +12,9 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="home">
-          <AppNav ref="leftNav"/>
+          <AppNav ref="leftNav" isOpendrawer={this.props.isOpendrawer}
+                  openDrawer={this.props.openDrawer}
+          />
           <Header isLogin={this.props.isLogin} logout={this.props.logout}
                   onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
                   onLogin={this._showSnackbar.bind(this)}/>
@@ -38,6 +40,7 @@ function mapStateToProps(state) {
     login: state.login,
     isLogin: state.login.isLogin,
     course: state.course,
+    isOpendrawer: state.others.isOpendrawer,
   }
 }
 
