@@ -4,6 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
 import {baseUrl} from "../Const";
+import {browserHistory} from "react-router";
 
 let courseID = "";
 let courseName = "";
@@ -30,9 +31,11 @@ class CreateCourse extends Component {
       .then(function (response) {
         //show snack bar
         console.log(response);
+        browserHistory.push('/courses');
       })
       .catch(function (error) {
         //show snack bar
+        console.log("error----");
         console.log(error);
       });
   }

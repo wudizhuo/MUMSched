@@ -40,6 +40,7 @@ class Courses extends Component {
     axios.delete(url)
       .then((response) => {
         console.log(response);
+        window.location.reload();
         // this.setState({tableData: response.data});
       })
       .catch(function (error) {
