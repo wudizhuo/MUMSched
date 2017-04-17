@@ -30,8 +30,11 @@ class Courses extends Component {
 
   edit() {
       // Want to send id for Edit Form
-    this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
-    browserHistory.push('/edit_course');
+      if(this.state.tableData[this.state.selectedIndex] != null)
+      {
+        this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
+        browserHistory.push('/edit_course');
+      }
   }
 
   delete() {
