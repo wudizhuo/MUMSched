@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {primaryColor, secondaryTextColor} from "../colors";
+import {primaryColor} from "../colors";
 import AppBar from "material-ui/AppBar";
 import MenuItem from "material-ui/MenuItem";
 import Avatar from "material-ui/Avatar";
 import {browserHistory} from "react-router";
 import Menu from "material-ui/Menu";
 import Popover from "material-ui/Popover";
+import logo from "../images/mum-logo.jpg";
 
 class Header extends Component {
 
@@ -55,26 +56,24 @@ class Header extends Component {
     return (
       <div>
         <Avatar
-          backgroundColor={secondaryTextColor}
-          size={45}
+          src={logo}
+          size={50}
           onTouchTap={this.handleTouchTap.bind(this)}
           style={styles.avatar}
+        />
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose.bind(this)}
         >
-          A
-          <Popover
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={this.handleRequestClose.bind(this)}
-          >
-            <Menu>
-              <MenuItem
-                onClick={this.logout.bind(this)}
-                primaryText="Sign out"/>
-            </Menu>
-          </Popover>
-        </Avatar>
+          <Menu>
+            <MenuItem
+              onClick={this.logout.bind(this)}
+              primaryText="Logout"/>
+          </Menu>
+        </Popover>
       </div>
     );
   }
