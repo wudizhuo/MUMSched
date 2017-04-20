@@ -18,12 +18,18 @@ class AppNav extends Component {
     browserHistory.push('/courses');
   }
 
+  _section() {
+    browserHistory.push('/sections');
+  }
+
   render() {
     return (
       <Drawer style={styles.container} open={this.props.isOpendrawer} docked={false}
               onRequestChange={this.props.openDrawer}>
         <div style={styles.label}>MUMSched</div>
         <MenuItem style={styles.item} onTouchTap={this._course}>
+          Courses</MenuItem>
+        <MenuItem style={styles.item} onTouchTap={this._section}>
           Courses</MenuItem>
       </Drawer>
     )

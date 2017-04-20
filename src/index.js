@@ -26,6 +26,7 @@ const router = (
         <Route path="/courses" component={Courses}/>
         <Route path="/create_course" component={CreateCourse}/>
         <Route path="/edit_course" component={EditCourses}/>
+        <Route path="/sections" component={Sections}/>
       </Route>
     </Router>
   </Provider>
