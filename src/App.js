@@ -5,8 +5,16 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as actionCreators from "./actions/index";
+import axios from "axios";
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    axios.defaults.baseURL = 'http://localhost:9090/';
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
 
   render() {
     return (
