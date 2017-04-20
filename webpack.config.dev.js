@@ -15,25 +15,30 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      use: ['babel-loader'],
       include: path.join(__dirname, 'src')
     },
       {
         test: /\.scss$/,
-        loader: 'style!css!postcss!sass'
+        use: [
+          "style-loader",
+          "css-loader",
+          "postcss-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.svg$/,
-        loader: 'babel?presets[]=es2015,presets[]=react!svg-react'
+        use: 'babel-loader?presets[]=es2015,presets[]=react!svg-react-loader'
       },
       {
         test: /\.(png|jpg)$/,
-        loader: 'url?limit=25000'
+        use: 'url-loader?limit=25000'
       }]
   }
 };
