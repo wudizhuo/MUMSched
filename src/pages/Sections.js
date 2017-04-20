@@ -70,7 +70,7 @@ class Sections extends Component {
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-                      title="Courses"
+                      title="Sections"
           />
           <Table
             onRowSelection={this.onRowSelection.bind(this)}
@@ -83,11 +83,13 @@ class Sections extends Component {
               multiSelectable={true}
             >
               <TableRow>
-                <TableHeaderColumn>ID</TableHeaderColumn>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Prereq Courses</TableHeaderColumn>
-                <TableHeaderColumn>Entry & Blocks</TableHeaderColumn>
-                {/*<TableHeaderColumn>Faculty</TableHeaderColumn>*/}
+                <TableHeaderColumn>Block</TableHeaderColumn>
+                <TableHeaderColumn>Course ID</TableHeaderColumn>
+                <TableHeaderColumn>Course Name</TableHeaderColumn>
+                <TableHeaderColumn>Professor</TableHeaderColumn>
+                <TableHeaderColumn>Capacity</TableHeaderColumn>
+                <TableHeaderColumn>Enrolled</TableHeaderColumn>
+                <TableHeaderColumn>Seats Available</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -129,7 +131,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width: '60%',
+    width: '80%',
   },
   cardAction: {
     display: 'flex',

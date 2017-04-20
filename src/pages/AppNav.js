@@ -30,7 +30,7 @@ class AppNav extends Component {
         <MenuItem style={styles.item} onTouchTap={this._course}>
           Courses</MenuItem>
         <MenuItem style={styles.item} onTouchTap={this._section}>
-          Courses</MenuItem>
+          Sections</MenuItem>
       </Drawer>
     )
   }
