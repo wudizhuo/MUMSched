@@ -141,4 +141,4 @@ var styles = {
 
 }
 
-export default Courses;
+export default Sections;
