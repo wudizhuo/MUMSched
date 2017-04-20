@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as actionCreators from "./actions/index";
 import axios from "axios";
+import {browserHistory} from "react-router";
 
 class App extends Component {
 
@@ -14,6 +15,12 @@ class App extends Component {
     axios.defaults.baseURL = 'http://localhost:9090/';
     axios.defaults.withCredentials = true;
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+
+  componentWillMount() {
+    if (!this.props.isLogin) {
+      browserHistory.push('/login');
+    }
   }
 
   render() {

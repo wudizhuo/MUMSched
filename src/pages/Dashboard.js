@@ -1,12 +1,7 @@
 import React, {Component} from "react";
-import {browserHistory} from "react-router";
 
 class Dashboard extends Component {
-
   componentWillMount() {
-    if (!this.props.isLogin) {
-      browserHistory.push('/login');
-    }
     this.props.openDrawer();
   }
 
@@ -34,11 +29,11 @@ var styles = {
     alignItems: 'center',
     flexDirection: 'column',
   },
-  welcome:{
+  welcome: {
     marginTop: '15vh',
     fontSize: '40px',
   },
-  secondLine:{
+  secondLine: {
     marginTop: '5vh',
     fontSize: '18px',
   },

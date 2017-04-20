@@ -3,7 +3,7 @@ import rootReducer from "./reducers/index";
 
 const defaultState = {
   login: {
-    isLogin: false,
+    isLogin: (localStorage.isLogin == 'true'),
   },
   others: {
     isOpendrawer: false,

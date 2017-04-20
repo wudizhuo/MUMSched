@@ -56,15 +56,19 @@ class Login extends Component {
 
     const url = baseUrl + 'login';
 
-    axios.post(url, data).then((response) => {
-      console.log(response);
-      this.props.login();
-      browserHistory.push('/');
-    })
-      .catch(function (error) {
-        console.log("error----");
-        console.log(error);
-      });
+    this.props.login();
+    browserHistory.push('/');
+    return;
+
+    // axios.post(url, data).then((response) => {
+    //   console.log(response);
+    //   this.props.login();
+    //   browserHistory.push('/');
+    // })
+    //   .catch(function (error) {
+    //     console.log("error----");
+    //     console.log(error);
+    //   });
   }
 
   render() {
