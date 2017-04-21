@@ -9,6 +9,7 @@ import Courses from "./pages/Courses";
 import CreateCourse from "./pages/CreateCourse";
 import EditCourses from "./pages/EditCourses";
 import Sections from "./pages/Sections";
+import CreateUser from "./pages/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
@@ -28,6 +29,7 @@ const router = (
         <Route path="/create_course" component={CreateCourse}/>
         <Route path="/edit_course" component={EditCourses}/>
         <Route path="/sections" component={Sections}/>
+        <Route path="/create_user" component={CreateUser}/>
       </Route>
     </Router>
   </Provider>
