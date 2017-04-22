@@ -17,7 +17,7 @@ class Sections extends Component {
   }
 
   componentWillMount() {
-    this.getCourses();
+    this.getSections();
   }
 
   onRowSelection(items) {
@@ -25,21 +25,21 @@ class Sections extends Component {
   }
 
   create() {
-    browserHistory.push('/create_course');
+    browserHistory.push('/create_section');
   }
 
   edit() {
       // Want to send id for Edit Form
       if(this.state.tableData[this.state.selectedIndex] != null)
       {
-        this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
-        browserHistory.push('/edit_course');
+        this.props.editSections(this.state.tableData[this.state.selectedIndex]);
+        browserHistory.push('/edit_section');
       }
   }
 
   delete() {
-    let courseId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'course-service/courses/delete/' + courseId;
+    let sectionId = this.state.tableData[this.state.selectedIndex].id;
+    const url = baseUrl + 'section-service/sections/delete/' + sectionId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -51,13 +51,13 @@ class Sections extends Component {
       });
   }
 
-  getCourses() {
-    const url = baseUrl + 'course-service/courses';
+  getSections() {
+    const url = baseUrl + 'section-service/sections';
 
     axios.get(url)
       .then((response) => {
         console.log(response);
-        this.props.getCourses(response.data);
+        this.props.getSections(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {
@@ -84,7 +84,7 @@ class Sections extends Component {
             >
               <TableRow>
                 <TableHeaderColumn>Block</TableHeaderColumn>
-                <TableHeaderColumn>Course ID</TableHeaderColumn>
+                <TableHeaderColumn>Course Code</TableHeaderColumn>
                 <TableHeaderColumn>Course Name</TableHeaderColumn>
                 <TableHeaderColumn>Professor</TableHeaderColumn>
                 <TableHeaderColumn>Capacity</TableHeaderColumn>
@@ -97,11 +97,12 @@ class Sections extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.prereqCourse}</TableRowColumn>
-                  <TableRowColumn>{row.entryBlock}</TableRowColumn>
-                  {/*<TableRowColumn>{row.faculty}</TableRowColumn>*/}
+                  <TableRowColumn>{row.block}</TableRowColumn>
+                  <TableRowColumn>{row.course.code}</TableRowColumn>
+                  <TableRowColumn>{row.course.name}</TableRowColumn>
+                  <TableRowColumn>{row.faculty}</TableRowColumn>
+                  <TableRowColumn>{row.limitCapacity}</TableRowColumn>
+                  <TableRowColumn>{row.limitCapacity-row.enrolledAmount}</TableRowColumn>
                 </TableRow>
               ))}
 
