@@ -22,6 +22,10 @@ class AppNav extends Component {
     browserHistory.push('/sections');
   }
 
+  _users() {
+        browserHistory.push('/users');
+    }
+
   render() {
     return (
       <Drawer style={styles.container} open={this.props.isOpendrawer} docked={false}
@@ -31,6 +35,8 @@ class AppNav extends Component {
           Courses</MenuItem>
         <MenuItem style={styles.item} onTouchTap={this._section}>
           Sections</MenuItem>
+        <MenuItem style={styles.item} onTouchTap={this._users}>
+          User Management</MenuItem>
       </Drawer>
     )
   }
