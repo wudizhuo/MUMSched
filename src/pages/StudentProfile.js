@@ -9,12 +9,10 @@ import axios from "axios";
 import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
 
-let userID = "";
-let userName = "";
-let dob = "";
+let facultyID = "";
+let facultyName = "";
 let email = "";
 let password = "";
-let role = "";
 let specialization1 ="";
 let specialization2 ="";
 let courseIDs ="";
@@ -24,7 +22,7 @@ let takenCourseIDs = "";
 let enrollCourseIDs = "";
 let isFixSchedule ="";
 
-class UpdateProfile extends Component {
+class FacultyProfile extends Component {
 
     constructor(props) {
         super(props);
@@ -136,6 +134,7 @@ var styles = {
     content: {
         width: '98%',
         paddingLeft: '2%',
+        fontSize: '14',
         paddingRight: '2%',
     },
     listItem: {
@@ -156,4 +155,4 @@ var styles = {
 
 }
 
-export default UpdateProfile;
+export default FacultyProfile;
