@@ -9,102 +9,133 @@ import axios from "axios";
 import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
 
-let facultyID = "";
-let facultyName = "";
+let studentID = "";
+let studentName = "";
 let email = "";
 let password = "";
-let specialization1 ="";
-let specialization2 ="";
-let courseIDs ="";
-let blockIds="";
 let entry ="";
-let takenCourseIDs = "";
-let enrollCourseIDs = "";
+let takenSectionIDs = "";
+let enrollSectionIDs = "";
 let isFixSchedule ="";
 
-class FacultyProfile extends Component {
+class StudentProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { value: 1,}
+        this.state = {
+            takenInfo:[],
+            selectedSection:'',
+            enrollInfo: [],
+            takens:'',
+            enrolls:'',
+        };
 
     };
 
-    handleChange(event, index, value) {
-        this.setState({value});
+    componentWillMount() {
+        this.getTakens();
+        this.getEnrolls();
     }
 
+
+    handleChangeEnroll(event, index, selectedSection) {
+        this.setState({selectedSection:selectedSection});
+    }
+
+
+    getTakens() {
+        const url = baseUrl + 'section-service/takens' + studentID;
+
+        axios.get(url)
+            .then((response) => {
+                console.log(response);
+                this.props.getTakens(response.data);
+                this.setState({takenInfo: response.data});
+                console.log(this.state.takenInfo);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    getEnrolls() {
+        const url = baseUrl + 'section-service/enrolls' + studentID;
+
+        axios.get(url)
+            .then((response) => {
+                console.log(response);
+                this.props.getEnrolls(response.data);
+                this.setState({enrollInfo: response.data});
+                console.log(this.state.enrollInfo);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     render() {
         return (
             <div style={styles.container}>
                 <Card style={styles.card}>
-                    <CardHeader titleStyle={styles.header} title="Create User" />
+                    <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" /><br />
-                        <TextField style={styles.content} floatingLabelText="User Name" ref="userName" /><br />
-                        <TextField style={styles.content} floatingLabelText="Email" ref="email" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" /> <br />
-                        <SelectField floatingLabelText="Role" style={styles.content} value={this.state.value} onChange={this.handleChange}>
-                            <MenuItem value={1} primaryText="Student" />
-                            <MenuItem value={2} primaryText="Faculty" />
-                            <MenuItem value={3} primaryText="Admin" />
+                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID"/><br />
+                        <TextField style={styles.content} floatingLabelText="Student Name" ref="studentName"/><br />
+                        <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Entry" ref="entry" hintText="January"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" defaultValue = {this.takenInfo}/> <br />
+
+                        <TextField style={styles.content} floatingLabelText="Enrolls List" ref="enrolls" hintText="One or more section"/> <br />
+
+                        <SelectField floatingLabelText={'Select Section'} style={styles.content} value={this.state.selectedSection}
+                                     ref="SectionID_temp"
+                                     onChange={this.handleChangeEnroll.bind(this)}>
+                            {this.state.sectionInfo.map(section =>
+                                <Option key={section.id} value={section.id}>)
+                                </Option>
+                            )}
                         </SelectField>
 
-                        <TextField style={styles.content} floatingLabelText="Specialization 1" ref="specialization1" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Specialization 2" ref="specialization2" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Course IDs" ref="courseIDs" hintText="WAP:SE" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Blocks IDs"ref="blockIds" hintText="January:Febuary" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Entry" ref="entry" hintText="A12345$" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Taken Course IDs" ref="takenCourseIDs" hintText="FPP:MPP" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Taken Course IDs" ref="enrollCourseIDs" hintText="WAP:SE" /> <br />
-                        <TextField style={styles.content} ref="isFixSchedule" hintText="true" /> <br />
+                        <FlatButton label="Add Enroll" primary={true} onClick={this.addEnroll.bind(this)}/>
+                        <TextField style={styles.content} floatingLabelText="Enroll List" ref="enrolls" hintText="One or more sections"/> <br />
                     </div>
 
                     <CardActions style={styles.cardAction}>
-                        <FlatButton label="Create" primary={true} onClick={this.create.bind(this)} />
+                        <FlatButton label="Save" primary={true} onClick={this.save.bind(this)}/>
                     </CardActions>
                 </Card>
             </div>
         )
     }
-    create() {
-        //userID = this.refs.courseID.getValue();
-        userName = this.refs.userName.getValue();
-        dob = this.refs.dob.getValue();
+
+    addEnroll() {
+        this.setState({enrolls: this.refs.enrolls.getValue() + this.state.selectedSection +', '});
+        console.log(this.refs.enrolls.getValue());
+    }
+
+
+    save() {
+        studentID = this.refs.studentID.getValue();
+        studentID = this.refs.studentName.getValue();
         email = this.refs.email.getValue();
         password = this.refs.password.getValue();
-        role = this.refs.role.getValue();
-        specialization1 = this.refs.specialization1.getValue();
-        specialization2 = this.refs.specialization2.getValue();
-        courseIDs ="";
-        blockIds="";
-        entry ="";
-        takenCourseIDs = "";
-        enrollCourseIDs = "";
-        isFixSchedule ="false";
+        entry = this.refs.entry.getValue();
+        takens = this.refs.takens.getValue();
+        blockIds = "";
 
-        const url = baseUrl + 'user-service/courses/add';
+        const url = baseUrl + 'user-service/profile/add';
         axios.post(url, {
-            id: userID,
-            name: userName,
-            dob: preCourseName,
+            id: studentID,
+            name: studentName,
             email: email,
             password: password,
-            role: role,
-            specialization1: specialization1,
-            specialization2: specialization1,
-            courseIDs: courseIDs,
-            blockIds: blockIds,
-            entry: entry,
-            takenCourseIDs: takenCourseIDs,
-            enrollCourseIDs: enrollCourseIDs,
-            isFixSchedule: isFixSchedule,
+            enrolls: enrolls,
         })
             .then(function (response) {
                 //show snack bar
                 console.log(response);
-                browserHistory.push('/users');
+                browserHistory.push('/student_profile');
             })
             .catch(function (error) {
                 //show snack bar
@@ -112,10 +143,6 @@ class FacultyProfile extends Component {
                 console.log(error);
             });
     }
-
-
-
-
 
 
 }
@@ -155,4 +182,4 @@ var styles = {
 
 }
 
-export default FacultyProfile;
+export default StudentProfile;

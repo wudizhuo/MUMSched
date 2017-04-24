@@ -39,7 +39,7 @@ class Users extends Component {
 
   delete() {
     let userId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'course-service/users/delete/' + userId;
+    const url = baseUrl + 'user-service/delete/' + userId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -52,12 +52,12 @@ class Users extends Component {
   }
 
   getUsers() {
-    const url = baseUrl + 'course-service/courses'; // Need change to user-service/users
+    const url = baseUrl + 'user-service/users'; // Need change to user-service/users
 
     axios.get(url)
       .then((response) => {
         console.log(response);
-        this.props.getCourses(response.data);
+        this.props.getUsers(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {
@@ -87,7 +87,6 @@ class Users extends Component {
                 <TableHeaderColumn>User Name</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
                 <TableHeaderColumn>Role</TableHeaderColumn>
-                {/*<TableHeaderColumn>Faculty</TableHeaderColumn>*/}
               </TableRow>
             </TableHeader>
             <TableBody
@@ -97,9 +96,8 @@ class Users extends Component {
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.prereqCourse}</TableRowColumn>
-                  <TableRowColumn>{row.entryBlock}</TableRowColumn>
-                  {/*<TableRowColumn>{row.faculty}</TableRowColumn>*/}
+                  <TableRowColumn>{row.email}</TableRowColumn>
+                  <TableRowColumn>{row.role}</TableRowColumn>
                 </TableRow>
               ))}
 

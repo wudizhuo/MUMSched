@@ -33,6 +33,7 @@ class FacultyProfile extends Component {
 
   componentWillMount() {
       this.getCourses();
+      this.getBlocks();
   }
   handleChangeBlock(event, index, selectedBlock) {
       this.setState({selectedBlock:selectedBlock});
@@ -58,7 +59,23 @@ class FacultyProfile extends Component {
           });
   }
 
-  render() {
+
+    getBlocks() {
+        const url = baseUrl + 'block-service/blocks';
+
+        axios.get(url)
+            .then((response) => {
+                console.log(response);
+                this.props.getBlocks(response.data);
+                this.setState({BlockInfo: response.data});
+                console.log(this.state.BlockInfo);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    render() {
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
