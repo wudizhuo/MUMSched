@@ -5,6 +5,7 @@ export const GETCOURSES = 'getCourses';
 export const EDITCOURSES = 'editcourses';
 export const OPENDRAWER = 'opendrawer';
 export const CLOSERAWER = 'closeDrawer';
+export const SHOW_SNACKBAR = 'show_snackbar';
 
 // action creators
 export function login() {
@@ -29,4 +30,8 @@ export function openDrawer() {
 
 export function closeDrawer() {
   return {type: CLOSERAWER}
+}
+
+export function showSnackbar(message = '') {
+  return {type: SHOW_SNACKBAR, message}
 }

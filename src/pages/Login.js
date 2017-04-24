@@ -8,7 +8,6 @@ import axios from "axios";
 import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
 
-let snackbar_msg = "";
 let username = "";
 let password = "";
 class Login extends Component {
@@ -17,12 +16,7 @@ class Login extends Component {
 
     this.state = {
       showProgressBar: false,
-      showSnackbar: false,
     };
-  }
-
-  componentWillMount() {
-    this.props.closeDrawer();
   }
 
   _progressBar() {
@@ -33,15 +27,6 @@ class Login extends Component {
           style={styles.progress}/>
       );
     }
-  }
-
-  showSnackbar() {
-    snackbar_msg = "Test...";
-    this.setState({showSnackbar: true});
-  }
-
-  _onRequestClose() {
-    this.setState({showSnackbar: false});
   }
 
   login() {
@@ -97,13 +82,6 @@ class Login extends Component {
           labelColor={primaryColorText}
           onClick={this.login.bind(this)}
           style={styles.button}
-        />
-
-        <Snackbar
-          open={this.state.showSnackbar}
-          onRequestClose={this._onRequestClose.bind(this)}
-          message={snackbar_msg}
-          autoHideDuration={3000}
         />
       </div>
     );

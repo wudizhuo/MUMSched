@@ -1,6 +1,6 @@
-import {OPENDRAWER,CLOSERAWER} from "../actions";
+import {OPENDRAWER, CLOSERAWER, SHOW_SNACKBAR} from "../actions";
 
-function others(state = [], action) {
+export function openDrawer(state = [], action) {
   switch (action.type) {
     case OPENDRAWER :
       return Object.assign({}, state, {
@@ -15,4 +15,11 @@ function others(state = [], action) {
   }
 }
 
-export default others;
+export function showSnackbar(state = [], action) {
+  switch (action.type) {
+    case SHOW_SNACKBAR :
+      return {...state, isShowSnackbar: !state.isShowSnackbar, message: action.message};
+    default:
+      return state;
+  }
+}

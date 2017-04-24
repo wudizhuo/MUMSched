@@ -7,6 +7,9 @@ import {browserHistory} from "react-router";
 import Menu from "material-ui/Menu";
 import Popover from "material-ui/Popover";
 import logo from "../images/mum-logo.jpg";
+import { connect } from 'react-redux'
+import * as actionCreators from "../actions/index";
+import {bindActionCreators} from "redux";
 
 class Header extends Component {
 
@@ -31,6 +34,7 @@ class Header extends Component {
     this.handleRequestClose();
     this.props.logout();
     browserHistory.push('login');
+    this.props.showSnackbar("You have logged out");
   }
 
   handleTouchTap(event) {
@@ -136,4 +140,8 @@ var styles = {
   }
 };
 
-export default Header;
+function mapDispachToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(null, mapDispachToProps)(Header);
