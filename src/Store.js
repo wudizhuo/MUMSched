@@ -5,8 +5,12 @@ const defaultState = {
   login: {
     isLogin: (localStorage.isLogin == 'true'),
   },
-  others: {
-    isOpendrawer: false,
+  openDrawer: {
+    isOpendrawer: false
+  },
+  showSnackbar: {
+    message: '',
+    isShowSnackbar: false
   },
 };
 

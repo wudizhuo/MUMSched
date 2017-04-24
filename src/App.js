@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import * as actionCreators from "./actions/index";
 import axios from "axios";
 import {browserHistory} from "react-router";
+import Snackbar from 'material-ui/Snackbar';
 
 class App extends Component {
 
@@ -34,6 +35,12 @@ class App extends Component {
                   onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
                   onLogin={this._showSnackbar.bind(this)}/>
           { React.cloneElement(this.props.children, this.props) }
+          <Snackbar
+            open={this.props.isShowSnackbar}
+            onRequestClose={this.props.showSnackbar}
+            message={this.props.snackbarMessage}
+            autoHideDuration={3000}
+          />
         </div>
       </MuiThemeProvider>
     );
@@ -44,18 +51,17 @@ class App extends Component {
   }
 
   _showSnackbar() {
-    this.refs.main.showSnackbar();
+    this.props.showSnackbar();
   }
-
 }
-
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
     isLogin: state.login.isLogin,
     course: state.course,
-    isOpendrawer: state.others.isOpendrawer,
+    isOpendrawer: state.openDrawer.isOpendrawer,
+    isShowSnackbar: state.showSnackbar.isShowSnackbar,
+    snackbarMessage: state.showSnackbar.message,
   }
 }
 
