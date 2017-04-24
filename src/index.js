@@ -10,6 +10,7 @@ import CreateCourse from "./pages/CreateCourse";
 import EditCourses from "./pages/EditCourses";
 import Sections from "./pages/Sections";
 import CreateSection from "./pages/CreateSection";
+import Entries from "./pages/Entries";
 import Users from "./pages/Users";
 import CreateUser from "./pages/CreateUser";
 import FacultyProfile from "./pages/FacultyProfile";
@@ -29,6 +30,7 @@ const router = (
       <Route path="/" component={App}>
         <IndexRoute component={Dashboard}/>
         <Route path="/login" component={Login}/>
+        <Route path="/entries" component={Entries}/>
         <Route path="/courses" component={Courses}/>
         <Route path="/create_course" component={CreateCourse}/>
         <Route path="/edit_course" component={EditCourses}/>

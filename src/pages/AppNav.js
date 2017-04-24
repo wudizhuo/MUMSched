@@ -14,6 +14,10 @@ class AppNav extends Component {
     this.props.openDrawer();
   }
 
+  _entry() {
+    browserHistory.push('/entries');
+  }
+
   _course() {
     browserHistory.push('/courses');
   }
@@ -37,6 +41,8 @@ class AppNav extends Component {
       <Drawer style={styles.container} open={this.props.isOpendrawer} docked={false}
               onRequestChange={this.props.openDrawer}>
         <div style={styles.label}>MUMSched</div>
+        <MenuItem style={styles.item} onTouchTap={this._entry}>
+          Entries</MenuItem>
         <MenuItem style={styles.item} onTouchTap={this._course}>
           Courses</MenuItem>
         <MenuItem style={styles.item} onTouchTap={this._section}>

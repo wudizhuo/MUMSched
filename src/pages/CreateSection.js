@@ -9,7 +9,7 @@ import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
 
 let block = "";
-let courseCode = "";
+let course = "";
 let faculty = "";
 let capacity = "";
 
