@@ -13,8 +13,6 @@ let facultyName = "";
 let email = "";
 let password = "";
 let specializations = "";
-let courseID_temp = "";
-let blockId_temp = "";
 
 class FacultyProfile extends Component {
 
@@ -25,8 +23,8 @@ class FacultyProfile extends Component {
           selectedBlock:'',
           courseInfo: [],
           selectedCourse:'',
-          courseIDs:'',
-          blockIDs:'',
+          courses:'',
+          blocks:'',
     };
 
   };
@@ -49,15 +47,26 @@ class FacultyProfile extends Component {
 
       axios.get(url)
           .then((response) => {
-              console.log(response);
               this.props.getCourses(response.data);
               this.setState({courseInfo: response.data});
+
+              console.log('-------');
               console.log(this.state.courseInfo);
           })
           .catch(function (error) {
               console.log(error);
           });
   }
+
+    menuCourse(courseInfo) {
+        return courseInfo.map((course) => (
+            <MenuItem
+                key={course.name}
+                value={course.name}
+                primaryText={course.name}
+            />
+        ));
+    }
 
 
     getBlocks() {
@@ -75,6 +84,16 @@ class FacultyProfile extends Component {
             });
     }
 
+    menuBlock(blockInfo) {
+        return blockInfo.map((block) => (
+            <MenuItem
+                key={block.name}
+                value={block.name}
+                primaryText={block.name}
+            />
+        ));
+    }
+
     render() {
     return (
       <div style={styles.container}>
@@ -87,29 +106,28 @@ class FacultyProfile extends Component {
             <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
             <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
             <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" hintText="Computer Science"/> <br />
-            <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.selectedCourse}
-                         ref="courseID_temp"
-                         onChange={this.handleChangeCourse.bind(this)}>
-                {this.state.courseInfo.map(course =>
-                    <Option key={course.id} value={course.id}>)
-                    </Option>
-                )}
-            </SelectField>
 
-            <FlatButton label="Add Course" primary={true} onClick={this.addCourseID.bind(this)}/>
-            <TextField style={styles.content} floatingLabelText="Courses List" ref="courseIDs" hintText="One or more courses"/> <br />
+          <SelectField
+              floatingLabelText={'Select Course'}
+              value={this.state.selectedCourse}
+              style={styles.content}
+              onChange={this.handleChangeCourse.bind(this)} >
+              {this.menuCourse(this.state.courseInfo)}
+          </SelectField>
 
-            <SelectField floatingLabelText={'Select Block'} style={styles.content} value={this.state.selectedBlock}
-                         ref="BlockID_temp"
-                         onChange={this.handleChangeBlock.bind(this)}>
-                {this.state.blockInfo.map(block =>
-                    <Option key={block.id} value={block.id}>)
-                    </Option>
-                )}
-            </SelectField>
+          <FlatButton label="Add Course" primary={true} onClick={this.addCourseID.bind(this)}/>
+          <TextField style={styles.content} floatingLabelText="Courses List" ref="courses" value={this.state.courses} hintText="Select one or more above sections"/> <br />
 
-            <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
-            <TextField style={styles.content} floatingLabelText="Courses List" ref="blockIDs" hintText="One or more blocks"/> <br />
+          <SelectField
+              floatingLabelText={'Select Block'}
+              value={this.state.selectedBlock}
+              style={styles.content}
+              onChange={this.handleChangeBlock.bind(this)} >
+              {this.menuBlock(this.state.blockInfo)}
+          </SelectField>
+
+          <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
+          <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocks} hintText="Select one or more above blocks"/> <br />
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -121,13 +139,13 @@ class FacultyProfile extends Component {
   }
 
   addCourseID() {
-    this.setState({courseIDs: this.refs.courseIDs.getValue() + this.state.selectedCourse +', '});
-    console.log(this.refs.courseIDs.getValue());
+    this.setState({courses: this.refs.courses.getValue() + this.state.selectedCourse +', '});
+    console.log(this.state.courses);
   }
 
   addBlockID() {
-      this.setState({blockIDs: this.refs.blockIDs.getValue() + this.state.selectedCourse +', '});
-      console.log(this.refs.blockIDs.getValue());
+      this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedCourse +', '});
+      console.log(this.refs.blocks.getValue());
   }
 
   save() {
@@ -136,8 +154,8 @@ class FacultyProfile extends Component {
     email = this.refs.email.getValue();
     password = this.refs.password.getValue();
     specializations = this.refs.specializations.getValue();
-    courseIDs = this.refs.courses.getValue();
-    blockIds = "";
+    courses = this.refs.courses.getValue();
+    blocks = this.refs.blocks.getValue();
 
     const url = baseUrl + 'user-service/profile/add';
     axios.post(url, {
@@ -146,7 +164,7 @@ class FacultyProfile extends Component {
       email: email,
       password: password,
       specializations: specializations,
-      courseIDs: courseIDs,
+      courses: courses,
     })
       .then(function (response) {
         //show snack bar
