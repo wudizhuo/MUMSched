@@ -14,8 +14,7 @@ let studentName = "";
 let email = "";
 let password = "";
 let entry ="";
-let takenSectionIDs = "";
-let enrollSectionIDs = "";
+let enroll_temp = "";
 let isFixSchedule ="";
 
 class StudentProfile extends Component {
@@ -84,14 +83,14 @@ class StudentProfile extends Component {
                         <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
                         <TextField style={styles.content} floatingLabelText="Entry" ref="entry" hintText="January"/> <br />
-                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" defaultValue = {this.takenInfo}/> <br />
+                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" /> <br />
 
                         <TextField style={styles.content} floatingLabelText="Enrolls List" ref="enrolls" hintText="One or more section"/> <br />
 
                         <SelectField floatingLabelText={'Select Section'} style={styles.content} value={this.state.selectedSection}
-                                     ref="SectionID_temp"
+                                     ref="enroll_temp"
                                      onChange={this.handleChangeEnroll.bind(this)}>
-                            {this.state.sectionInfo.map(section =>
+                            {this.state.enrollInfo.map(section =>
                                 <Option key={section.id} value={section.id}>)
                                 </Option>
                             )}
