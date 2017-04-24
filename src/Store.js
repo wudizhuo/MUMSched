@@ -1,9 +1,11 @@
 import {createStore, compose} from "redux";
 import rootReducer from "./reducers/index";
+import {role} from "./Const";
 
 const defaultState = {
   login: {
     isLogin: (localStorage.isLogin == 'true'),
+    role: role.Admin,
   },
   openDrawer: {
     isOpendrawer: false

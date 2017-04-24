@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import * as actionCreators from "./actions/index";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from "material-ui/Snackbar";
 
 class App extends Component {
 
@@ -28,11 +28,8 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="home">
-          <AppNav ref="leftNav" isOpendrawer={this.props.isOpendrawer}
-                  openDrawer={this.props.openDrawer}
-          />
+          <AppNav/>
           <Header isLogin={this.props.isLogin} logout={this.props.logout}
-                  onTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
                   onLogin={this._showSnackbar.bind(this)}/>
           { React.cloneElement(this.props.children, this.props) }
           <Snackbar
@@ -46,10 +43,6 @@ class App extends Component {
     );
   }
 
-  _onLeftIconButtonTouchTap() {
-    this.refs.leftNav.handleToggle();
-  }
-
   _showSnackbar() {
     this.props.showSnackbar();
   }
@@ -59,7 +52,6 @@ function mapStateToProps(state) {
   return {
     isLogin: state.login.isLogin,
     course: state.course,
-    isOpendrawer: state.openDrawer.isOpendrawer,
     isShowSnackbar: state.showSnackbar.isShowSnackbar,
     snackbarMessage: state.showSnackbar.message,
   }

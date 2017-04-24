@@ -3,6 +3,10 @@ import {primaryColor, secondaryTextColor} from "../colors";
 import Drawer from "material-ui/Drawer";
 import MenuItem from "material-ui/MenuItem";
 import {browserHistory} from "react-router";
+import {connect} from "react-redux";
+import {role} from "../Const";
+import * as actionCreators from "../actions/index";
+import {bindActionCreators} from "redux";
 
 class AppNav extends Component {
 
@@ -10,48 +14,27 @@ class AppNav extends Component {
     super(props);
   }
 
-  handleToggle() {
-    this.props.openDrawer();
-  }
-
-  _entry() {
-    browserHistory.push('/entries');
-  }
-
-  _course() {
-    browserHistory.push('/courses');
-  }
-
-  _section() {
-    browserHistory.push('/sections');
-  }
-
-  _users() {
-        browserHistory.push('/users');
-  }
-  _faculty() {
-        browserHistory.push('/faculty_profile');
-  }
-  _student() {
-        browserHistory.push('/student_profile');
-  }
-
   render() {
     return (
       <Drawer style={styles.container} open={this.props.isOpendrawer} docked={false}
               onRequestChange={this.props.openDrawer}>
         <div style={styles.label}>MUMSched</div>
-        <MenuItem style={styles.item} onTouchTap={this._entry}>
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/entries')}>
           Entries</MenuItem>
-        <MenuItem style={styles.item} onTouchTap={this._course}>
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/courses')}>
           Courses</MenuItem>
-        <MenuItem style={styles.item} onTouchTap={this._section}>
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/sections')}>
           Sections</MenuItem>
-        <MenuItem style={styles.item} onTouchTap={this._users}>
+
+        {this.props.role === role.Admin &&
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/users')}>
           User Management</MenuItem>
-        <MenuItem style={styles.item} onTouchTap={this._faculty}>
+        }
+
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/faculty_profile')}>
           Faculty Profile</MenuItem>
-        <MenuItem style={styles.item} onTouchTap={this._student}>
+
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/student_profile')}>
           Student Profile</MenuItem>
       </Drawer>
     )
@@ -86,4 +69,15 @@ var styles = {
   }
 };
 
-export default AppNav;
+function mapStateToProps(state) {
+  return {
+    role: state.login.role,
+    isOpendrawer: state.openDrawer.isOpendrawer,
+  }
+}
+
+function mapDispachToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispachToProps)(AppNav);

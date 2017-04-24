@@ -6,6 +6,7 @@ function login(state = [], action) {
       localStorage.isLogin = true;
       return Object.assign({}, state, {
         isLogin: true,
+        role: action.role,
       });
     case LOGOUT :
       localStorage.isLogin = false;

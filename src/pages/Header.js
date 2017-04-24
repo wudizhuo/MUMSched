@@ -90,7 +90,7 @@ class Header extends Component {
         <AppBar
           style={styles.label}
           title="MUMSched"
-          onLeftIconButtonTouchTap={this.props.onTouchTap}
+          onLeftIconButtonTouchTap={this.props.openDrawer}
           showMenuIconButton={this.props.isLogin}>
 
           {this.avatar()}
