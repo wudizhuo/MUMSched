@@ -13,20 +13,49 @@ let facultyName = "";
 let email = "";
 let password = "";
 let specializations = "";
-let specializations_temp = "";
-let courseIDs = "";
-let blockIds = "";
+let courseID_temp = "";
+let blockId_temp = "";
 
 class FacultyProfile extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: 'MPP',}
+    this.state = {
+          blockInfo:[],
+          selectedBlock:'',
+          courseInfo: [],
+          selectedCourse:'',
+          courseIDs:'',
+          blockIDs:'',
+    };
 
   };
 
-  handleChange(event, index, value) {
-    this.setState({value});
+  componentWillMount() {
+      this.getCourses();
+  }
+  handleChangeBlock(event, index, selectedBlock) {
+      this.setState({selectedBlock:selectedBlock});
+  }
+
+  handleChangeCourse(event, index, selectedCourse) {
+      this.setState({selectedCourse:selectedCourse});
+  }
+
+
+  getCourses() {
+      const url = baseUrl + 'course-service/courses';
+
+      axios.get(url)
+          .then((response) => {
+              console.log(response);
+              this.props.getCourses(response.data);
+              this.setState({courseInfo: response.data});
+              console.log(this.state.courseInfo);
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
   }
 
   render() {
@@ -40,16 +69,30 @@ class FacultyProfile extends Component {
             <TextField style={styles.content} floatingLabelText="Facutlty Name" ref="facultyName"/><br />
             <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
             <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
-            <SelectField style={styles.content} floatingLabelText="Select specialization" value={this.state.value} ref="specializations_temp" onChange={this.handleChange.bind(this)}>
-              <MenuItem value={"Computer Science"}/>
-              <MenuItem value={"Art"}/>
-              <MenuItem value={"Math"}/>
-              <MenuItem value={"Network"}/>
-              <MenuItem value={"Data Analysis"}/>
+            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" hintText="Computer Science"/> <br />
+            <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.selectedCourse}
+                         ref="courseID_temp"
+                         onChange={this.handleChangeCourse.bind(this)}>
+                {this.state.courseInfo.map(course =>
+                    <Option key={course.id} value={course.id}>)
+                    </Option>
+                )}
             </SelectField>
-            <FlatButton label="Add Spec" primary={true} onClick={this.addSpec.bind(this)}/>
-            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" hintText="Math..."/> <br />
 
+            <FlatButton label="Add Course" primary={true} onClick={this.addCourseID.bind(this)}/>
+            <TextField style={styles.content} floatingLabelText="Courses List" ref="courseIDs" hintText="One or more courses"/> <br />
+
+            <SelectField floatingLabelText={'Select Block'} style={styles.content} value={this.state.selectedBlock}
+                         ref="BlockID_temp"
+                         onChange={this.handleChangeBlock.bind(this)}>
+                {this.state.blockInfo.map(block =>
+                    <Option key={block.id} value={block.id}>)
+                    </Option>
+                )}
+            </SelectField>
+
+            <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
+            <TextField style={styles.content} floatingLabelText="Courses List" ref="blockIDs" hintText="One or more blocks"/> <br />
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -60,14 +103,14 @@ class FacultyProfile extends Component {
     )
   }
 
-  addSpec() {
-    facultyID = this.refs.facultyID.getValue();
-    facultyName = this.refs.facultyName.getValue();
-    email = this.refs.email.getValue();
-    password = this.refs.password.getValue();
-    specializations = specializations + this.state.value;
-    courseIDs = "";
-    blockIds = "";
+  addCourseID() {
+    this.setState({courseIDs: this.refs.courseIDs.getValue() + this.state.selectedCourse +', '});
+    console.log(this.refs.courseIDs.getValue());
+  }
+
+  addBlockID() {
+      this.setState({blockIDs: this.refs.blockIDs.getValue() + this.state.selectedCourse +', '});
+      console.log(this.refs.blockIDs.getValue());
   }
 
   save() {
@@ -75,8 +118,8 @@ class FacultyProfile extends Component {
     facultyName = this.refs.facultyName.getValue();
     email = this.refs.email.getValue();
     password = this.refs.password.getValue();
-    specializations = this.state.specializations.getValue();
-    courseIDs = "";
+    specializations = this.refs.specializations.getValue();
+    courseIDs = this.refs.courses.getValue();
     blockIds = "";
 
     const url = baseUrl + 'user-service/profile/add';

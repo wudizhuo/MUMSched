@@ -25,6 +25,9 @@ class AppNav extends Component {
   _users() {
         browserHistory.push('/users');
     }
+  _faculty() {
+        browserHistory.push('/faculty_profile');
+    }
 
   render() {
     return (
@@ -37,6 +40,8 @@ class AppNav extends Component {
           Sections</MenuItem>
         <MenuItem style={styles.item} onTouchTap={this._users}>
           User Management</MenuItem>
+        <MenuItem style={styles.item} onTouchTap={this._faculty}>
+          Update Profile</MenuItem>
       </Drawer>
     )
   }

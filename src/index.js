@@ -10,7 +10,9 @@ import CreateCourse from "./pages/CreateCourse";
 import EditCourses from "./pages/EditCourses";
 import Sections from "./pages/Sections";
 import CreateSection from "./pages/CreateSection";
+import Users from "./pages/Users";
 import CreateUser from "./pages/CreateUser";
+import FacultyProfile from "./pages/FacultyProfile";
 import Dashboard from "./pages/Dashboard";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
@@ -31,7 +33,9 @@ const router = (
         <Route path="/edit_course" component={EditCourses}/>
         <Route path="/sections" component={Sections}/>
         <Route path="/create_section" component={CreateSection}/>
+        <Route path="/users" component={Users}/>
         <Route path="/create_user" component={CreateUser}/>
+        <Route path="/faculty_profile" component={FacultyProfile}/>
       </Route>
     </Router>
   </Provider>
