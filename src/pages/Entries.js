@@ -56,7 +56,7 @@ class Entries extends Component {
   }
 
   getEntries() {
-    const url = baseUrl + 'entry-service/entries';
+    const url = baseUrl + 'entrys';
 
     axios.get(url)
       .then((response) => {
@@ -98,10 +98,10 @@ class Entries extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.no}</TableRowColumn>
-                  <TableRowColumn>{row.entry.name}</TableRowColumn>
-                  <TableRowColumn>{row.totalMPPStudents}</TableRowColumn>
-                  <TableRowColumn>{row.totalFPPStudents}</TableRowColumn>
+                  <TableRowColumn>{row.id}</TableRowColumn>
+                  <TableRowColumn>{row.name}</TableRowColumn>
+                  <TableRowColumn>{row.totalmpptudents}</TableRowColumn>
+                  <TableRowColumn>{row.totalfpptudents}</TableRowColumn>
                 </TableRow>
               ))}
 
