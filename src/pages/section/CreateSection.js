@@ -2,29 +2,27 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
-
+let blocks = [];
 class CreateSection extends Component {
-
   constructor(props) {
     super(props);
     // this.state = { value: 'Student',}
 
     this.state = {
-      blockInfo: [],
       courseInfo: [],
       facultyInfo: [],
+      block: '',
     };
-
   };
 
-  handleChange1(event, index, blockInfo) {
-    this.setState({blockInfo});
+  componentWillMount() {
+    this.getBlocks();
   }
 
   handleChange2(event, index, courseInfo) {
@@ -36,13 +34,13 @@ class CreateSection extends Component {
   }
 
   getBlocks() {
-    const url = baseUrl + 'block-service/blocks';
-
-    axios.get(url)
+    blocks = [];
+    axios.get('blocks')
       .then((response) => {
         console.log(response);
-        this.props.getBlocks(response.data);
-        this.setState({blockInfo: response.data});
+        response.data.forEach((item) => {
+          blocks.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -86,12 +84,10 @@ class CreateSection extends Component {
           <div style={styles.content}>
             <SelectField floatingLabelText={'Select Block'} style={styles.content} value={this.state.block}
                          ref="block"
-                         onChange={this.handleChange1.bind(this)}>
-              {this.state.blockInfo.map(block =>
-                <Option key={block.id} value={block.id}>)
-                  {`${block.name}`}
-                </Option>
-              )}
+                         onChange={(event, index, value) => {
+                           this.setState({block: value});
+                         }}>
+              {blocks}
             </SelectField>
             <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.courseInfo}
                          ref="course"
