@@ -51,9 +51,8 @@ class Blocks extends Component {
   }
 
   getBlocks() {
-    const url = baseUrl + 'blocks'; // Need change to user-service/users
-
-    axios.get(url)
+     // Need change to user-service/users
+    axios.get('blocks')
       .then((response) => {
         console.log(response);
         this.props.getBlocks(response.data);
@@ -82,11 +81,10 @@ class Blocks extends Component {
               multiSelectable={true}
             >
               <TableRow>
-                <TableHeaderColumn>Block Name</TableHeaderColumn>
+                <TableHeaderColumn>SeqNumber</TableHeaderColumn>
+                <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Start Date</TableHeaderColumn>
                 <TableHeaderColumn>End Date</TableHeaderColumn>
-                <TableHeaderColumn>MPP Students</TableHeaderColumn>
-                <TableHeaderColumn>FPP Students</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -94,12 +92,10 @@ class Blocks extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
+                  <TableRowColumn>{row.seqNumber}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.start_date}</TableRowColumn>
-                  <TableRowColumn>{row.end_date}</TableRowColumn>
-                  <TableRowColumn>{row.end_date}</TableRowColumn>
-                  <TableRowColumn>{row.mpp_students}</TableRowColumn>
-                  <TableRowColumn>{row.fpp_students}</TableRowColumn>
+                  <TableRowColumn>{row.startDate}</TableRowColumn>
+                  <TableRowColumn>{row.endDate}</TableRowColumn>
                 </TableRow>
               ))}
 
