@@ -11,18 +11,7 @@ class Sections extends Component {
     super(props);
 
     this.state = {
-      tableData: [
-        {
-          block:'Jan 2017',
-          course:{
-            code:'CS425',
-            name:'Web Application Programming'
-          },
-          faculty:'Tina',
-          limitCapacity: 25,
-          enrolledAmount: 10,
-        }
-      ],
+      tableData: [],
       selectedIndex: -1,
     };
   }
@@ -63,12 +52,11 @@ class Sections extends Component {
   }
 
   getSections() {
-    const url = baseUrl + 'section-service/sections';
+    // const url = baseUrl + 'sections';
 
-    axios.get(url)
+    axios.get('sections')
       .then((response) => {
-        console.log(response);
-        this.props.getSections(response.data);
+        console.log(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {
@@ -108,13 +96,13 @@ class Sections extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.block}</TableRowColumn>
-                  <TableRowColumn>{row.course.code}</TableRowColumn>
-                  <TableRowColumn>{row.course.name}</TableRowColumn>
-                  <TableRowColumn>{row.faculty}</TableRowColumn>
-                  <TableRowColumn>{row.limitCapacity}</TableRowColumn>
-                  <TableRowColumn>{row.enrolledAmount}</TableRowColumn>
-                  <TableRowColumn>{(row.limitCapacity)-(row.enrolledAmount)}</TableRowColumn>
+                  <TableRowColumn>{row.block.name}</TableRowColumn>
+                  <TableRowColumn>{row.course.courseCode}</TableRowColumn>
+                  <TableRowColumn>{row.course.courseName}</TableRowColumn>
+                  <TableRowColumn>{row.facultyId}</TableRowColumn>
+                  <TableRowColumn>{row.capacity}</TableRowColumn>
+                  <TableRowColumn>{row.enrolled}</TableRowColumn>
+                  <TableRowColumn>{(row.capacity)-(row.enrolled)}</TableRowColumn>
                 </TableRow>
               ))}
 

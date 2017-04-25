@@ -42,12 +42,11 @@ class EditSections extends Component {
   }
 
   getBlocks() {
-    const url = baseUrl + 'block-service/blocks';
 
-    axios.get(url)
+    axios.get('blocks')
       .then((response) => {
+        console.log("---------------")
         console.log(response);
-        this.props.getBlocks(response.data);
         this.setState({blockInfo: response.data});
       })
       .catch(function (error) {
@@ -56,14 +55,11 @@ class EditSections extends Component {
   }
 
   getCourses() {
-    const url = baseUrl + 'course-service/courses';
 
-    axios.get(url)
+    axios.get('courses')
       .then((response) => {
         console.log(response);
-        this.props.getCourses(response.data);
         this.setState({courseInfo: response.data});
-        this.setCourseInfo(response.data);
       })
       .catch(function (error) {
         console.log(error);
