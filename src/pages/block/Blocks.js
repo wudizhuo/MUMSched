@@ -37,8 +37,8 @@ class Blocks extends Component {
   }
 
   delete() {
-    let userId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'blocks/delete/' + blockId;
+    let id = this.state.tableData[this.state.selectedIndex].id;
+    const url = baseUrl + 'blocks/delete/' + id;
     axios.delete(url)
       .then((response) => {
         console.log(response);
