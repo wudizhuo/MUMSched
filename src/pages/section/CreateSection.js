@@ -9,28 +9,24 @@ import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
 let blocks = [];
+let courses = [];
+let faculties = [];
 class CreateSection extends Component {
   constructor(props) {
     super(props);
     // this.state = { value: 'Student',}
 
     this.state = {
-      courseInfo: [],
-      facultyInfo: [],
+      course: '',
+      faculty: '',
       block: '',
     };
   };
 
   componentWillMount() {
     this.getBlocks();
-  }
-
-  handleChange2(event, index, courseInfo) {
-    this.setState({courseInfo});
-  }
-
-  handleChange3(event, index, facultyInfo) {
-    this.setState({facultyInfo});
+    this.getCourses();
+    this.getFaculties();
   }
 
   getBlocks() {
@@ -48,13 +44,14 @@ class CreateSection extends Component {
   }
 
   getCourses() {
-    const url = baseUrl + 'course-service/courses';
-
-    axios.get(url)
+    courses = [];
+    axios.get('courses')
       .then((response) => {
         console.log(response);
-        this.props.getCourses(response.data);
-        this.setState({courseInfo: response.data});
+        response.data.forEach((item) => {
+          courses.push(<MenuItem value={item.courseCode} key={item.courseCode}
+                                 primaryText={item.courseCode + ' ' + item.courseName}/>)
+        })
       })
       .catch(function (error) {
         console.log(error);
@@ -62,13 +59,14 @@ class CreateSection extends Component {
   }
 
   getFaculties() {
-    const url = baseUrl + 'faculty-service/faculties';
-
-    axios.get(url)
+    faculties = [];
+    axios.get('faculties')
       .then((response) => {
         console.log(response);
-        this.props.getFaculties(response.data);
-        this.setState({facultyInfo: response.data});
+        sponse.data.forEach((item) => {
+          faculties.push(<MenuItem value={item.loginId} key={item.loginId}
+                                   primaryText={item.firstName + ' '+ item.lastName}/>)
+        })
       })
       .catch(function (error) {
         console.log(error);
@@ -89,23 +87,19 @@ class CreateSection extends Component {
                          }}>
               {blocks}
             </SelectField>
-            <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.courseInfo}
+            <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.course}
                          ref="course"
-                         onChange={this.handleChange2.bind(this)}>
-              {this.state.courseInfo.map(course =>
-                <Option key={course.id} value={course.id}>)
-                  {`${course.id} ${course.name}`}
-                </Option>
-              )}
+                         onChange={(event, index, value) => {
+                           this.setState({course: value});
+                         }}>
+              {courses}
             </SelectField>
             <SelectField floatingLabelText={'Select Faculty'} style={styles.content} value={this.state.faculty}
                          ref="faculty"
-                         onChange={this.handleChange3.bind(this)}>
-              {this.state.facultyInfo.map(faculty =>
-                <Option key={faculty.id} value={faculty.id}>)
-                  {`${faculty.name}`}
-                </Option>
-              )}
+                         onChange={(event, index, value) => {
+                           this.setState({faculty: value});
+                         }}>
+              {faculties}
             </SelectField>
             <TextField style={styles.content} floatingLabelText="Capacity" ref="capacity"/> <br />
           </div>
@@ -119,15 +113,15 @@ class CreateSection extends Component {
   }
 
   create() {
-    let block = this.refs.block.getValue();
-    let courseCode = this.refs.courseCode.getValue();
+    let blockId = this.refs.block.getValue();
+    let courseCode = this.refs.course.getValue();
     let faculty = this.refs.faculty.getValue();
     let capacity = this.refs.capacity.getValue();
     console.log(this.state.value);
 
     const url = baseUrl + 'section-service/section/add';
     axios.post(url, {
-      block: block,
+      block: blockId,
       courseId: courseCode,
       limitCapacity: capacity,
     })
