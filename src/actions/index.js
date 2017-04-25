@@ -8,6 +8,8 @@ export const GETUSERS = 'getUsers';
 export const EDITUSER = 'editUser';
 export const GETBLOCKS = 'getBlocks';
 export const EDITBLOCK = 'editBlock';
+export const GETENTRIES = 'getEntries';
+export const EDITENTRY = 'editEntry';
 export const OPENDRAWER = 'opendrawer';
 export const CLOSERAWER = 'closeDrawer';
 export const SHOW_SNACKBAR = 'show_snackbar';
@@ -47,6 +49,14 @@ export function getBlocks(blocks) {
 
 export function editBlock(block) {
     return {type: EDITBLOCK, block}
+}
+
+export function getEntries(entries) {
+    return {type: GETENTRIS, entries}
+}
+
+export function editEntry(entry) {
+    return {type: EDITENTRY, entry}
 }
 
 export function openDrawer() {

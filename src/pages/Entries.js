@@ -35,7 +35,7 @@ class Entries extends Component {
   edit() {
     // Want to send id for Edit Form
     if (this.state.tableData[this.state.selectedIndex] != null) {
-      this.props.editEntries(this.state.tableData[this.state.selectedIndex]);
+      this.props.editEntry(this.state.tableData[this.state.selectedIndex]);
       browserHistory.push('/edit_entry');
     }
   }
@@ -55,7 +55,7 @@ class Entries extends Component {
   }
 
   getEntries() {
-    axios.get('entrys')
+    axios.get(baseUrl+'entrys')
       .then((response) => {
         this.setState({tableData: response.data});
       })

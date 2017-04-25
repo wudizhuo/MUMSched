@@ -12,6 +12,7 @@ import Sections from "./pages/Sections";
 import CreateSection from "./pages/CreateSection";
 import EditSections from "./pages/EditSections";
 import Entries from "./pages/Entries";
+import EditEntry from "./pages/EditEntry";
 import Users from "./pages/Users";
 import CreateUser from "./pages/CreateUser";
 import EditUser from "./pages/EditUser";
@@ -38,6 +39,7 @@ const router = (
         <IndexRoute component={Dashboard}/>
         <Route path="/login" component={Login}/>
         <Route path="/entries" component={Entries}/>
+        <Route path="/edit_entry" component={EditEntry}/>
         <Route path="/courses" component={Courses}/>
         <Route path="/create_course" component={CreateCourse}/>
         <Route path="/edit_course" component={EditCourses}/>
