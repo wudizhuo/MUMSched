@@ -63,8 +63,7 @@ class Entries extends Component {
   getEntries() {
     axios.get(baseUrl+'entrys')
       .then((response) => {
-        this.setState({tableData: response.data});
-        this._mapData();
+        this._mapData(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -72,12 +71,13 @@ class Entries extends Component {
       });
   }
 
-  _mapData() {
-    this.state.tableData.forEach((item)=>{
+  _mapData(data) {
+    data.forEach((item)=>{
       item.blockList = item.blockList.map(function(block) {
         return block.name;
       }).join(', ');
     });
+    this.setState({tableData: data});
   }
 
   render() {
