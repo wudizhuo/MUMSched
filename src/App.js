@@ -8,12 +8,13 @@ import * as actionCreators from "./actions/index";
 import axios from "axios";
 import {browserHistory} from "react-router";
 import Snackbar from "material-ui/Snackbar";
+import {baseUrl} from "./Const";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    axios.defaults.baseURL = 'http://localhost:9090/';
+    axios.defaults.baseURL = baseUrl;
     axios.defaults.withCredentials = true;
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
   }

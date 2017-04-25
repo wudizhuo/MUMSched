@@ -1,6 +1,6 @@
 import {LOGINED, LOGOUT} from "../actions";
 
-function login(state = [], action) {
+export function login(state = [], action) {
   switch (action.type) {
     case LOGINED :
       localStorage.isLogin = true;
@@ -17,5 +17,3 @@ function login(state = [], action) {
       return state;
   }
 }
-
-export default login;

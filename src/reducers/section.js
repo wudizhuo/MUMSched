@@ -1,6 +1,6 @@
 import {GETSECTIONS, EDITSECTIONS} from "../actions";
 
-function section(state = [], action) {
+export function section(state = [], action) {
   switch (action.type) {
     case GETSECTIONS :
       return Object.assign({}, state, {
@@ -14,5 +14,3 @@ function section(state = [], action) {
       return state;
   }
 }
-
-export default section;

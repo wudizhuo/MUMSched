@@ -1,6 +1,6 @@
 import {GETCOURSES, EDITCOURSES} from "../actions";
 
-function course(state = [], action) {
+export function course(state = [], action) {
   switch (action.type) {
     case GETCOURSES :
       return Object.assign({}, state, {
@@ -14,5 +14,3 @@ function course(state = [], action) {
       return state;
   }
 }
-
-export default course;

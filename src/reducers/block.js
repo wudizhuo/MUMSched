@@ -1,6 +1,6 @@
 import {GETBLOCKS, EDITBLOCK} from "../actions";
 
-function block(state = [], action) {
+export function block(state = [], action) {
   switch (action.type) {
     case GETBLOCKS :
       return Object.assign({}, state, {
@@ -14,5 +14,3 @@ function block(state = [], action) {
       return state;
   }
 }
-
-export default block;

@@ -1,6 +1,6 @@
 import {GETUSERS, EDITUSER} from "../actions";
 
-function user(state = [], action) {
+export function user(state = [], action) {
   switch (action.type) {
     case GETUSERS :
       return Object.assign({}, state, {
@@ -14,5 +14,3 @@ function user(state = [], action) {
       return state;
   }
 }
-
-export default user;

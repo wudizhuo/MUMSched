@@ -1,6 +1,10 @@
 import {createStore, compose} from "redux";
-import rootReducer from "./reducers/index";
 import {role} from "./Const";
+import {combineReducers} from "redux";
+import {routerReducer} from "react-router-redux";
+import * as reducers from './reducers'
+
+const rootReducer = combineReducers({...reducers, routing: routerReducer});
 
 const defaultState = {
   login: {
