@@ -5,6 +5,7 @@ import TextField from "material-ui/TextField";
 import axios from "axios";
 import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
+import DatePicker from 'material-ui/DatePicker';
 
 let blockName = "";
 let startDate = "";
@@ -22,8 +23,8 @@ class CreateBlock extends Component {
 
                     <div style={styles.content}>
                         <TextField style={styles.content} floatingLabelText="Block Name" ref="blockName" /><br />
-                        <TextField style={styles.content} floatingLabelText="Start Date" ref="startDate" hintText="YYYY/MM/DD" /> <br />
-                        <TextField style={styles.content} floatingLabelText="End Date" ref="endDate" hintText="YYYY/MM/DD" /> <br />
+                        <DatePicker style={styles.content} floatingLabelText="Start Date" ref="startDate" mode="landscape" /> <br />
+                        <DatePicker style={styles.content} floatingLabelText="End Date" ref="endDate" mode="landscape" /> <br />
                         <TextField style={styles.content} floatingLabelText="Total MPP Students" ref="mppStudents" /> <br />
                         <TextField style={styles.content} floatingLabelText="Total FPP Students" ref="fppStudents" /> <br />
                     </div>
