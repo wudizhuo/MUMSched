@@ -28,7 +28,6 @@ class CreateBlock extends Component {
                         <TextField style={styles.content} floatingLabelText="Total MPP Students" ref="mppStudents" /> <br />
                         <TextField style={styles.content} floatingLabelText="Total FPP Students" ref="fppStudents" /> <br />
                     </div>
-
                     <CardActions style={styles.cardAction}>
                         <FlatButton label="Create" primary={true} onClick={this.create.bind(this)} />
                     </CardActions>
