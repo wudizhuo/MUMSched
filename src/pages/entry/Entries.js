@@ -64,13 +64,20 @@ class Entries extends Component {
     axios.get(baseUrl+'entrys')
       .then((response) => {
         this.setState({tableData: response.data});
-        console.log('Check input from Database');
-        console.log(this.state.tableData);
+        this._mapData();
       })
       .catch((error) => {
         console.log(error);
         this.props.showSnackbar(error.status + ' '+ error);
       });
+  }
+
+  _mapData() {
+    this.state.tableData.forEach((item)=>{
+      item.blockList = item.blockList.map(function(block) {
+        return block.name;
+      }).join(', ');
+    });
   }
 
   render() {
@@ -107,7 +114,7 @@ class Entries extends Component {
                   <TableRowColumn>{row.name}</TableRowColumn>
                   <TableRowColumn>{row.totalMPPStudents}</TableRowColumn>
                   <TableRowColumn>{row.totalFPPStudents}</TableRowColumn>
-                  <TableRowColumn>{row.blockList.name}</TableRowColumn>
+                  <TableRowColumn>{row.blockList}</TableRowColumn>
                 </TableRow>
               ))}
 
