@@ -45,12 +45,12 @@ class StudentProfile extends Component {
 
 
     getTakens() {
-        const url = baseUrl + 'course-service/courses' + studentID; // Need change to section-service/takens
+        const url = baseUrl + 'user/takens/' + studentID;
 
         axios.get(url)
             .then((response) => {
                 console.log(response);
-                this.props.getCourses(response.data);    // Need change to getTakens
+                this.props.getTakens(response.data);
                 this.setState({takenInfo: response.data});
                 console.log('This is Taken Infor');
                 console.log(this.state.takenInfo);
@@ -70,12 +70,12 @@ class StudentProfile extends Component {
     }
 
     getEnrolls() {
-        const url = baseUrl + 'course-service/courses' + studentID; //  Need change to getEnrolls
+        const url = baseUrl + 'user/enrolls/' + studentID;
 
         axios.get(url)
             .then((response) => {
                 console.log(response);
-                this.props.getCourses(response.data);    //  Need change to getEnrolls
+                this.props.getEnrolls(response.data);
                 this.setState({enrollInfo: response.data});
                 this.setState({enrolls: this.mergeEnroll()});
             })
@@ -93,11 +93,11 @@ class StudentProfile extends Component {
     }
 
     getSections() {
-        const url = baseUrl + 'course-service/courses'; // Need change to getSections function
+        const url = baseUrl + 'sections';
 
         axios.get(url)
             .then((response) => {
-            this.props.getCourses(response.data);  // Need change to getSections function
+            this.props.getSections(response.data);
         this.setState({sectionInfo: response.data});
 
         console.log('-------');

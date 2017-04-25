@@ -25,12 +25,12 @@ class AppNav extends Component {
           Courses</MenuItem>
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/sections')}>
           Sections</MenuItem>
-
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/blocks')}>
+          Blocks</MenuItem>
         {this.props.role === role.Admin &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/users')}>
-          User Management</MenuItem>
+          Users Management</MenuItem>
         }
-
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/faculty_profile')}>
           Faculty Profile</MenuItem>
 

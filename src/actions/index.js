@@ -3,6 +3,10 @@ export const LOGINED = 'Logined';
 export const LOGOUT = 'LOGOUT';
 export const GETCOURSES = 'getCourses';
 export const EDITCOURSES = 'editcourses';
+export const GETUSERS = 'getUsers';
+export const EDITUSER = 'editUser';
+export const GETBLOCKS = 'getBlocks';
+export const EDITBLOCK = 'editBlock';
 export const OPENDRAWER = 'opendrawer';
 export const CLOSERAWER = 'closeDrawer';
 export const SHOW_SNACKBAR = 'show_snackbar';
@@ -22,6 +26,22 @@ export function getCourses(courses) {
 
 export function editCourses(course) {
   return {type: EDITCOURSES, course}
+}
+
+export function getUsers(users) {
+    return {type: GETUSERS, users}
+}
+
+export function editUser(user) {
+    return {type: EDITUSER, user}
+}
+
+export function getBlocks(blocks) {
+    return {type: GETBLOCKS, blocks}
+}
+
+export function editBlock(block) {
+    return {type: EDITBLOCK, block}
 }
 
 export function openDrawer() {

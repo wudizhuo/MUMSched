@@ -13,8 +13,12 @@ import CreateSection from "./pages/CreateSection";
 import Entries from "./pages/Entries";
 import Users from "./pages/Users";
 import CreateUser from "./pages/CreateUser";
+import EditUser from "./pages/EditUser";
 import FacultyProfile from "./pages/FacultyProfile";
 import StudentProfile from "./pages/StudentProfile";
+import Blocks from "./pages/Blocks";
+import CreateBlock from "./pages/CreateBlock";
+import EditBlock from "./pages/EditBlock";
 import Dashboard from "./pages/Dashboard";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
@@ -38,8 +42,12 @@ const router = (
         <Route path="/create_section" component={CreateSection}/>
         <Route path="/users" component={Users}/>
         <Route path="/create_user" component={CreateUser}/>
+        <Route path="/edit_user" component={EditUser}/>
         <Route path="/faculty_profile" component={FacultyProfile}/>
         <Route path="/student_profile" component={StudentProfile}/>
+        <Route path="/blocks" component={Blocks}/>
+        <Route path="/create_block" component={CreateBlock}/>
+        <Route path="/edit_block" component={EditBlock}/>
       </Route>
     </Router>
   </Provider>

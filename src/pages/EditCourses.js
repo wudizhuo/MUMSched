@@ -108,6 +108,7 @@ var styles = {
   },
   content: {
     width: '98%',
+    fontSize: '14',
     paddingLeft: '2%',
     paddingRight: '2%',
   },

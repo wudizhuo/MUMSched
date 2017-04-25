@@ -6,7 +6,7 @@ import axios from "axios";
 import {browserHistory} from "react-router";
 import {baseUrl} from "../Const";
 
-class Users extends Component {
+class Blocks extends Component {
   constructor(props) {
     super(props);
 
@@ -17,7 +17,7 @@ class Users extends Component {
   }
 
   componentWillMount() {
-    this.getUsers();
+    this.getBlocks();
   }
 
   onRowSelection(items) {
@@ -25,47 +25,38 @@ class Users extends Component {
   }
 
   create() {
-    browserHistory.push('/create_user');
+    browserHistory.push('/create_block');
   }
 
   edit() {
       // Want to send id for Edit Form
       if(this.state.tableData[this.state.selectedIndex] != null)
       {
-        this.props.editUser(this.state.tableData[this.state.selectedIndex]);
-        browserHistory.push('/edit_user');
+        this.props.editBlock(this.state.tableData[this.state.selectedIndex]);
+        browserHistory.push('/edit_block');
       }
   }
 
   delete() {
     let userId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'user-service/delete/' + userId;
+    const url = baseUrl + 'blocks/delete/' + blockId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
         window.location.reload();
-        // this.setState({tableData: response.data});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
-  updateProfile() {
-      // Want to send id for Edit Form
-      if(this.state.tableData[this.state.selectedIndex] != null)
-      {
-          // TODO: Add method check User Role
-          browserHistory.push('/student_profile');
-      }
-  }
-  getUsers() {
-    const url = baseUrl + 'user-service/users'; // Need change to user-service/users
+  getBlocks() {
+    const url = baseUrl + 'blocks'; // Need change to user-service/users
 
     axios.get(url)
       .then((response) => {
         console.log(response);
-        this.props.getUsers(response.data);
+        this.props.getBlocks(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {
@@ -78,7 +69,7 @@ class Users extends Component {
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-                      title="Users Management"
+                      title="Blocks Management"
           />
           <Table
             onRowSelection={this.onRowSelection.bind(this)}
@@ -91,10 +82,11 @@ class Users extends Component {
               multiSelectable={true}
             >
               <TableRow>
-                <TableHeaderColumn>User ID</TableHeaderColumn>
-                <TableHeaderColumn>User Name</TableHeaderColumn>
-                <TableHeaderColumn>Email</TableHeaderColumn>
-                <TableHeaderColumn>Role</TableHeaderColumn>
+                <TableHeaderColumn>Block Name</TableHeaderColumn>
+                <TableHeaderColumn>Start Date</TableHeaderColumn>
+                <TableHeaderColumn>End Date</TableHeaderColumn>
+                <TableHeaderColumn>MPP Students</TableHeaderColumn>
+                <TableHeaderColumn>FPP Students</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -102,10 +94,12 @@ class Users extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.id}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.email}</TableRowColumn>
-                  <TableRowColumn>{row.role}</TableRowColumn>
+                  <TableRowColumn>{row.start_date}</TableRowColumn>
+                  <TableRowColumn>{row.end_date}</TableRowColumn>
+                  <TableRowColumn>{row.end_date}</TableRowColumn>
+                  <TableRowColumn>{row.mpp_students}</TableRowColumn>
+                  <TableRowColumn>{row.fpp_students}</TableRowColumn>
                 </TableRow>
               ))}
 
@@ -113,8 +107,6 @@ class Users extends Component {
           </Table>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Profile"
-                        onClick={this.updateProfile.bind(this)}/>
             <FlatButton label="Delete"
                         onClick={this.delete.bind(this)}/>
             <FlatButton label="Edit" secondary={true}
@@ -149,4 +141,4 @@ var styles = {
 
 }
 
-export default Users;
+export default Blocks;
