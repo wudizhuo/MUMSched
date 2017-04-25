@@ -11,7 +11,18 @@ class Sections extends Component {
     super(props);
 
     this.state = {
-      tableData: [],
+      tableData: [
+        {
+          block:'Jan 2017',
+          course:{
+            code:'CS425',
+            name:'Web Application Programming'
+          },
+          faculty:'Tina',
+          limitCapacity: 25,
+          enrolledAmount: 10,
+        }
+      ],
       selectedIndex: -1,
     };
   }
@@ -102,7 +113,8 @@ class Sections extends Component {
                   <TableRowColumn>{row.course.name}</TableRowColumn>
                   <TableRowColumn>{row.faculty}</TableRowColumn>
                   <TableRowColumn>{row.limitCapacity}</TableRowColumn>
-                  <TableRowColumn>{row.limitCapacity-row.enrolledAmount}</TableRowColumn>
+                  <TableRowColumn>{row.enrolledAmount}</TableRowColumn>
+                  <TableRowColumn>{(row.limitCapacity)-(row.enrolledAmount)}</TableRowColumn>
                 </TableRow>
               ))}
 

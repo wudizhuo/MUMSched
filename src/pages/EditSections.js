@@ -2,37 +2,40 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from "material-ui/SelectField";
 import axios from "axios";
 import {baseUrl} from "../Const";
+import {connect} from "react-redux";
 import {browserHistory} from "react-router";
 
+let block = "";
+let course = "";
+let faculty = "";
+let capacity = "";
 
-class CreateSection extends Component {
+class EditSections extends Component {
 
   constructor(props) {
     super(props);
-    // this.state = { value: 'Student',}
 
     this.state = {
       blockInfo: [],
-      courseInfo: [],
-      facultyInfo: [],
+      courseInfo:[],
+      facultyInfo:[],
+      selectedIndex: -1,
     };
-
-  };
-
-  handleChange1(event, index, blockInfo) {
-    this.setState({blockInfo});
   }
 
-  handleChange2(event, index, courseInfo) {
-    this.setState({courseInfo});
+  componentWillMount() {
+    this.getSections();
+    this.getBlocks();
+    this.getCourses();
+    this.getFaculties();
   }
 
-  handleChange3(event, index, facultyInfo) {
-    this.setState({facultyInfo});
+  getSections() {
+    // console.log(this.props);
+    console.log(this.props.section.edit_section);
   }
 
   getBlocks() {
@@ -77,14 +80,29 @@ class CreateSection extends Component {
       });
   }
 
+  handleChange1(event, index, blockInfo) {
+    this.setState({blockInfo});
+  }
+
+  handleChange2(event, index, courseInfo) {
+    this.setState({courseInfo});
+  }
+
+  handleChange3(event, index, facultyInfo) {
+    this.setState({facultyInfo});
+  }
+
   render() {
+
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
-          <CardHeader titleStyle={styles.header} title="Create Section"/>
-
+          <CardHeader titleStyle={styles.header}
+                      title="Update Section"
+          />
           <div style={styles.content}>
-            <SelectField floatingLabelText={'Select Block'} style={styles.content} value={this.state.block}
+            <SelectField floatingLabelText={'Select Block'} style={styles.content}
+                         value={this.props.section.edit_section.block}
                          ref="block"
                          onChange={this.handleChange1.bind(this)}>
               {this.state.blockInfo.map(block =>
@@ -93,7 +111,8 @@ class CreateSection extends Component {
                 </Option>
               )}
             </SelectField>
-            <SelectField floatingLabelText={'Select Course'} style={styles.content} value={this.state.courseInfo}
+            <SelectField floatingLabelText={'Select Course'} style={styles.content}
+                         value={this.props.section.edit_section.course}
                          ref="course"
                          onChange={this.handleChange2.bind(this)}>
               {this.state.courseInfo.map(course =>
@@ -102,7 +121,8 @@ class CreateSection extends Component {
                 </Option>
               )}
             </SelectField>
-            <SelectField floatingLabelText={'Select Faculty'} style={styles.content} value={this.state.faculty}
+            <SelectField floatingLabelText={'Select Faculty'} style={styles.content}
+                         value={this.props.section.edit_section.faculty}
                          ref="faculty"
                          onChange={this.handleChange3.bind(this)}>
               {this.state.facultyInfo.map(faculty =>
@@ -111,38 +131,45 @@ class CreateSection extends Component {
                 </Option>
               )}
             </SelectField>
-            <TextField style={styles.content} floatingLabelText="Capacity" ref="capacity"/> <br />
+            <TextField style={styles.content} floatingLabelText="Capacity" ref="capacity"
+                       defaultValue={this.props.section.edit_section.capacity}/> <br />
+            {/*<TextField style={styles.content}*/}
+            {/*ref="faculties"*/}
+            {/*hintText="Faculty"*/}
+            {/*/><br />*/}
+
           </div>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Submit" primary={true} onClick={this.create.bind(this)}/>
+            <FlatButton label="Update" primary={true}
+                        onClick={this.update.bind(this)}
+            />
           </CardActions>
         </Card>
       </div>
     )
   }
 
-  create() {
-    let block = this.refs.block.getValue();
-    let courseCode = this.refs.courseCode.getValue();
-    let faculty = this.refs.faculty.getValue();
-    let capacity = this.refs.capacity.getValue();
-    console.log(this.state.value);
+  update() {
+    block = this.refs.block.getValue();
+    course = this.refs.course.getValue();
+    faculty = this.refs.faculty.getValue();
+    capacity = this.refs.capacity.getValue();
 
-    const url = baseUrl + 'section-service/section/add';
-    axios.post(url, {
-      block: block,
-      courseId: courseCode,
+    // console.log(block + course + faculty + capacity);
+
+    const url = baseUrl + 'section-service/sections/update';
+    axios.put(url, {
+      blockInfo: block,
+      courseInfo: course,
+      facultyInfo: faculty,
       limitCapacity: capacity,
     })
       .then(function (response) {
-        //show snack bar
         console.log(response);
-        browserHistory.push('/users');
+        browserHistory.push('/sections');
       })
       .catch(function (error) {
-        //show snack bar
-        console.log("error----");
         console.log(error);
       });
   }
@@ -179,10 +206,12 @@ var styles = {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  customWidth: {
-    width: 150,
-  },
-
 }
 
-export default CreateSection;
+function mapStateToProps(state) {
+  return {
+    section: state.section,
+  }
+}
+
+export default connect(mapStateToProps)(EditSections);
