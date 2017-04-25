@@ -73,6 +73,7 @@ class DetailSched extends Component {
             <TableBody
               deselectOnClickaway={false}
               stripedRows = {true}
+              displayRowCheckbox = {false}
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
