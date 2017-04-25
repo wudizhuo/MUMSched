@@ -33,12 +33,11 @@ class Entries extends Component {
   }
 
   edit() {
-      // Want to send id for Edit Form
-      if(this.state.tableData[this.state.selectedIndex] != null)
-      {
-        this.props.editEntries(this.state.tableData[this.state.selectedIndex]);
-        browserHistory.push('/edit_entry');
-      }
+    // Want to send id for Edit Form
+    if (this.state.tableData[this.state.selectedIndex] != null) {
+      this.props.editEntries(this.state.tableData[this.state.selectedIndex]);
+      browserHistory.push('/edit_entry');
+    }
   }
 
   delete() {
@@ -56,16 +55,13 @@ class Entries extends Component {
   }
 
   getEntries() {
-    const url = baseUrl + 'entrys';
-
-    axios.get(url)
+    axios.get('entrys')
       .then((response) => {
-        console.log(response);
-        this.props.getEntries(response.data);
         this.setState({tableData: response.data});
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
+        this.props.showSnackbar(error.status + " " + error);
       });
   }
 
@@ -100,8 +96,8 @@ class Entries extends Component {
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.totalmpptudents}</TableRowColumn>
-                  <TableRowColumn>{row.totalfpptudents}</TableRowColumn>
+                  <TableRowColumn>{row.totalMPPStudents}</TableRowColumn>
+                  <TableRowColumn>{row.totalFPPStudents}</TableRowColumn>
                 </TableRow>
               ))}
 
