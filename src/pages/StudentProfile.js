@@ -25,6 +25,7 @@ class StudentProfile extends Component {
             takenInfo:[],
             selectedSection:'',
             enrollInfo: [],
+            sectionInfo: [],
             takens:'',
             enrolls:'',
         };
@@ -34,6 +35,7 @@ class StudentProfile extends Component {
     componentWillMount() {
         this.getTakens();
         this.getEnrolls();
+        this.getSections();
     }
 
 
@@ -43,34 +45,80 @@ class StudentProfile extends Component {
 
 
     getTakens() {
-        const url = baseUrl + 'section-service/takens' + studentID;
+        const url = baseUrl + 'course-service/courses' + studentID; // Need change to section-service/takens
 
         axios.get(url)
             .then((response) => {
                 console.log(response);
-                this.props.getTakens(response.data);
+                this.props.getCourses(response.data);    // Need change to getTakens
                 this.setState({takenInfo: response.data});
+                console.log('This is Taken Infor');
                 console.log(this.state.takenInfo);
+                this.setState({takens: this.mergeTaken()});
+
             })
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    mergeTaken(){
+        console.log("---test Taken---");
+        return this.state.takenInfo.map(function(item) {
+            return item.name;
+        })
     }
 
     getEnrolls() {
-        const url = baseUrl + 'section-service/enrolls' + studentID;
+        const url = baseUrl + 'course-service/courses' + studentID; //  Need change to getEnrolls
 
         axios.get(url)
             .then((response) => {
                 console.log(response);
-                this.props.getEnrolls(response.data);
+                this.props.getCourses(response.data);    //  Need change to getEnrolls
                 this.setState({enrollInfo: response.data});
-                console.log(this.state.enrollInfo);
+                this.setState({enrolls: this.mergeEnroll()});
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
+
+    mergeEnroll(){
+        console.log("---test---");
+        let enrolls = '';
+        return this.state.enrollInfo.map(function(item) {
+            return item.name;
+        })
+    }
+
+    getSections() {
+        const url = baseUrl + 'course-service/courses'; // Need change to getSections function
+
+        axios.get(url)
+            .then((response) => {
+            this.props.getCourses(response.data);  // Need change to getSections function
+        this.setState({sectionInfo: response.data});
+
+        console.log('-------');
+        console.log(this.state.sectionInfo);
+        })
+        .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    menuSection(sectionInfo) {
+        return sectionInfo.map((section) => (
+            <MenuItem
+        key={section.name}
+        value={section.name}
+        primaryText={section.name}
+    />
+    ));
+    }
+
+
     render() {
         return (
             <div style={styles.container}>
@@ -78,27 +126,26 @@ class StudentProfile extends Component {
                     <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID"/><br />
-                        <TextField style={styles.content} floatingLabelText="Student Name" ref="studentName"/><br />
+                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" disabled ={'true'}/><br />
+                        <TextField style={styles.content} floatingLabelText="Student Name" ref="studentName" disabled ={'true'}/><br />
                         <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
                         <TextField style={styles.content} floatingLabelText="Entry" ref="entry" hintText="January"/> <br />
-                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" /> <br />
+                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens} /> <br />
 
-                        <TextField style={styles.content} floatingLabelText="Enrolls List" ref="enrolls" hintText="One or more section"/> <br />
 
-                        <SelectField floatingLabelText={'Select Section'} style={styles.content} value={this.state.selectedSection}
-                                     ref="enroll_temp"
-                                     onChange={this.handleChangeEnroll.bind(this)}>
-                            {this.state.enrollInfo.map(section =>
-                                <Option key={section.id} value={section.id}>)
-                                </Option>
-                            )}
+                        <SelectField
+                            floatingLabelText={'Select Section'}
+                            value={this.state.selectedSection}
+                            style={styles.content}
+                            onChange={this.handleChangeEnroll.bind(this)} >
+                                {this.menuSection(this.state.sectionInfo)}
                         </SelectField>
 
                         <FlatButton label="Add Enroll" primary={true} onClick={this.addEnroll.bind(this)}/>
-                        <TextField style={styles.content} floatingLabelText="Enroll List" ref="enrolls" hintText="One or more sections"/> <br />
-                    </div>
+                        <TextField style={styles.content} floatingLabelText="Enrolls List" ref="enrolls" value={this.state.enrolls} hintText="Select one or more above sections"/> <br />
+
+                        </div>
 
                     <CardActions style={styles.cardAction}>
                         <FlatButton label="Save" primary={true} onClick={this.save.bind(this)}/>
@@ -109,14 +156,18 @@ class StudentProfile extends Component {
     }
 
     addEnroll() {
-        this.setState({enrolls: this.refs.enrolls.getValue() + this.state.selectedSection +', '});
+        if(enrolls == '')
+            this.setState({enrolls: this.refs.enrolls.getValue() + this.state.selectedSection});
+        else
+            this.setState({enrolls:', ' + this.refs.enrolls.getValue() + this.state.selectedSection});
+
         console.log(this.refs.enrolls.getValue());
     }
 
 
     save() {
         studentID = this.refs.studentID.getValue();
-        studentID = this.refs.studentName.getValue();
+        studentName = this.refs.studentName.getValue();
         email = this.refs.email.getValue();
         password = this.refs.password.getValue();
         entry = this.refs.entry.getValue();

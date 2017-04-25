@@ -101,8 +101,8 @@ class FacultyProfile extends Component {
           <CardHeader titleStyle={styles.header} title="Update Faculty Profile"/>
 
           <div style={styles.content}>
-            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID"/><br />
-            <TextField style={styles.content} floatingLabelText="Facutlty Name" ref="facultyName"/><br />
+            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID" disabled ={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="Facutlty Name" ref="facultyName" disabled ={'true'}/><br />
             <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
             <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
             <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" hintText="Computer Science"/> <br />
