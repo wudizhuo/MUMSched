@@ -4,7 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 
 class Blocks extends Component {
   constructor(props) {
@@ -29,7 +29,6 @@ class Blocks extends Component {
   }
 
   edit() {
-      // Want to send id for Edit Form
       if(this.state.tableData[this.state.selectedIndex] != null)
       {
         this.props.editBlock(this.state.tableData[this.state.selectedIndex]);
