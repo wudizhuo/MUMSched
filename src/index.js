@@ -19,6 +19,8 @@ import StudentProfile from "./pages/StudentProfile";
 import Blocks from "./pages/Blocks";
 import CreateBlock from "./pages/CreateBlock";
 import EditBlock from "./pages/EditBlock";
+import Schedules from "./pages/Schedules";
+import DetailSched from "./pages/DetailSched";
 import Dashboard from "./pages/Dashboard";
 import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import store from "./store";
@@ -48,6 +50,8 @@ const router = (
         <Route path="/blocks" component={Blocks}/>
         <Route path="/create_block" component={CreateBlock}/>
         <Route path="/edit_block" component={EditBlock}/>
+        <Route path="/schedules" component={Schedules}/>
+        <Route path="/detail_sched" component={DetailSched}/>
       </Route>
     </Router>
   </Provider>

@@ -20,22 +20,25 @@ class AppNav extends Component {
               onRequestChange={this.props.openDrawer}>
         <div style={styles.label}>MUMSched</div>
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/entries')}>
-          Entries</MenuItem>
+          ENTRIES</MenuItem>
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/courses')}>
-          Courses</MenuItem>
+          COURSES</MenuItem>
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/sections')}>
-          Sections</MenuItem>
+          SECTIONS</MenuItem>
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/blocks')}>
-          Blocks</MenuItem>
+          BLOCKS</MenuItem><br />
+        <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/schedules')}>
+           SCHEDULES</MenuItem><br /><br />
+
         {this.props.role === role.Admin &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/users')}>
-          Users Management</MenuItem>
+          USERS</MenuItem>
         }
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/faculty_profile')}>
-          Faculty Profile</MenuItem>
+          FACULTY PROFILE</MenuItem>
 
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/student_profile')}>
-          Student Profile</MenuItem>
+          STUDENT PROFILE</MenuItem>
       </Drawer>
     )
   }
