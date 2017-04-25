@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
 let facultyID = "";

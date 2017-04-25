@@ -3,8 +3,9 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
+import {connect} from "react-redux";
 
 
 class EditEntry extends Component {
@@ -13,7 +14,7 @@ class EditEntry extends Component {
   }
 
   getEntries() {
-     console.log(this.props.entry.edit_entry);
+    //console.log(this.props.entry.edit_entry);
    }
 
   update() {
@@ -49,22 +50,23 @@ class EditEntry extends Component {
           <div style={styles.content}>
             <TextField style={styles.content}
                        ref="entryID"
-                       defaultValue = {this.props.entry.edit_course.id}
+                       defaultValue = {this.props.entry.edit_entry.id}
+                       disabled ={'true'}
             /><br />
             <TextField style={styles.content}
                        ref="entryName"
-                       defaultValue = {this.props.entry.edit_course.entryName}
+                       defaultValue = {this.props.entry.edit_entry.name}
                        hintText="Entry Name"
             /><br />
             <TextField style={styles.content}
                        ref="totalMPPStudents"
                        hintText="MPP Students"
-                       defaultValue = {this.props.entry.edit_course.totalMPPStudents}
+                       defaultValue = {this.props.entry.edit_entry.totalMPPStudents}
             /><br />
             <TextField style={styles.content}
                        ref="totalFPPStudents"
                        hintText="FPP Students"
-                       defaultValue = {this.props.entry.edit_course.totalFPPStudents}
+                       defaultValue = {this.props.entry.edit_entry.totalFPPStudents}
             /><br />
             {/*<TextField style={styles.content}*/}
                        {/*ref="faculties"*/}
@@ -117,4 +119,10 @@ var styles = {
   },
 }
 
-export default EditEntry;
+function mapStateToProps(state) {
+    return {
+        entry: state.entry,
+    }
+}
+
+export default connect(mapStateToProps)(EditEntry);

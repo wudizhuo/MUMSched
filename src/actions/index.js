@@ -52,7 +52,7 @@ export function editBlock(block) {
 }
 
 export function getEntries(entries) {
-    return {type: GETENTRIS, entries}
+    return {type: GETENTRIES, entries}
 }
 
 export function editEntry(entry) {

@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
 let userID = "";
@@ -14,13 +14,22 @@ let email = "";
 let password = "";
 let role = "";
 
-class CreateUser extends Component {
+class EditUser extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { value: 'Student',}
+        this.state = { value: '',}
 
     };
+
+    componentWillMount() {
+        this.getUsers();
+    }
+
+    getUsers() {
+        console.log(this.props.user.edit_user);
+    }
+
 
     handleChange(event, index, value) {
         this.setState({value});
@@ -30,14 +39,14 @@ class CreateUser extends Component {
         return (
             <div style={styles.container}>
                 <Card style={styles.card}>
-                    <CardHeader titleStyle={styles.header} title="Create User" />
+                    <CardHeader titleStyle={styles.header} title="Update User" />
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" /><br />
-                        <TextField style={styles.content} floatingLabelText="User Name" ref="userName" /><br />
-                        <TextField style={styles.content} floatingLabelText="Email" ref="email" /> <br />
-                        <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" /> <br />
-                        <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" onChange={this.handleChange.bind(this)}>
+                        <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" defaultValue = {this.props.user.edit_user.id} /><br />
+                        <TextField style={styles.content} floatingLabelText="User Name" ref="userName" defaultValue = {this.props.user.edit_user.name}  /><br />
+                        <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue = {this.props.user.edit_user.email}  /> <br />
+                        <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" defaultValue = {this.props.user.edit_user.password} /> <br />
+                        <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" defaultValue = {this.props.user.edit_user.role}  onChange={this.handleChange.bind(this)}>
                             <MenuItem value={"Student"} primaryText="Student" />
                             <MenuItem value={"Faculty"} primaryText="Faculty" />
                             <MenuItem value={"Admin"} primaryText="Admin" />
@@ -45,13 +54,13 @@ class CreateUser extends Component {
                     </div>
 
                     <CardActions style={styles.cardAction}>
-                        <FlatButton label="Create" primary={true} onClick={this.create.bind(this)} />
+                        <FlatButton label="Update" primary={true} onClick={this.update.bind(this)} />
                     </CardActions>
                 </Card>
             </div>
         )
     }
-    create() {
+    update() {
         //userID = this.refs.courseID.getValue();
         userName = this.refs.userName.getValue();
         email = this.refs.email.getValue();
@@ -59,8 +68,8 @@ class CreateUser extends Component {
         role = this.state.value;
         console.log(this.state.value);
 
-        const url = baseUrl + 'user-service/user/add';
-        axios.post(url, {
+        const url = baseUrl + 'user-service/user/update';
+        axios.put(url, {
             id: userID,
             name: userName,
             email: email,
@@ -117,4 +126,4 @@ var styles = {
 
 }
 
-export default CreateUser;
+export default EditUser;

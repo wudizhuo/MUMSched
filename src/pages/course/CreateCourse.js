@@ -3,7 +3,7 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
 let courseID = "";
@@ -12,17 +12,9 @@ let preCourseName = "";
 let targetBlock = "";
 let faculties = "";
 
-class EditCourses extends Component {
-  componentWillMount() {
-    this.getCourses();
-  }
-
-  getCourses() {
-     console.log(this.props.course.edit_course);
-   }
-
-  update() {
-    courseID = this.refs.courseID.getValue();
+class CreateCourse extends Component {
+  create() {
+    // courseID = this.refs.courseID.getValue();
     courseName = this.refs.courseName.getValue();
     preCourseName = this.refs.preCourseName.getValue();
     targetBlock = this.refs.targetBlock.getValue();
@@ -30,50 +22,47 @@ class EditCourses extends Component {
 
     // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
-    const url = baseUrl + 'course-service/courses/update';
-    axios.put(url, {
-      id: courseID,
+    const url = baseUrl + 'course-service/courses/add';
+    axios.post(url, {
       name: courseName,
       prereqCourse: preCourseName,
       entryBlock: targetBlock,
     })
       .then(function (response) {
+        //show snack bar
         console.log(response);
         browserHistory.push('/courses');
       })
       .catch(function (error) {
+        //show snack bar
+        console.log("error----");
         console.log(error);
       });
   }
 
   render() {
-
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-                      title="Update Course"
+                      title="Create Course"
           />
           <div style={styles.content}>
-            <TextField style={styles.content}
-                       ref="courseID"
-                       defaultValue = {this.props.course.edit_course.id}
-                       //hintText="Course ID"
-            /><br />
+            {/*<TextField style={styles.content}*/}
+                       {/*ref="courseID"*/}
+                       {/*hintText="Course ID"*/}
+            {/*/><br />*/}
             <TextField style={styles.content}
                        ref="courseName"
-                       defaultValue = {this.props.course.edit_course.name}
                        hintText="Course Name"
             /><br />
             <TextField style={styles.content}
                        ref="preCourseName"
                        hintText="Prereq Course"
-                       defaultValue = {this.props.course.edit_course.prereqCourse}
             /><br />
             <TextField style={styles.content}
                        ref="targetBlock"
                        hintText="Target Entry Block"
-                       defaultValue = {this.props.course.edit_course.entryBlock}
             /><br />
             {/*<TextField style={styles.content}*/}
                        {/*ref="faculties"*/}
@@ -83,8 +72,8 @@ class EditCourses extends Component {
           </div>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Update" primary={true}
-                        onClick={this.update.bind(this)}
+            <FlatButton label="Create" primary={true}
+                        onClick={this.create.bind(this)}
             />
           </CardActions>
         </Card>
@@ -126,4 +115,4 @@ var styles = {
   },
 }
 
-export default EditCourses;
+export default CreateCourse;

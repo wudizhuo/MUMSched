@@ -4,9 +4,9 @@ import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import {baseUrl} from "../Const";
+import {baseUrl} from "../../Const";
 
-class Entries extends Component {
+class Sections extends Component {
   constructor(props) {
     super(props);
 
@@ -17,7 +17,7 @@ class Entries extends Component {
   }
 
   componentWillMount() {
-    this.getEntries();
+    this.getSections();
   }
 
   onRowSelection(items) {
@@ -25,24 +25,21 @@ class Entries extends Component {
   }
 
   create() {
-    browserHistory.push('/create_entry');
-  }
-
-  detail() {
-    browserHistory.push('/detail_entry');
+    browserHistory.push('/create_section');
   }
 
   edit() {
-    // Want to send id for Edit Form
-    if (this.state.tableData[this.state.selectedIndex] != null) {
-      this.props.editEntry(this.state.tableData[this.state.selectedIndex]);
-      browserHistory.push('/edit_entry');
-    }
+      // Want to send id for Edit Form
+      if(this.state.tableData[this.state.selectedIndex] != null)
+      {
+        this.props.editSections(this.state.tableData[this.state.selectedIndex]);
+        browserHistory.push('/edit_section');
+      }
   }
 
   delete() {
-    let entryId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'entry-service/entries/delete/' + entryId;
+    let sectionId = this.state.tableData[this.state.selectedIndex].id;
+    const url = baseUrl + 'section-service/sections/delete/' + sectionId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -54,14 +51,16 @@ class Entries extends Component {
       });
   }
 
-  getEntries() {
-    axios.get(baseUrl+'entrys')
+  getSections() {
+    // const url = baseUrl + 'sections';
+
+    axios.get('sections')
       .then((response) => {
+        console.log(response.data);
         this.setState({tableData: response.data});
       })
-      .catch((error) => {
+      .catch(function (error) {
         console.log(error);
-        this.props.showSnackbar(error.status + " " + error);
       });
   }
 
@@ -70,7 +69,7 @@ class Entries extends Component {
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header}
-                      title="Entries"
+                      title="Sections"
           />
           <Table
             onRowSelection={this.onRowSelection.bind(this)}
@@ -83,10 +82,13 @@ class Entries extends Component {
               multiSelectable={true}
             >
               <TableRow>
-                <TableHeaderColumn>No</TableHeaderColumn>
-                <TableHeaderColumn>Entry</TableHeaderColumn>
-                <TableHeaderColumn>MPP students</TableHeaderColumn>
-                <TableHeaderColumn>FPP students</TableHeaderColumn>
+                <TableHeaderColumn>Block</TableHeaderColumn>
+                <TableHeaderColumn>Course Code</TableHeaderColumn>
+                <TableHeaderColumn>Course Name</TableHeaderColumn>
+                <TableHeaderColumn>Professor</TableHeaderColumn>
+                <TableHeaderColumn>Capacity</TableHeaderColumn>
+                <TableHeaderColumn>Enrolled</TableHeaderColumn>
+                <TableHeaderColumn>Seats Available</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -94,10 +96,13 @@ class Entries extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.totalMPPStudents}</TableRowColumn>
-                  <TableRowColumn>{row.totalFPPStudents}</TableRowColumn>
+                  <TableRowColumn>{row.block.name}</TableRowColumn>
+                  <TableRowColumn>{row.course.courseCode}</TableRowColumn>
+                  <TableRowColumn>{row.course.courseName}</TableRowColumn>
+                  <TableRowColumn>{row.facultyId}</TableRowColumn>
+                  <TableRowColumn>{row.capacity}</TableRowColumn>
+                  <TableRowColumn>{row.enrolled}</TableRowColumn>
+                  <TableRowColumn>{(row.capacity)-(row.enrolled)}</TableRowColumn>
                 </TableRow>
               ))}
 
@@ -105,8 +110,6 @@ class Entries extends Component {
           </Table>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="Detail"
-                        onClick={this.detail.bind(this)}/>
             <FlatButton label="Delete"
                         onClick={this.delete.bind(this)}/>
             <FlatButton label="Edit" secondary={true}
@@ -141,4 +144,4 @@ var styles = {
 
 }
 
-export default Entries;
+export default Sections;
