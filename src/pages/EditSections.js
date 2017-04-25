@@ -7,11 +7,13 @@ import axios from "axios";
 import {baseUrl} from "../Const";
 import {connect} from "react-redux";
 import {browserHistory} from "react-router";
+import MenuItem from "material-ui/MenuItem";
 
 let block = "";
 let course = "";
 let faculty = "";
 let capacity = "";
+let courseItem = [];
 
 class EditSections extends Component {
 
@@ -20,8 +22,8 @@ class EditSections extends Component {
 
     this.state = {
       blockInfo: [],
-      courseInfo:[],
-      facultyInfo:[],
+      courseInfo: [],
+      facultyInfo: [],
       selectedIndex: -1,
     };
   }
@@ -35,7 +37,8 @@ class EditSections extends Component {
 
   getSections() {
     // console.log(this.props);
-    console.log(this.props.section.edit_section);
+    let item = this.props.section.edit_section.course;
+    courseItem.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
   }
 
   getBlocks() {
@@ -60,10 +63,19 @@ class EditSections extends Component {
         console.log(response);
         this.props.getCourses(response.data);
         this.setState({courseInfo: response.data});
+        this.setCourseInfo(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+
+  setCourseInfo(courses) {
+    courseItem = [];
+    courses.forEach((item) => {
+      courseItem.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
+    });
   }
 
   getFaculties() {
@@ -112,14 +124,10 @@ class EditSections extends Component {
               )}
             </SelectField>
             <SelectField floatingLabelText={'Select Course'} style={styles.content}
-                         value={this.props.section.edit_section.course}
+                         value={this.props.section.edit_section.course.name}
                          ref="course"
                          onChange={this.handleChange2.bind(this)}>
-              {this.state.courseInfo.map(course =>
-                <Option key={course.id} value={course.id}>)
-                  {`${course.id} ${course.name}`}
-                </Option>
-              )}
+              {courseItem}
             </SelectField>
             <SelectField floatingLabelText={'Select Faculty'} style={styles.content}
                          value={this.props.section.edit_section.faculty}
