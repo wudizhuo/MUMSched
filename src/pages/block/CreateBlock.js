@@ -39,7 +39,6 @@ class CreateBlock extends Component {
     data.forEach((item) => {
       entriesMenuItem.push(<MenuItem value={item} key={item.name} primaryText={item.name}/>);
     });
-    console.log(entriesMenuItem);
     this.forceUpdate();
   }
 
@@ -83,6 +82,7 @@ class CreateBlock extends Component {
       "seqNumber": seqNumber,
       "startDate": startDate,
       "endDate": endDate,
+      "entry": this.state.selectedEntry.id
     })
       .then(function (response) {
         //show snack bar
