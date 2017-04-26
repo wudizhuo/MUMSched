@@ -95,9 +95,9 @@ class Sections extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.block.name}</TableRowColumn>
-                  <TableRowColumn>{row.course.courseCode}</TableRowColumn>
-                  <TableRowColumn>{row.course.courseName}</TableRowColumn>
+                  <TableRowColumn>{row.block === null ? '' : row.block.name}</TableRowColumn>
+                  <TableRowColumn>{row.course === null ? '' : row.course.courseCode}</TableRowColumn>
+                  <TableRowColumn>{row.course === null ? '' : row.course.courseName}</TableRowColumn>
                   <TableRowColumn>{row.facultyId}</TableRowColumn>
                   <TableRowColumn>{row.capacity}</TableRowColumn>
                   <TableRowColumn>{row.enrolled}</TableRowColumn>

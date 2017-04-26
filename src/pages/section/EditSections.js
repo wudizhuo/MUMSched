@@ -23,6 +23,7 @@ class EditSections extends Component {
       selectedFaculty: '',
       blockName: props.section.edit_section.block.name,
       selectedIndex: -1,
+      // faculty: '',
     };
   }
 
@@ -89,16 +90,19 @@ class EditSections extends Component {
     facultyItems = [];
 
     let item = this.props.section.edit_section;
-    courseItems.push(<MenuItem value={item.facultyId} key={item.facultyId}
-                               primaryText={item.facultyId}/>)
+    facultyItems.push(<MenuItem value={item.facultyId} key={item.facultyId}
+                                primaryText={item.facultyId}/>)
 
     axios.get('http://10.10.52.10:8082/faculties')
       .then((response) => {
         console.log(response);
+        this.setState({
+          selectedFaculty: response.data.find((item)=>item.id === this.props.section.edit_section.facultyId)
+        });
         facultyItems = [];
         response.data.forEach((item) => {
           facultyItems.push(<MenuItem value={item} key={item.id}
-                                      primaryText={item.firstName + item.lastName}/>)
+                                      primaryText={item.firstName + ' ' + item.lastName}/>)
         })
         this.forceUpdate();
       })
@@ -116,24 +120,22 @@ class EditSections extends Component {
                       title="Update Section"
           />
           <div style={styles.content}>
-            <SelectField floatingLabelText={'Block'} style={styles.content}
-                         value={this.state.blockName}
-                         ref="block"
-                         onChange={(event, index, value) => {
-                           this.setState({blockName: value});
-                         }}>
-              {blockItems}
-            </SelectField>
-            <SelectField floatingLabelText={'Course'} style={styles.content}
-                         value={this.state.courseCodeName}
-                         ref="course"
-                         onChange={(event, index, value) => {
-                           this.setState({courseCodeName: value});
-                         }}>
-              {courseItems}
-            </SelectField>
+            <TextField style={styles.content}
+                       ref="Block"
+                       hintText="Block"
+                       floatingLabelText="Block"
+                       disabled={true}
+                       value={this.state.blockName}
+            /><br />
+            <TextField style={styles.content}
+                       ref="Course"
+                       hintText="Course"
+                       floatingLabelText="Course"
+                       disabled={true}
+                       value={this.state.courseCodeName}
+            /><br />
             <SelectField floatingLabelText={'Faculty'} style={styles.content}
-                         value={this.state.facultyName}
+                         value={this.state.selectedFaculty}
                          ref="faculty"
                          onChange={(event, index, value) => {
                            this.setState({selectedFaculty: value});
@@ -142,6 +144,8 @@ class EditSections extends Component {
             </SelectField>
             <TextField style={styles.content} floatingLabelText="Capacity" ref="capacity"
                        defaultValue={this.props.section.edit_section.capacity}/> <br />
+            <TextField style={styles.content} floatingLabelText="Enrolled" ref="enrolled"
+                       defaultValue={this.props.section.edit_section.enrolled}/> <br />
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -155,19 +159,23 @@ class EditSections extends Component {
   }
 
   update() {
-    let block = this.refs.block.getValue();
-    let course = this.refs.course.getValue();
+    let block = this.props.section.edit_section.block.id;
+    let course = this.props.section.edit_section.course.courseId;
     let facultyId = this.state.selectedFaculty.id;
+    // let facultyId = this.refs.faculty.id.getValue();
     let capacity = this.refs.capacity.getValue();
+    let enrolled = this.refs.enrolled.getValue();
 
     // console.log(block + course + faculty + capacity);
 
-    const url = baseUrl + 'section-service/sections/update';
+    const url = baseUrl + 'sections/update';
     axios.put(url, {
-      blockInfo: block,
-      courseInfo: course,
-      facultyId: facultyId,
-      limitCapacity: capacity,
+      "id": this.props.section.edit_section.id,
+      "blockId": block,
+      "courseId": course,
+      "facultyId": facultyId,
+      "capacity": capacity,
+      "enrolled": enrolled,
     })
       .then(function (response) {
         console.log(response);
