@@ -30,7 +30,7 @@ class FacultyProfile extends Component {
       lastName: this.props.user.lastName,
       email: this.props.user.email,
       password: this.props.user.password,
-      specializations: this.props.user.specialization,
+      specialization: this.props.user.specialization,
       coursesText: '',
       blocksText: '',
     };
@@ -39,7 +39,6 @@ class FacultyProfile extends Component {
   componentWillMount() {
     this.getBlocks();
     this.getCourses();
-
   }
 
   handleCourseOpen() {
@@ -78,16 +77,15 @@ class FacultyProfile extends Component {
     axios.get('courses')
       .then((response) => {
         courses = response.data;
+        let text = '';
         courses.forEach((item) => {
-
-
-          //TODO change to inital value
-          // if (this.props.entry.edit_entry.blockList.some(block => block.id === item.id)) {
-          //   item.isChecked = true;
-          // } else {
-          //   item.isChecked = false;
-          // }
-
+          if (this.props.user.specializedCourses.some(data => data === item.id)) {
+            item.isChecked = true;
+            text = text + " " + item.courseName;
+          } else {
+            item.isChecked = false;
+          }
+          this.setState({coursesText: text});
           coursesCheckbox.push(
             <Checkbox
               key={item.id}
@@ -105,18 +103,19 @@ class FacultyProfile extends Component {
   }
 
   getBlocks() {
-    //const url = baseUrl + 'blocks';
+    blocksCheckbox = [];
     axios.get('blocks')
       .then((response) => {
         blocks = response.data;
+        let text = '';
         blocks.forEach((item) => {
-          //TODO change to inital value
-          // if (this.props.entry.edit_entry.blockList.some(block => block.id === item.id)) {
-          //   item.isChecked = true;
-          // } else {
-          //   item.isChecked = false;
-          // }
-
+          if (this.props.user.availableBlocks.some(data => data === item.id)) {
+            item.isChecked = true;
+            text = text + " " + item.name;
+          } else {
+            item.isChecked = false;
+          }
+          this.setState({blocksText: text});
           blocksCheckbox.push(
             <Checkbox
               key={item.id}
@@ -200,13 +199,14 @@ class FacultyProfile extends Component {
                        disabled={true}/><br />
             <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" value={this.state.lastName}
                        disabled={true}/><br />
-            <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
+            <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue={this.state.email}
                        onChange={(event) => this.setState({email: event.target.value,})}/> <br />
-            <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.password}
+            <TextField style={styles.content} floatingLabelText="Password" ref="password"
+                       defaultValue={this.state.password}
                        onChange={(event) => this.setState({password: event.target.value,})}/> <br />
             <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations"
-                       values={this.state.specializations}
-                       onChange={(event) => this.setState({specializations: event.target.value,})}/> <br />
+                       defaultValue={this.state.specialization}
+                       onChange={(event) => this.setState({specialization: event.target.value,})}/> <br />
 
             <TextField style={styles.content} floatingLabelText="Courses List" ref="courses"
                        value={this.state.coursesText}
@@ -235,18 +235,23 @@ class FacultyProfile extends Component {
     const url = 'http://10.10.52.10:8082/' + 'faculties/update';
     let coursesId = courses.filter(item => item.isChecked).map(item => item.id);
     let blocksId = blocks.filter(item => item.isChecked).map(item => item.id);
-    axios.post(url, {
-      id: this.state.id,
-      email: this.state.email,
-      /*password: this.state.password, */ /* We will update later*/
-      specializedCourses: this.state.specializations,
-      courses: coursesId,
-      availableBlocks: blocksId,
+
+    axios.put(url, {
+      "id": this.state.id,
+      "loginId": this.props.user.loginId,
+      "password": this.state.password,
+      "firstName": this.props.user.firstName,
+      "lastName": this.props.user.lastName,
+      "email": this.state.email,
+      "role": this.props.user.role,
+      "specialization": this.state.specialization,
+      "specializedCourses": coursesId,
+      "availableBlocks": blocksId,
+      "assignedSections": this.props.user.assignedSections,
     })
-      .then(function (response) {
-        //show snack bar
+      .then((response) => {
         console.log(response);
-        browserHistory.push('/faculty_profile');
+        this.refresh()
       })
       .catch(function (error) {
         //show snack bar
@@ -255,7 +260,18 @@ class FacultyProfile extends Component {
       });
   }
 
-
+  refresh() {
+    const url = 'http://10.10.52.10:8082/' + 'users/login/' + this.props.user.loginId + "/" + this.state.password;
+    axios.get(url).then((response) => {
+      console.log(response);
+      this.props.login(response.data, response.data.role);
+      browserHistory.push('/');
+    })
+      .catch((error) => {
+        console.log(error);
+        this.props.showSnackbar("Login Failed");
+      });
+  }
 }
 
 var styles = {
