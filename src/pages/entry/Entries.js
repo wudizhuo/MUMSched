@@ -73,7 +73,7 @@ class Entries extends Component {
 
   _mapData(data) {
     data.forEach((item)=>{
-      item.blockList = item.blockList.map(function(block) {
+      item.blockListText = item.blockList.map(function(block) {
         return block.name;
       }).join(', ');
     });
@@ -114,7 +114,7 @@ class Entries extends Component {
                   <TableRowColumn>{row.name}</TableRowColumn>
                   <TableRowColumn>{row.totalMPPStudents}</TableRowColumn>
                   <TableRowColumn>{row.totalFPPStudents}</TableRowColumn>
-                  <TableRowColumn>{row.blockList}</TableRowColumn>
+                  <TableRowColumn>{row.blockListText}</TableRowColumn>
                 </TableRow>
               ))}
 

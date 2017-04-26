@@ -10,6 +10,7 @@ import Checkbox from "material-ui/Checkbox";
 import Dialog from "material-ui/Dialog";
 
 let blocks = [];
+let blocksCheckbox = [];
 class EditEntry extends Component {
 
   constructor(props) {
@@ -17,6 +18,7 @@ class EditEntry extends Component {
 
     this.state = {
       open: false,
+      blockListText: props.entry.edit_entry.blockListText,
     };
   }
 
@@ -33,22 +35,38 @@ class EditEntry extends Component {
     this.setState({open: false});
   };
 
+  _updateBlocks() {
+    this.setState({blockListText: blocks.filter(block => block.isChecked).map(block => block.name).join(", ")});
+    this.handleClose();
+  };
 
   getEntries() {
     //console.log(this.props.entry.edit_entry);
   }
 
+  _onCheck(event, isInputChecked, block) {
+    block.isChecked = isInputChecked;
+  }
+
   getBlocks() {
-    blocks = [];
+    blocksCheckbox = [];
     axios.get('blocks')
       .then((response) => {
-        console.log("---getBlocks---");
-        console.log(response);
-        response.data.forEach((item) => {
-          blocks.push(
+        blocks = response.data;
+        console.log(this.props.entry.edit_entry.blockList);
+        blocks.forEach((item) => {
+          if (this.props.entry.edit_entry.blockList.some(block => block.id === item.id)) {
+            item.isChecked = true;
+          } else {
+            item.isChecked = false;
+          }
+          blocksCheckbox.push(
             <Checkbox
+              key={item.name}
               label={item.name}
               style={styles.checkbox}
+              defaultChecked={item.isChecked}
+              onCheck={(event, isInputChecked) => this._onCheck(event, isInputChecked, item)}
             />
           );
         });
@@ -60,7 +78,7 @@ class EditEntry extends Component {
 
 
   update() {
-    let entryID = this.refs.entryID.getValue();
+    let entryID = this.props.entry.edit_entry.id;
     let entryName = this.refs.entryName.getValue();
     let totalMPPStudents = this.refs.totalMPPStudents.getValue();
     let totalFPPStudents = this.refs.totalFPPStudents.getValue();
@@ -92,7 +110,7 @@ class EditEntry extends Component {
         label="Save"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onTouchTap={this._updateBlocks.bind(this)}
       />,
     ];
 
@@ -121,17 +139,12 @@ class EditEntry extends Component {
                        floatingLabelText="FPP Students"
                        defaultValue={this.props.entry.edit_entry.totalFPPStudents}
             /><br />
-            {/*<TextField style={styles.content}*/}
-            {/*ref="faculties"*/}
-            {/*hintText="Faculty"*/}
-            {/*/><br />*/}
-
             <TextField style={styles.content}
                        ref="Blocks"
                        hintText="Blocks"
                        floatingLabelText="Blocks"
                        disabled={true}
-                       defaultValue={this.props.entry.edit_entry.blockList}
+                       value={this.state.blockListText}
             /><br />
             <FlatButton label="Change Blocks" primary={true}
                         onTouchTap={this.handleOpen.bind(this)}
@@ -144,7 +157,7 @@ class EditEntry extends Component {
               bodyStyle={styles.customContentStyle}
               onRequestClose={this.handleClose.bind(this)}
             >
-              {blocks}
+              {blocksCheckbox}
             </Dialog>
           </div>
 
