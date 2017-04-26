@@ -96,9 +96,9 @@ class EditSections extends Component {
       .then((response) => {
         console.log(response);
         facultyItems = [];
-        sponse.data.forEach((item) => {
-          facultyItems.push(<MenuItem value={item.facultyID} key={item.facultyID}
-                                      primaryText={item.facultyID}/>)
+        response.data.forEach((item) => {
+          facultyItems.push(<MenuItem value={item} key={item.id}
+                                      primaryText={item.firstName + item.lastName}/>)
         })
         this.forceUpdate();
       })
