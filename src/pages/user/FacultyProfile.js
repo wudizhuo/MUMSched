@@ -15,26 +15,28 @@ let blocksCheckbox = [];
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);
+    // "specialization": "Math",
+    // "specializedCourses": [],
+    // "availableBlocks": [],
+    // "assignedSections": []
     this.state = {
       open_courses: false,
       open_blocks: false,
       userInfo: [],
       selectedBlock: '',
-      id: '',
-      facultyID: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      specializations: '',
+      id: this.props.user.id,
+      facultyID: this.props.user.loginId,
+      firstName: this.props.user.firstName,
+      lastName: this.props.user.lastName,
+      email: this.props.user.email,
+      password: this.props.user.password,
+      specializations: this.props.user.specialization,
       coursesText: '',
       blocksText: '',
     };
-
   };
 
   componentWillMount() {
-    this.getPreInfo();
     this.getBlocks();
     this.getCourses();
 
@@ -68,55 +70,6 @@ class FacultyProfile extends Component {
 
   _onCheck(event, isInputChecked, item) {
     item.isChecked = isInputChecked;
-  }
-
-  handleChangeBlock(event, index, selectedBlock) {
-    this.setState({selectedBlock: selectedBlock});
-  }
-
-  getPreInfo() {
-
-    try {
-      if (this.props.user.edit_user.loginId != null) {
-        console.log('Move from User Management');
-        id = this.props.user.edit_user.id;
-        facultyID = this.props.user.edit_user.loginId;
-        firstName = this.props.user.edit_user.firstName;
-        lastName = this.props.user.edit_user.lastName;
-        email = this.props.user.edit_user.email;
-        password = this.props.user.edit_user.password;
-        specializations = this.props.user.edit_user.specializations;
-
-
-      }
-    } catch (error) {
-      console.log('User want to edit his self');
-      // We will use ID to get Infomation of User
-      // const url = baseUrl + 'faculties/get/' +id; //  TODO: Need Update
-      let id = 8;
-      const url = 'http://127.0.0.1:8082/users/get/' + id;
-      axios.get(url)
-        .then((response) => {
-          this._mapData(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-
-  }
-
-  _mapData(data) {
-    console.log(data);
-    this.setState({id: data.id});
-    this.setState({facultyID: data.loginId});
-    this.setState({firstName: data.firstName});
-    this.setState({lastName: data.lastNam});
-    this.setState({email: data.email});
-    //this.setState({password:data.password});
-    //this.setState({specializations:data.specializations});
-    console.log(email);
-
   }
 
   getCourses() {
@@ -153,8 +106,7 @@ class FacultyProfile extends Component {
 
   getBlocks() {
     //const url = baseUrl + 'blocks';
-    const url = 'http://127.0.0.1:8081/blocks'
-    axios.get(url)
+    axios.get('blocks')
       .then((response) => {
         blocks = response.data;
         blocks.forEach((item) => {
@@ -242,12 +194,12 @@ class FacultyProfile extends Component {
           <div style={styles.content}>
             <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID"
                        value={this.state.facultyID}
-                       disabled={'true'}/><br />
+                       disabled={true}/><br />
             <TextField style={styles.content} floatingLabelText="First Name" ref="firstName"
                        value={this.state.firstName}
-                       disabled={'true'}/><br />
+                       disabled={true}/><br />
             <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" value={this.state.lastName}
-                       disabled={'true'}/><br />
+                       disabled={true}/><br />
             <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
                        onChange={(event) => this.setState({email: event.target.value,})}/> <br />
             <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.password}
@@ -263,12 +215,12 @@ class FacultyProfile extends Component {
             <FlatButton label="Change Courses" primary={true}
                         onTouchTap={this.handleCourseOpen.bind(this)}
             />
+            <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocksText}
+                       hintText="Select one or more above blocks"/> <br />
             {this.blockDialog()}
             <FlatButton label="Change Blocks" primary={true}
                         onTouchTap={this.handleBlockOpen.bind(this)}
             />
-            <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocksText}
-                       hintText="Select one or more above blocks"/> <br />
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -279,22 +231,17 @@ class FacultyProfile extends Component {
     )
   }
 
-  addBlockID() {
-    this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedBlock + ', '});
-    console.log(this.refs.blocks.getValue());
-  }
-
   save() {
-    //const url = baseUrl + 'faculties/update';
-    const url = 'http://127.0.0.1:8081/faculties/update';
+    const url = 'http://10.10.52.10:8082/' + 'faculties/update';
     let coursesId = courses.filter(item => item.isChecked).map(item => item.id);
+    let blocksId = blocks.filter(item => item.isChecked).map(item => item.id);
     axios.post(url, {
       id: this.state.id,
       email: this.state.email,
       /*password: this.state.password, */ /* We will update later*/
       specializedCourses: this.state.specializations,
       courses: coursesId,
-      availableBlocks: this.state.blocks,
+      availableBlocks: blocksId,
     })
       .then(function (response) {
         //show snack bar
@@ -354,7 +301,7 @@ var styles = {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
+    user: state.login.user,
   }
 }
 

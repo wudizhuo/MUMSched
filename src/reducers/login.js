@@ -6,6 +6,7 @@ export function login(state = [], action) {
       localStorage.isLogin = true;
       return Object.assign({}, state, {
         isLogin: true,
+        user: action.user,
         role: action.role,
       });
     case LOGOUT :

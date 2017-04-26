@@ -15,8 +15,8 @@ export const CLOSERAWER = 'closeDrawer';
 export const SHOW_SNACKBAR = 'show_snackbar';
 
 // action creators
-export function login() {
-  return {type: LOGINED}
+export function login(user, role) {
+  return {type: LOGINED, user, role}
 }
 
 export function logout() {
@@ -36,27 +36,27 @@ export function editSections(section) {
 }
 
 export function getUsers(users) {
-    return {type: GETUSERS, users}
+  return {type: GETUSERS, users}
 }
 
 export function editUser(user) {
-    return {type: EDITUSER, user}
+  return {type: EDITUSER, user}
 }
 
 export function getBlocks(blocks) {
-    return {type: GETBLOCKS, blocks}
+  return {type: GETBLOCKS, blocks}
 }
 
 export function editBlock(block) {
-    return {type: EDITBLOCK, block}
+  return {type: EDITBLOCK, block}
 }
 
 export function getEntries(entries) {
-    return {type: GETENTRIES, entries}
+  return {type: GETENTRIES, entries}
 }
 
 export function editEntry(entry) {
-    return {type: EDITENTRY, entry}
+  return {type: EDITENTRY, entry}
 }
 
 export function openDrawer() {

@@ -4,8 +4,10 @@ import {primaryColor, primaryColorText} from "../colors";
 import CircularProgress from "material-ui/CircularProgress";
 import RaisedButton from "material-ui/RaisedButton";
 import axios from "axios";
-import {baseUrl} from "../Const";
 import {browserHistory} from "react-router";
+import * as actionCreators from "../actions/index";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
 let username = "";
 let password = "";
@@ -37,15 +39,15 @@ class Login extends Component {
     password = this.refs.password.getValue();
     console.log(username + password);
 
-    const url = baseUrl + 'user/login/' + username + "/" + password;
+    const url = 'http://10.10.52.10:8082/' + 'users/login/' + username + "/" + password;
     axios.get(url).then((response) => {
       console.log(response);
-      this.props.login();
+      this.props.login(response.data, response.data.role);
       browserHistory.push('/');
     })
-      .catch(function (error) {
-        console.log("error----");
+      .catch((error) => {
         console.log(error);
+        this.props.showSnackbar("Login Failed");
       });
   }
 
@@ -109,4 +111,9 @@ var styles = {
   },
 };
 
-export default Login;
+
+function mapDispachToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(null, mapDispachToProps)(Login);
