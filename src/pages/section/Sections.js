@@ -53,7 +53,6 @@ class Sections extends Component {
 
   getSections() {
     // const url = baseUrl + 'sections';
-
     axios.get('sections')
       .then((response) => {
         console.log(response.data);

@@ -60,7 +60,7 @@ class CreateSection extends Component {
 
   getFaculties() {
     faculties = [];
-    axios.get('faculties')
+    axios.get('http://10.10.11.103:8082/faculties')
       .then((response) => {
         console.log(response);
         sponse.data.forEach((item) => {

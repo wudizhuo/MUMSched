@@ -9,21 +9,19 @@ import {connect} from "react-redux";
 import {browserHistory} from "react-router";
 import MenuItem from "material-ui/MenuItem";
 
-let block = "";
-let course = "";
-let faculty = "";
-let capacity = "";
 let courseItem = [];
 
+let blockItems = [];
+let courseItems = [];
+let facultyItems = [];
 class EditSections extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
-      blockInfo: [],
-      courseInfo: [],
-      facultyInfo: [],
+      courseCodeName: props.section.edit_section.course.courseCode + ' ' + props.section.edit_section.course.courseName,
+      facultyName: props.section.edit_section.facultyId,
+      blockName: props.section.edit_section.block.name,
       selectedIndex: -1,
     };
   }
@@ -36,18 +34,24 @@ class EditSections extends Component {
   }
 
   getSections() {
-    // console.log(this.props);
+    console.log(this.props);
     let item = this.props.section.edit_section.course;
     courseItem.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
   }
 
   getBlocks() {
+    blockItems = [];
+    let item = this.props.section.edit_section.block;
+    blockItems.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
 
     axios.get('blocks')
       .then((response) => {
-        console.log("---------------")
         console.log(response);
-        this.setState({blockInfo: response.data});
+        blockItems = [];
+        response.data.forEach((item) => {
+          blockItems.push(<MenuItem value={item.name} key={item.name} primaryText={item.name}/>);
+        });
+        this.forceUpdate();
       })
       .catch(function (error) {
         console.log(error);
@@ -55,17 +59,24 @@ class EditSections extends Component {
   }
 
   getCourses() {
-
+    courseItems = [];
+    let item = this.props.section.edit_section.course;
+    courseItems.push(<MenuItem value={item.courseCode} key={item.courseCode}
+                               primaryText={item.courseCode + item.courseName}/>)
     axios.get('courses')
       .then((response) => {
         console.log(response);
-        this.setState({courseInfo: response.data});
+        courseItems = [];
+        response.data.forEach((item) => {
+          courseItems.push(<MenuItem value={item.courseCode + ' ' + item.courseName} key={item.courseCode}
+                                     primaryText={item.courseCode + ' ' + item.courseName}/>)
+        })
+        this.forceUpdate();
       })
       .catch(function (error) {
         console.log(error);
       });
   }
-
 
   setCourseInfo(courses) {
     courseItem = [];
@@ -75,33 +86,29 @@ class EditSections extends Component {
   }
 
   getFaculties() {
-    const url = baseUrl + 'faculty-service/faculties';
+    facultyItems = [];
 
-    axios.get(url)
+    let item = this.props.section.edit_section;
+    courseItems.push(<MenuItem value={item.facultyId} key={item.facultyId}
+                               primaryText={item.facultyId}/>)
+
+    axios.get('http://10.10.52.10:8082/faculties')
       .then((response) => {
         console.log(response);
-        this.props.getFaculties(response.data);
-        this.setState({facultyInfo: response.data});
+        facultyItems = [];
+        sponse.data.forEach((item) => {
+          facultyItems.push(<MenuItem value={item.facultyID} key={item.facultyID}
+                                   primaryText={item.facultyID}/>)
+        })
+        this.forceUpdate();
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
-  handleChange1(event, index, blockInfo) {
-    this.setState({blockInfo});
-  }
-
-  handleChange2(event, index, courseInfo) {
-    this.setState({courseInfo});
-  }
-
-  handleChange3(event, index, facultyInfo) {
-    this.setState({facultyInfo});
-  }
-
   render() {
-
+    console.log(this.props.section.edit_section.block.name);
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
@@ -109,39 +116,32 @@ class EditSections extends Component {
                       title="Update Section"
           />
           <div style={styles.content}>
-            <SelectField floatingLabelText={'Select Block'} style={styles.content}
-                         value={this.props.section.edit_section.block}
+            <SelectField floatingLabelText={'Block'} style={styles.content}
+                         value={this.state.blockName}
                          ref="block"
-                         onChange={this.handleChange1.bind(this)}>
-              {this.state.blockInfo.map(block =>
-                <Option key={block.id} value={block.id}>)
-                  {`${block.name}`}
-                </Option>
-              )}
+                         onChange={(event, index, value) => {
+                           this.setState({blockName: value});
+                         }}>
+              {blockItems}
             </SelectField>
-            <SelectField floatingLabelText={'Select Course'} style={styles.content}
-                         value={this.props.section.edit_section.course.name}
+            <SelectField floatingLabelText={'Course'} style={styles.content}
+                         value={this.state.courseCodeName}
                          ref="course"
-                         onChange={this.handleChange2.bind(this)}>
-              {courseItem}
+                         onChange={(event, index, value) => {
+                           this.setState({courseCodeName: value});
+                         }}>
+              {courseItems}
             </SelectField>
-            <SelectField floatingLabelText={'Select Faculty'} style={styles.content}
-                         value={this.props.section.edit_section.faculty}
+            <SelectField floatingLabelText={'Faculty'} style={styles.content}
+                         value={this.state.facultyName}
                          ref="faculty"
-                         onChange={this.handleChange3.bind(this)}>
-              {this.state.facultyInfo.map(faculty =>
-                <Option key={faculty.id} value={faculty.id}>)
-                  {`${faculty.name}`}
-                </Option>
-              )}
+                         onChange={(event, index, value) => {
+                           this.setState({facultyName: value});
+                         }}>
+              {facultyItems}
             </SelectField>
             <TextField style={styles.content} floatingLabelText="Capacity" ref="capacity"
                        defaultValue={this.props.section.edit_section.capacity}/> <br />
-            {/*<TextField style={styles.content}*/}
-            {/*ref="faculties"*/}
-            {/*hintText="Faculty"*/}
-            {/*/><br />*/}
-
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -155,10 +155,10 @@ class EditSections extends Component {
   }
 
   update() {
-    block = this.refs.block.getValue();
-    course = this.refs.course.getValue();
-    faculty = this.refs.faculty.getValue();
-    capacity = this.refs.capacity.getValue();
+    let block = this.refs.block.getValue();
+    let course = this.refs.course.getValue();
+    let faculty = this.refs.faculty.getValue();
+    let capacity = this.refs.capacity.getValue();
 
     // console.log(block + course + faculty + capacity);
 
