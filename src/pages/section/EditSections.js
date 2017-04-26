@@ -20,7 +20,7 @@ class EditSections extends Component {
     super(props);
     this.state = {
       courseCodeName: props.section.edit_section.course.courseCode + ' ' + props.section.edit_section.course.courseName,
-      facultyName: props.section.edit_section.facultyId,
+      selectedFaculty: '',
       blockName: props.section.edit_section.block.name,
       selectedIndex: -1,
     };
@@ -136,7 +136,7 @@ class EditSections extends Component {
                          value={this.state.facultyName}
                          ref="faculty"
                          onChange={(event, index, value) => {
-                           this.setState({facultyName: value});
+                           this.setState({selectedFaculty: value});
                          }}>
               {facultyItems}
             </SelectField>
@@ -157,7 +157,7 @@ class EditSections extends Component {
   update() {
     let block = this.refs.block.getValue();
     let course = this.refs.course.getValue();
-    let faculty = this.refs.faculty.getValue();
+    let facultyId = this.state.selectedFaculty.id;
     let capacity = this.refs.capacity.getValue();
 
     // console.log(block + course + faculty + capacity);
@@ -166,7 +166,7 @@ class EditSections extends Component {
     axios.put(url, {
       blockInfo: block,
       courseInfo: course,
-      facultyInfo: faculty,
+      facultyId: facultyId,
       limitCapacity: capacity,
     })
       .then(function (response) {
