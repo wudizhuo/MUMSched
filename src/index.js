@@ -13,6 +13,7 @@ import CreateSection from "./pages/section/CreateSection";
 import EditSections from "./pages/section/EditSections";
 import Entries from "./pages/entry/Entries";
 import EditEntry from "./pages/entry/EditEntry";
+import CreateEntry from "./pages/entry/CreateEntry";
 import Users from "./pages/user/Users";
 import CreateUser from "./pages/user/CreateUser";
 import EditUser from "./pages/user/EditUser";
@@ -40,6 +41,7 @@ const router = (
         <Route path="/login" component={Login}/>
         <Route path="/entries" component={Entries}/>
         <Route path="/edit_entry" component={EditEntry}/>
+        <Route path="/create_entry" component={CreateEntry}/>
         <Route path="/courses" component={Courses}/>
         <Route path="/create_course" component={CreateCourse}/>
         <Route path="/edit_course" component={EditCourses}/>
