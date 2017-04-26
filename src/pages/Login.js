@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import TextField from "material-ui/TextField";
 import {primaryColor, primaryColorText} from "../colors";
 import CircularProgress from "material-ui/CircularProgress";
-import Snackbar from "material-ui/Snackbar";
 import RaisedButton from "material-ui/RaisedButton";
 import axios from "axios";
 import {baseUrl} from "../Const";
@@ -38,26 +37,16 @@ class Login extends Component {
     password = this.refs.password.getValue();
     console.log(username + password);
 
-    const data = new FormData();
-
-    data.append('username', username);
-    data.append('password', password);
-
-    const url = baseUrl + 'login';
-
-    this.props.login();
-    browserHistory.push('/');
-    return;
-
-    // axios.post(url, data).then((response) => {
-    //   console.log(response);
-    //   this.props.login();
-    //   browserHistory.push('/');
-    // })
-    //   .catch(function (error) {
-    //     console.log("error----");
-    //     console.log(error);
-    //   });
+    const url = baseUrl + 'user/login/' + username + "/" + password;
+    axios.get(url).then((response) => {
+      console.log(response);
+      this.props.login();
+      browserHistory.push('/');
+    })
+      .catch(function (error) {
+        console.log("error----");
+        console.log(error);
+      });
   }
 
   render() {
