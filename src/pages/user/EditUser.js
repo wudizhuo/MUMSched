@@ -48,6 +48,7 @@ class EditUser extends Component {
         )
     }
     update() {
+        let id = this.props.user.edit_user.id;
         let userID = this.refs.userID.getValue();
         let firstName = this.refs.firstName.getValue();
         let lastName = this.refs.lastName.getValue();
@@ -57,6 +58,7 @@ class EditUser extends Component {
 
         const url = baseUrl + '/users/update';
         axios.put(url, {
+            id:id,
             loginId: userID,
             firstName: firstName,
             lastName: lastName,

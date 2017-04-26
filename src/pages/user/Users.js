@@ -55,12 +55,15 @@ class Users extends Component {
       // Want to send id for Edit Form
       if(this.state.tableData[this.state.selectedIndex] != null)
       {
-          // TODO: Add method check User Role
-          browserHistory.push('/student_profile');
+          this.props.editUser(this.state.tableData[this.state.selectedIndex]);
+          if( "STUDENT" == this.state.tableData[this.state.selectedIndex].role)
+              browserHistory.push('/student_profile');
+          else if( "FACULTY" == this.state.tableData[this.state.selectedIndex].role)
+              browserHistory.push('/faculty_profile');
       }
   }
   getUsers() {
-    const url = baseUrl + 'users'; // Need change to user-service/users
+    const url = baseUrl + 'users';
 
     axios.get(url)
       .then((response) => {

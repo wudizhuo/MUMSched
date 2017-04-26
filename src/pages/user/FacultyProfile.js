@@ -7,21 +7,24 @@ import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
+import {connect} from "react-redux";
 
+let id = "";
 let facultyID = "";
-let facultyName = "";
+let firstName = "";
+let lastName = "";
 let email = "";
 let password = "";
 let specializations = "";
 
 class FacultyProfile extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
+          userInfo:[],
           blockInfo:[],
           selectedBlock:'',
-          courseInfo: [],
+          courseInfo:[],
           selectedCourse:'',
           courses:'',
           blocks:'',
@@ -30,9 +33,12 @@ class FacultyProfile extends Component {
   };
 
   componentWillMount() {
-      this.getCourses();
+      this.getPreInfo();
       this.getBlocks();
+      this.getCourses();
+
   }
+
   handleChangeBlock(event, index, selectedBlock) {
       this.setState({selectedBlock:selectedBlock});
   }
@@ -41,17 +47,53 @@ class FacultyProfile extends Component {
       this.setState({selectedCourse:selectedCourse});
   }
 
+  getPreInfo(){
+
+      try {
+          if(this.props.user.edit_user.loginId != null)
+              console.log('Move from User Management');
+              id = this.props.user.edit_user.id;
+              facultyID = this.props.user.edit_user.loginId;
+              firstName = this.props.user.edit_user.firstName;
+              lastName = this.props.user.edit_user.lastName;
+              email = this.props.user.edit_user.email;
+              password = this.props.user.edit_user.password;
+              specializations = this.props.user.edit_user.specializations;
+      } catch (error) {
+          console.log('User want to edit his self');
+          // We will use ID to get Infomation of User
+          // const url = baseUrl + 'faculties/get/' +id; //  TODO: Need Update
+          const url = 'http://127.0.0.1:8081/faculties/get/' + id;
+          axios.get(url)
+              .then((response) => {
+                  this.props.getUsers(response.data);
+                  this.setState({userInfo: response.data});
+              })
+              .catch(function (error) {
+                  console.log(error);
+              });
+
+          id = userInfo[0].id;
+          facultyID = userInfo[0].loginId;
+          firstName = userInfo[0].firstName;
+          lastName = userInfo[0].lastName;
+          email = userInfo[0].email;
+          password = userInfo[0].password;
+          specializations = userInfo[0].specializations;
+      }
+
+
+  }
 
   getCourses() {
-      const url = baseUrl + 'course-service/courses';
+      // const url = baseUrl + 'courses';  TODO: Need Update
+      const url = 'http://127.0.0.1:8081/courses'
 
       axios.get(url)
           .then((response) => {
               this.props.getCourses(response.data);
               this.setState({courseInfo: response.data});
 
-              console.log('-------');
-              console.log(this.state.courseInfo);
           })
           .catch(function (error) {
               console.log(error);
@@ -59,25 +101,26 @@ class FacultyProfile extends Component {
   }
 
     menuCourse(courseInfo) {
+        console.log('Truoc khi convert course');
+        console.log(courseInfo);
         return courseInfo.map((course) => (
             <MenuItem
-                key={course.name}
-                value={course.name}
-                primaryText={course.name}
+                key={course.courseName}
+                value={course.courseName}
+                primaryText={course.courseName}
             />
         ));
     }
 
 
     getBlocks() {
-        const url = baseUrl + 'block-service/blocks';
-
+        //const url = baseUrl + 'blocks';
+        const url = 'http://127.0.0.1:8081/blocks'
         axios.get(url)
             .then((response) => {
                 console.log(response);
                 this.props.getBlocks(response.data);
-                this.setState({BlockInfo: response.data});
-                console.log(this.state.BlockInfo);
+                this.setState({blockInfo: response.data});
             })
             .catch(function (error) {
                 console.log(error);
@@ -85,6 +128,8 @@ class FacultyProfile extends Component {
     }
 
     menuBlock(blockInfo) {
+        console.log('Truoc khi convert block');
+        console.log(blockInfo);
         return blockInfo.map((block) => (
             <MenuItem
                 key={block.name}
@@ -101,16 +146,18 @@ class FacultyProfile extends Component {
           <CardHeader titleStyle={styles.header} title="Update Faculty Profile"/>
 
           <div style={styles.content}>
-            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID" disabled ={'true'}/><br />
-            <TextField style={styles.content} floatingLabelText="Facutlty Name" ref="facultyName" disabled ={'true'}/><br />
-            <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
-            <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
-            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" hintText="Computer Science"/> <br />
+            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID" defaultValue = {facultyID} disabled ={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" defaultValue = {firstName} disabled ={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" defaultValue = {lastName} disabled ={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue = {email} /> <br />
+            <TextField style={styles.content} floatingLabelText="Password" ref="password" defaultValue = {password} /> <br />
+            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" defaultValue = {specializations} hintText="Computer Science"/> <br />
 
           <SelectField
               floatingLabelText={'Select Course'}
               value={this.state.selectedCourse}
               style={styles.content}
+              ref="courses_tmp"
               onChange={this.handleChangeCourse.bind(this)} >
               {this.menuCourse(this.state.courseInfo)}
           </SelectField>
@@ -122,6 +169,7 @@ class FacultyProfile extends Component {
               floatingLabelText={'Select Block'}
               value={this.state.selectedBlock}
               style={styles.content}
+              ref="blocks_tmp"
               onChange={this.handleChangeBlock.bind(this)} >
               {this.menuBlock(this.state.blockInfo)}
           </SelectField>
@@ -144,25 +192,26 @@ class FacultyProfile extends Component {
   }
 
   addBlockID() {
-      this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedCourse +', '});
+      this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedBlock +', '});
       console.log(this.refs.blocks.getValue());
   }
 
   save() {
     facultyID = this.refs.facultyID.getValue();
-    facultyName = this.refs.facultyName.getValue();
+    firstName = this.refs.firstName.getValue();
+    lastName = this.refs.lastName.getValue();
     email = this.refs.email.getValue();
     password = this.refs.password.getValue();
     specializations = this.refs.specializations.getValue();
-    courses = this.refs.courses.getValue();
-    blocks = this.refs.blocks.getValue();
+    let courses = this.refs.courses.getValue();
+    let blocks = this.refs.blocks.getValue();
 
-    const url = baseUrl + 'user-service/profile/add';
+    //const url = baseUrl + 'faculties/update';
+      const url = 'http://127.0.0.1:8081/faculties/update';
     axios.post(url, {
-      id: facultyID,
-      name: facultyName,
+      id: id,
       email: email,
-      password: password,
+      /*password: password, */ /* We will update later*/
       specializations: specializations,
       courses: courses,
     })
@@ -216,4 +265,11 @@ var styles = {
 
 }
 
-export default FacultyProfile;
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    }
+}
+
+export default connect(mapStateToProps)(FacultyProfile);
