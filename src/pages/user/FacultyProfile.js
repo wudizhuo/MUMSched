@@ -2,194 +2,241 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 import axios from "axios";
-import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 import {connect} from "react-redux";
+import Dialog from "material-ui/Dialog";
+import Checkbox from "material-ui/Checkbox";
 
-
+let courses = [];
+let coursesCheckbox = [];
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          userInfo:[],
-          blockInfo:[],
-          selectedBlock:'',
-          courseInfo:[],
-          selectedCourse:'',
-          courses:'',
-          blocks:'',
-          id:'',
-            facultyID:'',
-            firstName:'',
-            lastName:'',
-            email:'',
-            password:'',
-            specializations:'',
+      open: false,
+      userInfo: [],
+      blockInfo: [],
+      selectedBlock: '',
+      courseInfo: [],
+      blocks: '',
+      id: '',
+      facultyID: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      specializations: '',
+      coursesText: '',
     };
 
   };
 
   componentWillMount() {
-      this.getPreInfo();
-      this.getBlocks();
-      this.getCourses();
+    this.getPreInfo();
+    this.getBlocks();
+    this.getCourses();
 
+  }
+
+  handleOpen() {
+    this.setState({open: true});
+  };
+
+  handleClose() {
+    this.setState({open: false});
+  };
+
+  _updateCourses() {
+    this.setState({coursesText: courses.filter(item => item.isChecked).map(item => item.courseName).join(", ")});
+    this.handleClose();
+  };
+
+  _onCheck(event, isInputChecked, block) {
+    block.isChecked = isInputChecked;
   }
 
   handleChangeBlock(event, index, selectedBlock) {
-      this.setState({selectedBlock:selectedBlock});
+    this.setState({selectedBlock: selectedBlock});
   }
 
-  handleChangeCourse(event, index, selectedCourse) {
-      this.setState({selectedCourse:selectedCourse});
-  }
+  getPreInfo() {
 
-  getPreInfo(){
-
-      try {
-          if(this.props.user.edit_user.loginId != null)
-          {
-              console.log('Move from User Management');
-              id = this.props.user.edit_user.id;
-              facultyID = this.props.user.edit_user.loginId;
-              firstName = this.props.user.edit_user.firstName;
-              lastName = this.props.user.edit_user.lastName;
-              email = this.props.user.edit_user.email;
-              password = this.props.user.edit_user.password;
-              specializations = this.props.user.edit_user.specializations;
+    try {
+      if (this.props.user.edit_user.loginId != null) {
+        console.log('Move from User Management');
+        id = this.props.user.edit_user.id;
+        facultyID = this.props.user.edit_user.loginId;
+        firstName = this.props.user.edit_user.firstName;
+        lastName = this.props.user.edit_user.lastName;
+        email = this.props.user.edit_user.email;
+        password = this.props.user.edit_user.password;
+        specializations = this.props.user.edit_user.specializations;
 
 
-          }
-      } catch (error) {
-          console.log('User want to edit his self');
-          // We will use ID to get Infomation of User
-          // const url = baseUrl + 'faculties/get/' +id; //  TODO: Need Update
-          let id = 8;
-          const url = 'http://127.0.0.1:8082/users/get/' + id;
-          axios.get(url)
-              .then((response) => {
-                  this._mapData(response.data);
-              })
-              .catch(function (error) {
-                  console.log(error);
-              });
       }
+    } catch (error) {
+      console.log('User want to edit his self');
+      // We will use ID to get Infomation of User
+      // const url = baseUrl + 'faculties/get/' +id; //  TODO: Need Update
+      let id = 8;
+      const url = 'http://127.0.0.1:8082/users/get/' + id;
+      axios.get(url)
+        .then((response) => {
+          this._mapData(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
 
   }
 
-    _mapData(data) {
-            console.log(data);
-            this.setState({id: data.id});
-            this.setState({facultyID: data.loginId});
-            this.setState({firstName: data.firstName});
-            this.setState({lastName: data.lastNam});
-            this.setState({email: data.email});
-            //this.setState({password:data.password});
-            //this.setState({specializations:data.specializations});
-            console.log(email);
+  _mapData(data) {
+    console.log(data);
+    this.setState({id: data.id});
+    this.setState({facultyID: data.loginId});
+    this.setState({firstName: data.firstName});
+    this.setState({lastName: data.lastNam});
+    this.setState({email: data.email});
+    //this.setState({password:data.password});
+    //this.setState({specializations:data.specializations});
+    console.log(email);
 
-    }
+  }
 
   getCourses() {
-      // const url = baseUrl + 'courses';  TODO: Need Update
-      const url = 'http://127.0.0.1:8081/courses'
+``
+    coursesCheckbox = [];
+    // const url = baseUrl + 'courses';  TODO: Need Update
+    axios.get('courses')
+      .then((response) => {
+        this.props.getCourses(response.data);
+        this.setState({courseInfo: response.data});
+        courses = response.data;
+        courses.forEach((item) => {
 
-      axios.get(url)
-          .then((response) => {
-              this.props.getCourses(response.data);
-              this.setState({courseInfo: response.data});
 
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
+          //TODO change to inital value
+          // if (this.props.entry.edit_entry.blockList.some(block => block.id === item.id)) {
+          //   item.isChecked = true;
+          // } else {
+          //   item.isChecked = false;
+          // }
+
+          coursesCheckbox.push(
+            <Checkbox
+              key={item.id}
+              label={item.courseName}
+              style={styles.checkbox}
+              defaultChecked={item.isChecked}
+              onCheck={(event, isInputChecked) => this._onCheck(event, isInputChecked, item)}
+            />
+          );
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
-    menuCourse(courseInfo) {
-        console.log('Truoc khi convert course');
-        console.log(courseInfo);
-        return courseInfo.map((course) => (
-            <MenuItem
-                key={course.courseName}
-                value={course.courseName}
-                primaryText={course.courseName}
-            />
-        ));
-    }
+  getBlocks() {
+    //const url = baseUrl + 'blocks';
+    const url = 'http://127.0.0.1:8081/blocks'
+    axios.get(url)
+      .then((response) => {
+        console.log(response);
+        this.props.getBlocks(response.data);
+        this.setState({blockInfo: response.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
+  menuBlock(blockInfo) {
+    console.log('Truoc khi convert block');
+    console.log(blockInfo);
+    return blockInfo.map((block) => (
+      <MenuItem
+        key={block.name}
+        value={block.name}
+        primaryText={block.name}
+      />
+    ));
+  }
 
-    getBlocks() {
-        //const url = baseUrl + 'blocks';
-        const url = 'http://127.0.0.1:8081/blocks'
-        axios.get(url)
-            .then((response) => {
-                console.log(response);
-                this.props.getBlocks(response.data);
-                this.setState({blockInfo: response.data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+  courseDialog() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleClose.bind(this)}
+      />,
+      <FlatButton
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this._updateCourses.bind(this)}
+      />,
+    ];
+    return (<Dialog
+      title="Courses"
+      actions={actions}
+      modal={false}
+      open={this.state.open}
+      bodyStyle={styles.customContentStyle}
+      onRequestClose={this.handleClose.bind(this)}
+    >
+      {coursesCheckbox}
+    </Dialog>);
+  }
 
-    menuBlock(blockInfo) {
-        console.log('Truoc khi convert block');
-        console.log(blockInfo);
-        return blockInfo.map((block) => (
-            <MenuItem
-                key={block.name}
-                value={block.name}
-                primaryText={block.name}
-            />
-        ));
-    }
-
-    render() {
+  render() {
     return (
       <div style={styles.container}>
         <Card style={styles.card}>
           <CardHeader titleStyle={styles.header} title="Update Faculty Profile"/>
 
           <div style={styles.content}>
-            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID" value = {this.state.facultyID}
-                       disabled ={'true'}/><br />
-            <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" value = {this.state.firstName}
-                       disabled ={'true'}/><br />
-            <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" value = {this.state.lastName}
-                       disabled ={'true'}/><br />
-            <TextField style={styles.content} floatingLabelText="Email" ref="email" value =  {this.state.email}
-                       onChange={(event) => this.setState({ email: event.target.value, })}  /> <br />
-            <TextField style={styles.content} floatingLabelText="Password" ref="password" value = {this.password}
-                       onChange={(event) => this.setState({ password: event.target.value, })}  /> <br />
-            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations" values = {this.state.specializations}
-                       onChange={(event) => this.setState({ specializations: event.target.value, })} /> <br />
+            <TextField style={styles.content} floatingLabelText="Facutlty ID" ref="facultyID"
+                       value={this.state.facultyID}
+                       disabled={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="First Name" ref="firstName"
+                       value={this.state.firstName}
+                       disabled={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" value={this.state.lastName}
+                       disabled={'true'}/><br />
+            <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
+                       onChange={(event) => this.setState({email: event.target.value,})}/> <br />
+            <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.password}
+                       onChange={(event) => this.setState({password: event.target.value,})}/> <br />
+            <TextField style={styles.content} floatingLabelText="Specializations" ref="specializations"
+                       values={this.state.specializations}
+                       onChange={(event) => this.setState({specializations: event.target.value,})}/> <br />
 
-          <SelectField
-              floatingLabelText={'Select Course'}
-              value={this.state.selectedCourse}
-              style={styles.content}
-              ref="courses_tmp"
-              onChange={this.handleChangeCourse.bind(this)} >
-              {this.menuCourse(this.state.courseInfo)}
-          </SelectField>
+            <TextField style={styles.content} floatingLabelText="Courses List" ref="courses"
+                       value={this.state.coursesText}
+                       hintText="Select one or more above sections"/> <br />
+            {this.courseDialog()}
+            <FlatButton label="Change Courses" primary={true}
+                        onTouchTap={this.handleOpen.bind(this)}
+            />
 
-          <FlatButton label="Add Course" primary={true} onClick={this.addCourseID.bind(this)}/>
-          <TextField style={styles.content} floatingLabelText="Courses List" ref="courses" value={this.state.courses} hintText="Select one or more above sections"/> <br />
-
-          <SelectField
+            <SelectField
               floatingLabelText={'Select Block'}
               value={this.state.selectedBlock}
               style={styles.content}
               ref="blocks_tmp"
-              onChange={this.handleChangeBlock.bind(this)} >
+              onChange={this.handleChangeBlock.bind(this)}>
               {this.menuBlock(this.state.blockInfo)}
-          </SelectField>
+            </SelectField>
 
-          <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
-          <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocks} hintText="Select one or more above blocks"/> <br />
+            <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
+            <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocks}
+                       hintText="Select one or more above blocks"/> <br />
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -200,26 +247,22 @@ class FacultyProfile extends Component {
     )
   }
 
-  addCourseID() {
-    this.setState({courses: this.refs.courses.getValue() + this.state.selectedCourse +', '});
-    console.log(this.state.courses);
-  }
-
   addBlockID() {
-      this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedBlock +', '});
-      console.log(this.refs.blocks.getValue());
+    this.setState({blocks: this.refs.blocks.getValue() + this.state.selectedBlock + ', '});
+    console.log(this.refs.blocks.getValue());
   }
 
   save() {
     //const url = baseUrl + 'faculties/update';
-      const url = 'http://127.0.0.1:8081/faculties/update';
+    const url = 'http://127.0.0.1:8081/faculties/update';
+    let coursesId = courses.filter(item => item.isChecked).map(item => item.id).join(", ");
     axios.post(url, {
       id: this.state.id,
       email: this.state.email,
       /*password: this.state.password, */ /* We will update later*/
       specializedCourses: this.state.specializations,
-      courses: this.state.courses,
-      availableBlocks:this.state.blocks,
+      courses: coursesId,
+      availableBlocks: this.state.blocks,
     })
       .then(function (response) {
         //show snack bar
@@ -268,14 +311,19 @@ var styles = {
   customWidth: {
     width: 150,
   },
-
+  checkbox: {
+    marginBottom: 16,
+  },
+  customContentStyle: {
+    overflow: 'auto',
+  },
 }
 
 
 function mapStateToProps(state) {
-    return {
-        user: state.user,
-    }
+  return {
+    user: state.user,
+  }
 }
 
 export default connect(mapStateToProps)(FacultyProfile);
