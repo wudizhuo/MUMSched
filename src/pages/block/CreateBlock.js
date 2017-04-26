@@ -6,8 +6,42 @@ import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 import DatePicker from "material-ui/DatePicker";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 
+let entriesMenuItem = [];
 class CreateBlock extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedEntry: {},
+    };
+  }
+
+  componentWillMount() {
+    this.getEntries();
+  }
+
+  getEntries() {
+    axios.get(baseUrl + 'entrys')
+      .then((response) => {
+        console.log(response.data);
+        this.setEntriesMenuItem(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.props.showSnackbar(error.status + ' ' + error);
+      });
+  }
+
+  setEntriesMenuItem(data) {
+    entriesMenuItem = [];
+    data.forEach((item) => {
+      entriesMenuItem.push(<MenuItem value={item} key={item.name} primaryText={item.name}/>);
+    });
+    console.log(entriesMenuItem);
+    this.forceUpdate();
+  }
 
   render() {
     return (
@@ -20,6 +54,14 @@ class CreateBlock extends Component {
             <TextField style={styles.content} floatingLabelText="Block Name" ref="blockName"/><br />
             <DatePicker style={styles.content} floatingLabelText="Start Date" ref="startDate" mode="landscape"/> <br />
             <DatePicker style={styles.content} floatingLabelText="End Date" ref="endDate" mode="landscape"/> <br />
+            <SelectField floatingLabelText={'Select Entry'} style={styles.content}
+                         value={this.state.selectedEntry}
+                         ref="selectEntry"
+                         onChange={(event, index, value) => {
+                           this.setState({selectedEntry: value})
+                         }}>
+              {entriesMenuItem}
+            </SelectField>
           </div>
           <CardActions style={styles.cardAction}>
             <FlatButton label="Create" primary={true} onClick={this.create.bind(this)}/>
