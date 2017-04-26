@@ -6,16 +6,58 @@ import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 import {connect} from "react-redux";
+import Checkbox from "material-ui/Checkbox";
+import Dialog from "material-ui/Dialog";
 
-
+let blocks = [];
 class EditEntry extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
+
   componentWillMount() {
     this.getEntries();
+    this.getBlocks();
   }
+
+  handleOpen() {
+    this.setState({open: true});
+  };
+
+  handleClose() {
+    this.setState({open: false});
+  };
+
 
   getEntries() {
     //console.log(this.props.entry.edit_entry);
-   }
+  }
+
+  getBlocks() {
+    blocks = [];
+    axios.get('blocks')
+      .then((response) => {
+        console.log("---getBlocks---");
+        console.log(response);
+        response.data.forEach((item) => {
+          blocks.push(
+            <Checkbox
+              label={item.name}
+              style={styles.checkbox}
+            />
+          );
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
 
   update() {
     let entryID = this.refs.entryID.getValue();
@@ -40,6 +82,19 @@ class EditEntry extends Component {
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleClose.bind(this)}
+      />,
+      <FlatButton
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.handleClose.bind(this)}
+      />,
+    ];
 
     return (
       <div style={styles.container}>
@@ -49,30 +104,48 @@ class EditEntry extends Component {
           />
           <div style={styles.content}>
             <TextField style={styles.content}
-                       ref="entryID"
-                       defaultValue = {this.props.entry.edit_entry.id}
-                       disabled ={'true'}
-            /><br />
-            <TextField style={styles.content}
                        ref="entryName"
-                       defaultValue = {this.props.entry.edit_entry.name}
+                       defaultValue={this.props.entry.edit_entry.name}
                        hintText="Entry Name"
+                       floatingLabelText="Entry Name"
             /><br />
             <TextField style={styles.content}
                        ref="totalMPPStudents"
                        hintText="MPP Students"
-                       defaultValue = {this.props.entry.edit_entry.totalMPPStudents}
+                       floatingLabelText="MPP Students"
+                       defaultValue={this.props.entry.edit_entry.totalMPPStudents}
             /><br />
             <TextField style={styles.content}
                        ref="totalFPPStudents"
                        hintText="FPP Students"
-                       defaultValue = {this.props.entry.edit_entry.totalFPPStudents}
+                       floatingLabelText="FPP Students"
+                       defaultValue={this.props.entry.edit_entry.totalFPPStudents}
             /><br />
             {/*<TextField style={styles.content}*/}
-                       {/*ref="faculties"*/}
-                       {/*hintText="Faculty"*/}
+            {/*ref="faculties"*/}
+            {/*hintText="Faculty"*/}
             {/*/><br />*/}
 
+            <TextField style={styles.content}
+                       ref="Blocks"
+                       hintText="Blocks"
+                       floatingLabelText="Blocks"
+                       disabled={true}
+                       defaultValue={this.props.entry.edit_entry.blockList}
+            /><br />
+            <FlatButton label="Change Blocks" primary={true}
+                        onTouchTap={this.handleOpen.bind(this)}
+            />
+            <Dialog
+              title="Blocks"
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              bodyStyle={styles.customContentStyle}
+              onRequestClose={this.handleClose.bind(this)}
+            >
+              {blocks}
+            </Dialog>
           </div>
 
           <CardActions style={styles.cardAction}>
@@ -113,16 +186,22 @@ var styles = {
   header: {
     fontSize: '20px',
   },
+  checkbox: {
+    marginBottom: 16,
+  },
   cardAction: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  customContentStyle: {
+    overflow: 'auto',
+  },
 }
 
 function mapStateToProps(state) {
-    return {
-        entry: state.entry,
-    }
+  return {
+    entry: state.entry,
+  }
 }
 
 export default connect(mapStateToProps)(EditEntry);
