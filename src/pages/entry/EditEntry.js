@@ -146,9 +146,6 @@ class EditEntry extends Component {
                        disabled={true}
                        value={this.state.blockListText}
             /><br />
-            <FlatButton label="Change Blocks" primary={true}
-                        onTouchTap={this.handleOpen.bind(this)}
-            />
             <Dialog
               title="Blocks"
               actions={actions}
