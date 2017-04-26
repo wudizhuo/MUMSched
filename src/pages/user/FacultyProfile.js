@@ -2,8 +2,6 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
 import axios from "axios";
 import {browserHistory} from "react-router";
 import {connect} from "react-redux";
@@ -12,16 +10,16 @@ import Checkbox from "material-ui/Checkbox";
 
 let courses = [];
 let coursesCheckbox = [];
+let blocks = [];
+let blocksCheckbox = [];
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      open_courses: false,
+      open_blocks: false,
       userInfo: [],
-      blockInfo: [],
       selectedBlock: '',
-      courseInfo: [],
-      blocks: '',
       id: '',
       facultyID: '',
       firstName: '',
@@ -30,6 +28,7 @@ class FacultyProfile extends Component {
       password: '',
       specializations: '',
       coursesText: '',
+      blocksText: '',
     };
 
   };
@@ -41,17 +40,30 @@ class FacultyProfile extends Component {
 
   }
 
-  handleOpen() {
-    this.setState({open: true});
+  handleCourseOpen() {
+    this.setState({open_courses: true});
   };
 
-  handleClose() {
-    this.setState({open: false});
+  handleCourseClose() {
+    this.setState({open_courses: false});
+  };
+
+  handleBlockOpen() {
+    this.setState({open_blocks: true});
+  };
+
+  handleBlockClose() {
+    this.setState({open_blocks: false});
   };
 
   _updateCourses() {
     this.setState({coursesText: courses.filter(item => item.isChecked).map(item => item.courseName).join(", ")});
-    this.handleClose();
+    this.handleCourseClose();
+  };
+
+  _updateBlocks() {
+    this.setState({blocksText: blocks.filter(item => item.isChecked).map(item => item.name).join(", ")});
+    this.handleBlockClose();
   };
 
   _onCheck(event, isInputChecked, item) {
@@ -108,13 +120,10 @@ class FacultyProfile extends Component {
   }
 
   getCourses() {
-``
     coursesCheckbox = [];
     // const url = baseUrl + 'courses';  TODO: Need Update
     axios.get('courses')
       .then((response) => {
-        this.props.getCourses(response.data);
-        this.setState({courseInfo: response.data});
         courses = response.data;
         courses.forEach((item) => {
 
@@ -147,25 +156,29 @@ class FacultyProfile extends Component {
     const url = 'http://127.0.0.1:8081/blocks'
     axios.get(url)
       .then((response) => {
-        console.log(response);
-        this.props.getBlocks(response.data);
-        this.setState({blockInfo: response.data});
+        blocks = response.data;
+        blocks.forEach((item) => {
+          //TODO change to inital value
+          // if (this.props.entry.edit_entry.blockList.some(block => block.id === item.id)) {
+          //   item.isChecked = true;
+          // } else {
+          //   item.isChecked = false;
+          // }
+
+          blocksCheckbox.push(
+            <Checkbox
+              key={item.id}
+              label={item.name}
+              style={styles.checkbox}
+              defaultChecked={item.isChecked}
+              onCheck={(event, isInputChecked) => this._onCheck(event, isInputChecked, item)}
+            />
+          );
+        });
       })
       .catch(function (error) {
         console.log(error);
       });
-  }
-
-  menuBlock(blockInfo) {
-    console.log('Truoc khi convert block');
-    console.log(blockInfo);
-    return blockInfo.map((block) => (
-      <MenuItem
-        key={block.name}
-        value={block.name}
-        primaryText={block.name}
-      />
-    ));
   }
 
   courseDialog() {
@@ -173,7 +186,7 @@ class FacultyProfile extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onTouchTap={this.handleCourseClose.bind(this)}
       />,
       <FlatButton
         label="Save"
@@ -186,11 +199,37 @@ class FacultyProfile extends Component {
       title="Courses"
       actions={actions}
       modal={false}
-      open={this.state.open}
+      open={this.state.open_courses}
       bodyStyle={styles.customContentStyle}
-      onRequestClose={this.handleClose.bind(this)}
+      onRequestClose={this.handleCourseClose.bind(this)}
     >
       {coursesCheckbox}
+    </Dialog>);
+  }
+
+  blockDialog() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleBlockClose.bind(this)}
+      />,
+      <FlatButton
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this._updateBlocks.bind(this)}
+      />,
+    ];
+    return (<Dialog
+      title="Blocks"
+      actions={actions}
+      modal={false}
+      open={this.state.open_blocks}
+      bodyStyle={styles.customContentStyle}
+      onRequestClose={this.handleBlockClose.bind(this)}
+    >
+      {blocksCheckbox}
     </Dialog>);
   }
 
@@ -222,20 +261,13 @@ class FacultyProfile extends Component {
                        hintText="Select one or more above sections"/> <br />
             {this.courseDialog()}
             <FlatButton label="Change Courses" primary={true}
-                        onTouchTap={this.handleOpen.bind(this)}
+                        onTouchTap={this.handleCourseOpen.bind(this)}
             />
-
-            <SelectField
-              floatingLabelText={'Select Block'}
-              value={this.state.selectedBlock}
-              style={styles.content}
-              ref="blocks_tmp"
-              onChange={this.handleChangeBlock.bind(this)}>
-              {this.menuBlock(this.state.blockInfo)}
-            </SelectField>
-
-            <FlatButton label="Add Block" primary={true} onClick={this.addBlockID.bind(this)}/>
-            <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocks}
+            {this.blockDialog()}
+            <FlatButton label="Change Blocks" primary={true}
+                        onTouchTap={this.handleBlockOpen.bind(this)}
+            />
+            <TextField style={styles.content} floatingLabelText="Blocks List" ref="blocks" value={this.state.blocksText}
                        hintText="Select one or more above blocks"/> <br />
           </div>
 
