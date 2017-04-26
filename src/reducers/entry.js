@@ -1,6 +1,6 @@
 import {GETENTRIES, EDITENTRY} from "../actions";
 
-function entry(state = [], action) {
+export function entry(state = [], action) {
   switch (action.type) {
     case GETENTRIES :
       return Object.assign({}, state, {
@@ -14,5 +14,3 @@ function entry(state = [], action) {
       return state;
   }
 }
-
-export default entry;
