@@ -8,14 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
-
-let studentID = "";
-let studentName = "";
-let email = "";
-let password = "";
-let entry ="";
-let enroll_temp = "";
-let isFixSchedule ="";
+import {connect} from "react-redux";
 
 class StudentProfile extends Component {
 
@@ -26,16 +19,60 @@ class StudentProfile extends Component {
             selectedSection:'',
             enrollInfo: [],
             sectionInfo: [],
+            studentID: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            password:'',
+            entry: '',
             takens:'',
             enrolls:'',
+            isFixSchedule:'',
         };
-
     };
 
     componentWillMount() {
-        this.getTakens();
-        this.getEnrolls();
+        this.getPreInfo();
+        //this.getTakens();
+        //this.getEnrolls();
         this.getSections();
+    }
+
+    getPreInfo(){
+        let id = '';
+        try {
+            if(this.props.user.edit_user.loginId != null) {
+                console.log('Move from User Management');
+                id = this.props.user.edit_user.loginId;
+            }
+        } catch (error) {
+            console.log('User want to edit his self');
+            // We will use ID to get Infomation of User
+            // const url = baseUrl + 'students/get/' +id; //  TODO: Need Update
+            id = 8;
+        }
+
+        const url = 'http://127.0.0.1:8082/students/get/' + id;
+        axios.get(url)
+            .then((response) => {
+                this._mapData(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    _mapData(data) {
+        console.log(data);
+        this.setState({id: data.id});
+        this.setState({studentID: data.loginId});
+        this.setState({firstName: data.firstName});
+        this.setState({lastName: data.lastNam});
+        this.setState({email: data.email});
+        //this.setState({password:data.password});
+        this.setState({entry: data.entry});
+        this.setState({takens: data.takens});
+        this.setState({enrolls: data.enrolls});
     }
 
 
@@ -43,7 +80,7 @@ class StudentProfile extends Component {
         this.setState({selectedSection:selectedSection});
     }
 
-
+/*
     getTakens() {
         const url = baseUrl + 'user/takens/' + studentID;
 
@@ -69,6 +106,7 @@ class StudentProfile extends Component {
         })
     }
 
+
     getEnrolls() {
         const url = baseUrl + 'user/enrolls/' + studentID;
 
@@ -91,9 +129,11 @@ class StudentProfile extends Component {
             return item.name;
         })
     }
+ */
 
     getSections() {
-        const url = baseUrl + 'sections';
+        //const url = baseUrl + 'sections';
+        const url = 'http://127.0.0.1:8081/sections/';
 
         axios.get(url)
             .then((response) => {
@@ -126,14 +166,14 @@ class StudentProfile extends Component {
                     <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" disabled ={'true'}/><br />
-                        <TextField style={styles.content} floatingLabelText="Student Name" ref="studentName" disabled ={'true'}/><br />
-                        <TextField style={styles.content} floatingLabelText="Email" ref="email"/> <br />
-                        <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$"/> <br />
-                        <TextField style={styles.content} floatingLabelText="Entry" ref="entry" hintText="January"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" value={this.state.studentID}
+                                   disabled ={'true'}/><br />
+                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" value={this.state.firstName}
+                                   disabled ={'true'}/><br />
+                        <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}/> <br />
+                        <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password} hintText="A12345$"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Entry" ref="entry" value={this.state.entry} hintText="January"/> <br />
                         <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens} /> <br />
-
-
                         <SelectField
                             floatingLabelText={'Select Section'}
                             value={this.state.selectedSection}
@@ -166,20 +206,14 @@ class StudentProfile extends Component {
 
 
     save() {
-        studentID = this.refs.studentID.getValue();
-        studentName = this.refs.studentName.getValue();
-        email = this.refs.email.getValue();
-        password = this.refs.password.getValue();
-        entry = this.refs.entry.getValue();
-        takens = this.refs.takens.getValue();
-        blockIds = "";
 
         const url = baseUrl + 'user-service/profile/add';
         axios.post(url, {
-            id: studentID,
-            name: studentName,
-            email: email,
-            password: password,
+            id: this.state.studentID,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password,
             enrolls: enrolls,
         })
             .then(function (response) {
@@ -232,4 +266,10 @@ var styles = {
 
 }
 
-export default StudentProfile;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    }
+}
+
+export default connect(mapStateToProps)(StudentProfile);
