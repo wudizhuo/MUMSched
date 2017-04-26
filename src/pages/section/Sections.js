@@ -113,8 +113,8 @@ class Sections extends Component {
                         onClick={this.delete.bind(this)}/>
             <FlatButton label="Edit" secondary={true}
                         onClick={this.edit.bind(this)}/>
-            <FlatButton label="Create" primary={true}
-                        onClick={this.create.bind(this)}/>
+            {/*<FlatButton label="Create" primary={true}*/}
+                        {/*onClick={this.create.bind(this)}/>*/}
           </CardActions>
         </Card>
       </div>
