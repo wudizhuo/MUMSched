@@ -14,7 +14,6 @@ class Entries extends Component {
     this.state = {
       tableData: [],
       selectedIndex: -1,
-      open: false,
     };
   }
 
@@ -30,14 +29,6 @@ class Entries extends Component {
     browserHistory.push('/create_entry');
   }
 
-  closeDialog(){
-      this.setState({open: false});
-  };
-
-  viewblock(){
-      this.setState({open: true});
-  };
-
   edit() {
     // Want to send id for Edit Form
     if (this.state.tableData[this.state.selectedIndex] != null) {
@@ -48,12 +39,10 @@ class Entries extends Component {
 
   delete() {
     let entryId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'entry-service/entries/delete/' + entryId;
-    axios.delete(url)
+    axios.delete('entrys/delete/' + entryId)
       .then((response) => {
         console.log(response);
         window.location.reload();
-        // this.setState({tableData: response.data});
       })
       .catch(function (error) {
         console.log(error);
@@ -122,8 +111,8 @@ class Entries extends Component {
           </Table>
 
           <CardActions style={styles.cardAction}>
-            <FlatButton label="View Blocks"
-                        onClick={this.viewblock.bind(this)}/>
+            <FlatButton label="Delete"
+                        onClick={this.delete.bind(this)}/>
             <FlatButton label="Edit" secondary={true}
                         onClick={this.edit.bind(this)}/>
             <FlatButton label="Create" primary={true}
