@@ -1,4 +1,4 @@
-export const baseUrl = 'http://127.0.0.1:8082/';
+export const baseUrl = 'http://10.10.52.10:8081/';
 export const role = {
   Student: 'student',
   Faculty: 'faculty',
