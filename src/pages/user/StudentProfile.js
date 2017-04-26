@@ -39,7 +39,7 @@ class StudentProfile extends Component {
     }
 
     getPreInfo(){
-        let id = '';
+        let id = 0;
         try {
             if(this.props.user.edit_user.loginId != null) {
                 console.log('Move from User Management');
@@ -49,7 +49,7 @@ class StudentProfile extends Component {
             console.log('User want to edit his self');
             // We will use ID to get Infomation of User
             // const url = baseUrl + 'students/get/' +id; //  TODO: Need Update
-            id = 8;
+            id = 7;
         }
 
         const url = 'http://127.0.0.1:8082/students/get/' + id;
@@ -131,19 +131,17 @@ class StudentProfile extends Component {
     }
  */
 
+
     getSections() {
         //const url = baseUrl + 'sections';
         const url = 'http://127.0.0.1:8081/sections/';
 
         axios.get(url)
             .then((response) => {
-            this.props.getSections(response.data);
-        this.setState({sectionInfo: response.data});
-
-        console.log('-------');
-        console.log(this.state.sectionInfo);
-        })
-        .catch(function (error) {
+                console.log(response.data);
+                this.setState({sectionInfo: response.data});
+            })
+            .catch(function (error) {
                 console.log(error);
             });
     }
@@ -166,12 +164,12 @@ class StudentProfile extends Component {
                     <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" value={this.state.studentID}
-                                   disabled ={'true'}/><br />
-                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" value={this.state.firstName}
-                                   disabled ={'true'}/><br />
-                        <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}/> <br />
-                        <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password} hintText="A12345$"/> <br />
+                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" value={this.state.studentID} /> <br />
+                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" value={this.state.firstName} /> <br />
+                        <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
+                                   onChange={(event) => this.setState({ email: event.target.value, })}/> <br />
+                        <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password} hintText="A12345$"
+                                   onChange={(event) => this.setState({ password: event.target.value, })}/> <br />
                         <TextField style={styles.content} floatingLabelText="Entry" ref="entry" value={this.state.entry} hintText="January"/> <br />
                         <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens} /> <br />
                         <SelectField
@@ -206,15 +204,16 @@ class StudentProfile extends Component {
 
 
     save() {
-
-        const url = baseUrl + 'user-service/profile/add';
+        //const url = baseUrl + 'students/update';
+        const url = 'http://127.0.0.1:8081/students/update/';
         axios.post(url, {
             id: this.state.studentID,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             email: this.state.email,
             password: this.state.password,
-            enrolls: enrolls,
+            enrolledSections: enrolls,
+            //takenSections:
         })
             .then(function (response) {
                 //show snack bar
