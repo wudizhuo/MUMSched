@@ -7,12 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
-
-let userID = "";
-let userName = "";
-let email = "";
-let password = "";
-let role = "";
+import {connect} from "react-redux";
 
 class EditUser extends Component {
 
@@ -21,15 +16,6 @@ class EditUser extends Component {
         this.state = { value: '',}
 
     };
-
-    componentWillMount() {
-        this.getUsers();
-    }
-
-    getUsers() {
-        console.log(this.props.user.edit_user);
-    }
-
 
     handleChange(event, index, value) {
         this.setState({value});
@@ -43,7 +29,8 @@ class EditUser extends Component {
 
                     <div style={styles.content}>
                         <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" defaultValue = {this.props.user.edit_user.id} /><br />
-                        <TextField style={styles.content} floatingLabelText="User Name" ref="userName" defaultValue = {this.props.user.edit_user.name}  /><br />
+                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" defaultValue = {this.props.user.edit_user.firstName}  /><br />
+                        <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" defaultValue = {this.props.user.edit_user.lastName}  /><br />
                         <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue = {this.props.user.edit_user.email}  /> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" defaultValue = {this.props.user.edit_user.password} /> <br />
                         <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" defaultValue = {this.props.user.edit_user.role}  onChange={this.handleChange.bind(this)}>
@@ -62,13 +49,12 @@ class EditUser extends Component {
     }
     update() {
         //userID = this.refs.courseID.getValue();
-        userName = this.refs.userName.getValue();
-        email = this.refs.email.getValue();
-        password = this.refs.password.getValue();
-        role = this.state.value;
-        console.log(this.state.value);
+        let userName = this.refs.userName.getValue();
+        let email = this.refs.email.getValue();
+        let password = this.refs.password.getValue();
+        let role = this.state.value;
 
-        const url = baseUrl + 'user-service/user/update';
+        const url = baseUrl + '/users/update';
         axios.put(url, {
             id: userID,
             name: userName,
@@ -126,4 +112,11 @@ var styles = {
 
 }
 
-export default EditUser;
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    }
+}
+
+export default connect(mapStateToProps)(EditUser);

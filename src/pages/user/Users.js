@@ -60,7 +60,7 @@ class Users extends Component {
       }
   }
   getUsers() {
-    const url = baseUrl + 'user-service/users'; // Need change to user-service/users
+    const url = baseUrl + 'users'; // Need change to user-service/users
 
     axios.get(url)
       .then((response) => {
@@ -92,7 +92,8 @@ class Users extends Component {
             >
               <TableRow>
                 <TableHeaderColumn>User ID</TableHeaderColumn>
-                <TableHeaderColumn>User Name</TableHeaderColumn>
+                <TableHeaderColumn>First Name</TableHeaderColumn>
+                <TableHeaderColumn>Last Name</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
                 <TableHeaderColumn>Role</TableHeaderColumn>
               </TableRow>
@@ -103,7 +104,8 @@ class Users extends Component {
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
+                  <TableRowColumn>{row.firstName}</TableRowColumn>
+                  <TableRowColumn>{row.lastName}</TableRowColumn>
                   <TableRowColumn>{row.email}</TableRowColumn>
                   <TableRowColumn>{row.role}</TableRowColumn>
                 </TableRow>
