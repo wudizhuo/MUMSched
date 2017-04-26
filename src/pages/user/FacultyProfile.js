@@ -54,8 +54,8 @@ class FacultyProfile extends Component {
     this.handleClose();
   };
 
-  _onCheck(event, isInputChecked, block) {
-    block.isChecked = isInputChecked;
+  _onCheck(event, isInputChecked, item) {
+    item.isChecked = isInputChecked;
   }
 
   handleChangeBlock(event, index, selectedBlock) {
@@ -255,7 +255,7 @@ class FacultyProfile extends Component {
   save() {
     //const url = baseUrl + 'faculties/update';
     const url = 'http://127.0.0.1:8081/faculties/update';
-    let coursesId = courses.filter(item => item.isChecked).map(item => item.id).join(", ");
+    let coursesId = courses.filter(item => item.isChecked).map(item => item.id);
     axios.post(url, {
       id: this.state.id,
       email: this.state.email,
