@@ -28,15 +28,15 @@ class EditUser extends Component {
                     <CardHeader titleStyle={styles.header} title="Update User" />
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" defaultValue = {this.props.user.edit_user.id} /><br />
+                        <TextField style={styles.content} floatingLabelText="Login ID"  ref="userID" defaultValue = {this.props.user.edit_user.loginId} /><br />
                         <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" defaultValue = {this.props.user.edit_user.firstName}  /><br />
                         <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" defaultValue = {this.props.user.edit_user.lastName}  /><br />
                         <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue = {this.props.user.edit_user.email}  /> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" defaultValue = {this.props.user.edit_user.password} /> <br />
                         <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" defaultValue = {this.props.user.edit_user.role}  onChange={this.handleChange.bind(this)}>
-                            <MenuItem value={"Student"} primaryText="Student" />
-                            <MenuItem value={"Faculty"} primaryText="Faculty" />
-                            <MenuItem value={"Admin"} primaryText="Admin" />
+                            <MenuItem value={"STUDENT"} primaryText="STUDENT" />
+                            <MenuItem value={"FACULTY"} primaryText="FACULTY" />
+                            <MenuItem value={"ADMIN"} primaryText="ADMIN" />
                         </SelectField>
                     </div>
 
@@ -48,16 +48,18 @@ class EditUser extends Component {
         )
     }
     update() {
-        //userID = this.refs.courseID.getValue();
-        let userName = this.refs.userName.getValue();
+        let userID = this.refs.userID.getValue();
+        let firstName = this.refs.firstName.getValue();
+        let lastName = this.refs.lastName.getValue();
         let email = this.refs.email.getValue();
         let password = this.refs.password.getValue();
         let role = this.state.value;
 
         const url = baseUrl + '/users/update';
         axios.put(url, {
-            id: userID,
-            name: userName,
+            loginId: userID,
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             password: password,
             role: role,

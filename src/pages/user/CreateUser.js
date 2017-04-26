@@ -8,12 +8,6 @@ import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
-let userID = "";
-let userName = "";
-let email = "";
-let password = "";
-let role = "";
-
 class CreateUser extends Component {
 
     constructor(props) {
@@ -33,14 +27,15 @@ class CreateUser extends Component {
                     <CardHeader titleStyle={styles.header} title="Create User" />
 
                     <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="User ID"  ref="userID" /><br />
-                        <TextField style={styles.content} floatingLabelText="User Name" ref="userName" /><br />
+                        <TextField style={styles.content} floatingLabelText="Login ID"  ref="userID" /><br />
+                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" /><br />
+                        <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" /><br />
                         <TextField style={styles.content} floatingLabelText="Email" ref="email" /> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" /> <br />
                         <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" onChange={this.handleChange.bind(this)}>
-                            <MenuItem value={"Student"} primaryText="Student" />
-                            <MenuItem value={"Faculty"} primaryText="Faculty" />
-                            <MenuItem value={"Admin"} primaryText="Admin" />
+                            <MenuItem value={"STUDENT"} primaryText="STUDENT" />
+                            <MenuItem value={"FACULTY"} primaryText="FACULTY" />
+                            <MenuItem value={"ADMIN"} primaryText="ADMIN" />
                         </SelectField>
                     </div>
 
@@ -52,17 +47,18 @@ class CreateUser extends Component {
         )
     }
     create() {
-        //userID = this.refs.courseID.getValue();
-        userName = this.refs.userName.getValue();
-        email = this.refs.email.getValue();
-        password = this.refs.password.getValue();
-        role = this.state.value;
-        console.log(this.state.value);
+        let userID = this.refs.userID.getValue();
+        let firstName = this.refs.firstName.getValue();
+        let lastName = this.refs.lastName.getValue();
+        let email = this.refs.email.getValue();
+        let password = this.refs.password.getValue();
+        let role = this.state.value;
 
-        const url = baseUrl + 'user-service/user/add';
+        const url = baseUrl + '/users/add';
         axios.post(url, {
-            id: userID,
-            name: userName,
+            loginId: userID,
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             password: password,
             role: role,

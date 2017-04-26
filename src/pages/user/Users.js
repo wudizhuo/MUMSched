@@ -39,7 +39,7 @@ class Users extends Component {
 
   delete() {
     let userId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'user-service/delete/' + userId;
+    const url = baseUrl + '/users/delete/' + userId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -91,7 +91,7 @@ class Users extends Component {
               multiSelectable={true}
             >
               <TableRow>
-                <TableHeaderColumn>User ID</TableHeaderColumn>
+                <TableHeaderColumn>Login ID</TableHeaderColumn>
                 <TableHeaderColumn>First Name</TableHeaderColumn>
                 <TableHeaderColumn>Last Name</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
@@ -103,7 +103,7 @@ class Users extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.id}</TableRowColumn>
+                  <TableRowColumn>{row.loginId}</TableRowColumn>
                   <TableRowColumn>{row.firstName}</TableRowColumn>
                   <TableRowColumn>{row.lastName}</TableRowColumn>
                   <TableRowColumn>{row.email}</TableRowColumn>
