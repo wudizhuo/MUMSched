@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
+import TextField from "material-ui/TextField";
 import axios from "axios";
 import {browserHistory} from "react-router";
 import * as actionCreators from "../../actions/index";
@@ -38,7 +39,7 @@ class Schedules extends Component {
   }
 
   create() {
-      const url = baseUrl3+ 'schedule/generate/3';
+      const url = baseUrl3+ 'schedule/generate/' + this.refs.entry.getValue();;
 
       axios.get(url)
           .then((response) => {
@@ -124,7 +125,7 @@ class Schedules extends Component {
                 <TableHeaderColumn>ID</TableHeaderColumn>
                 <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Entry</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
+                <TableHeaderColumn>Approved status</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -148,10 +149,14 @@ class Schedules extends Component {
                         onClick={this.delete.bind(this)}/>
             <FlatButton label="Detail" secondary={true}
                         onClick={this.detail.bind(this)}/>
-            <FlatButton label="Create" primary={true}
-                        onClick={this.create.bind(this)}/>
             <FlatButton label="Approve" primary={true}
-                        onClick={this.approve.bind(this)}/>
+                        onClick={this.approve.bind(this)}/> <br />
+
+          </CardActions>
+          <CardActions style={styles.cardAction}>
+              <TextField style={styles.content} ref="entry" hintText="Input Entry and create Schedule"/>
+              <FlatButton label="Create" primary={true}
+                          onClick={this.create.bind(this)}/>
           </CardActions>
         </Card>
       </div>
