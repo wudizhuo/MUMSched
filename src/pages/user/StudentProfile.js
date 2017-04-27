@@ -49,7 +49,7 @@ class StudentProfile extends Component {
         enrolledSections = response.data;
         let text = '';
         enrolledSections.forEach((item) => {
-          if (this.props.user.enrolledSections.some(data => data === item.id)) {
+          if (this.props.user.enrolledSections !== undefined && this.props.user.enrolledSections.some(data => data === item.id)) {
             item.isChecked = true;
             if (item.course !== null) {
               text = text + " " + item.course.courseName;
@@ -125,7 +125,9 @@ class StudentProfile extends Component {
             <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password}
                        hintText="A12345$"
                        onChange={(event) => this.setState({password: event.target.value,})}/> <br />
-            <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens}/>
+            <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens}
+                       disabled={true}
+            />
             <br />
             <TextField style={styles.content} floatingLabelText="EnrolledSections List" ref="enrolledSections"
                        value={this.state.enrolledSectionsText}

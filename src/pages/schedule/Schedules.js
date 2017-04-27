@@ -188,9 +188,14 @@ var styles = {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    role: state.login.role,
+  }
+}
 
 function mapDispachToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 }
 
-export default connect(null, mapDispachToProps)(Schedules);
+export default connect(mapStateToProps, mapDispachToProps)(Schedules);
