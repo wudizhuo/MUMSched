@@ -13,6 +13,9 @@ let courses = [];
 let coursesCheckbox = [];
 let blocks = [];
 let blocksCheckbox = [];
+
+//TODO some show bug
+
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);

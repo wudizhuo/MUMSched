@@ -33,7 +33,7 @@ class EditUser extends Component {
                         <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName" defaultValue = {this.props.user.edit_user.lastName}  /><br />
                         <TextField style={styles.content} floatingLabelText="Email" ref="email" defaultValue = {this.props.user.edit_user.email}  /> <br />
                         <TextField style={styles.content} floatingLabelText="Password" ref="password" hintText="A12345$" defaultValue = {this.props.user.edit_user.password} /> <br />
-                        <SelectField style={styles.content} floatingLabelText="Role"  value={this.state.value} ref="role" defaultValue = {this.props.user.edit_user.role}  onChange={this.handleChange.bind(this)}>
+                        <SelectField style={styles.content} floatingLabelText="Role"  value={this.props.user.edit_user.role} ref="role" onChange={this.handleChange.bind(this)}>
                             <MenuItem value={"STUDENT"} primaryText="STUDENT" />
                             <MenuItem value={"FACULTY"} primaryText="FACULTY" />
                             <MenuItem value={"ADMIN"} primaryText="ADMIN" />
