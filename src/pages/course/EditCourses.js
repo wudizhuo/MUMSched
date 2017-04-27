@@ -22,7 +22,7 @@ class EditCourses extends Component {
 
     // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
-    const url = baseUrl + 'course-service/courses/update';
+    const url = baseUrl + 'courses/update';
     axios.put(url, {
       id: courseID,
       name: courseName,

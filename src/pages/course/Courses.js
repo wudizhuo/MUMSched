@@ -52,7 +52,7 @@ class Courses extends Component {
   }
 
   getCourses() {
-    const url = baseUrl + 'course-service/courses';
+    const url = baseUrl + 'courses';
 
     axios.get(url)
       .then((response) => {
