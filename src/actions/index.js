@@ -4,8 +4,6 @@ export const LOGOUT = 'LOGOUT';
 export const GETCOURSES = 'getCourses';
 export const EDITCOURSES = 'editcourses';
 export const EDITSECTIONS = 'editsections';
-export const GETUSERS = 'getUsers';
-export const EDITUSER = 'editUser';
 export const GETBLOCKS = 'getBlocks';
 export const EDITBLOCK = 'editBlock';
 export const GETENTRIES = 'getEntries';
@@ -33,14 +31,6 @@ export function editCourses(course) {
 
 export function editSections(section) {
   return {type: EDITSECTIONS, section}
-}
-
-export function getUsers(users) {
-  return {type: GETUSERS, users}
-}
-
-export function editUser(user) {
-  return {type: EDITUSER, user}
 }
 
 export function getBlocks(blocks) {
