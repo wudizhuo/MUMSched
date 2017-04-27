@@ -57,7 +57,7 @@ class StudentProfile extends Component {
           } else {
             item.isChecked = false;
           }
-          this.setState({coursesText: text});
+          this.setState({enrolledSectionsText: text});
           enrolledSectionsCheckbox.push(
             <Checkbox
               key={item.id}
@@ -143,6 +143,19 @@ class StudentProfile extends Component {
     )
   }
 
+  refresh() {
+    const url = baseUrl2 + 'users/login/' + this.props.user.loginId + "/" + this.state.password;
+    axios.get(url).then((response) => {
+      console.log(response);
+      this.props.login(response.data, response.data.role);
+      browserHistory.push('/');
+    })
+      .catch((error) => {
+        console.log(error);
+        this.props.showSnackbar("Login Failed");
+      });
+  }
+
   save() {
     const url = baseUrl2 + 'students/update/';
     let enrolledSectionIds = enrolledSections.filter(item => item.isChecked).map(item => item.id);
@@ -158,10 +171,10 @@ class StudentProfile extends Component {
       "takenSections": this.props.user.takenSections,
       "enrolledSections": enrolledSectionIds,
     })
-      .then(function (response) {
+      .then((response) => {
         //show snack bar
         console.log(response);
-        browserHistory.push('/student_profile');
+        this.refresh();
       })
       .catch(function (error) {
         //show snack bar
