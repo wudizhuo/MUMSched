@@ -38,7 +38,7 @@ class Courses extends Component {
 
   delete() {
     let courseId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'course-service/courses/delete/' + courseId;
+    const url = 'courses/delete/' + courseId;
     axios.delete(url)
       .then((response) => {
         console.log(response);

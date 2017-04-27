@@ -131,7 +131,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width: '80%',
+    width: '85%',
   },
   cardAction: {
     display: 'flex',

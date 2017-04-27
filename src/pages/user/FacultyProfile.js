@@ -14,8 +14,6 @@ let coursesCheckbox = [];
 let blocks = [];
 let blocksCheckbox = [];
 
-//TODO some show bug
-
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);
@@ -126,6 +124,7 @@ class FacultyProfile extends Component {
             />
           );
         });
+        this.forceUpdate();
       })
       .catch(function (error) {
         console.log(error);
