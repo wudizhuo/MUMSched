@@ -5,6 +5,7 @@ import CircularProgress from "material-ui/CircularProgress";
 import RaisedButton from "material-ui/RaisedButton";
 import axios from "axios";
 import {browserHistory} from "react-router";
+import {baseUrl2} from "../Const";
 import * as actionCreators from "../actions/index";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -39,7 +40,7 @@ class Login extends Component {
     password = this.refs.password.getValue();
     console.log(username + password);
 
-    const url = 'http://10.10.52.10:8082/' + 'users/login/' + username + "/" + password;
+    const url = baseUrl2 + 'users/login/' + username + "/" + password;
     axios.get(url).then((response) => {
       console.log(response);
       this.props.login(response.data, response.data.role);

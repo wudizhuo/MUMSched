@@ -5,6 +5,7 @@ import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import axios from "axios";
 import {connect} from "react-redux";
+import {baseUrl2} from "../../Const";
 import {browserHistory} from "react-router";
 import MenuItem from "material-ui/MenuItem";
 
@@ -92,7 +93,8 @@ class EditSections extends Component {
     facultyItems.push(<MenuItem value={item.facultyId} key={item.facultyId}
                                 primaryText={item.facultyId}/>)
 
-    axios.get('http://10.10.52.10:8082/faculties')
+
+    axios.get(baseUrl2+'faculties')
       .then((response) => {
         console.log(response);
         this.setState({

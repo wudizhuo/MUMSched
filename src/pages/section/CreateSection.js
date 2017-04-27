@@ -6,6 +6,7 @@ import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import axios from "axios";
 import {baseUrl} from "../../Const";
+import {baseUrl2} from "../../Const";
 import {browserHistory} from "react-router";
 
 let blocks = [];
@@ -60,12 +61,12 @@ class CreateSection extends Component {
 
   getFaculties() {
     faculties = [];
-    axios.get('http://10.10.11.103:8082/faculties')
+    axios.get(baseUrl2 + 'faculties')
       .then((response) => {
         console.log(response);
         sponse.data.forEach((item) => {
           faculties.push(<MenuItem value={item.loginId} key={item.loginId}
-                                   primaryText={item.firstName + ' '+ item.lastName}/>)
+                                   primaryText={item.firstName + ' ' + item.lastName}/>)
         })
       })
       .catch(function (error) {
