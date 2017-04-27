@@ -3,6 +3,7 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
+import {baseUrl3} from "../../Const";
 import {browserHistory} from "react-router";
 import {baseUrl1} from "../../Const";
 import {baseUrl2} from "../../Const";
@@ -83,13 +84,13 @@ class Schedules extends Component {
 
   getSchedules() {
     //const url = baseUrl + 'course-service/courses';
-      const url = 'http://127.0.0.1:8083/schedules';
+    const url = baseUrl3 + 'schedules';
 
     axios.get(url)
       .then((response) => {
         this.setState({tableData: response.data});
-          console.log('This is Schedule Data');
-          console.log(this.state.tableData);
+        console.log('This is Schedule Data');
+        console.log(this.state.tableData);
       })
       .catch(function (error) {
         console.log(error);
@@ -122,7 +123,7 @@ class Schedules extends Component {
             </TableHeader>
             <TableBody
               deselectOnClickaway={false}
-              stripedRows = {true}
+              stripedRows={true}
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
