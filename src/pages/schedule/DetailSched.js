@@ -33,12 +33,11 @@ class DetailSched extends Component {
   }
 
   getSchedules() {
-    const url = baseUrl + 'course-service/courses';
+    const url = 'http://127.0.0.1:8083/schedules/get/3';
 
     axios.get(url)
       .then((response) => {
         console.log(response);
-        this.props.getCourses(response.data);
         this.setState({tableData: response.data});
       })
       .catch(function (error) {
@@ -77,10 +76,10 @@ class DetailSched extends Component {
             >
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.prereqCourse}</TableRowColumn>  /* TODO: Change to Date */
-                  <TableRowColumn>{row.entryBlock}</TableRowColumn>    /* TODO: Change to Status */
+                  <TableRowColumn>{0}</TableRowColumn>
+                  <TableRowColumn>{0}</TableRowColumn>
+                  <TableRowColumn>{0}</TableRowColumn>  /* TODO: Change to Date */
+                  <TableRowColumn>{0}</TableRowColumn>    /* TODO: Change to Status */
                 </TableRow>
               ))}
 

@@ -29,7 +29,17 @@ class Schedules extends Component {
   }
 
   create() {
-    // TODO Something
+      const url = 'http://127.0.0.1:8083/schedule/generate/1';
+
+      axios.get(url)
+          .then((response) => {
+              console.log(response);
+              window.location.reload();
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+
   }
 
   approve() {
@@ -37,8 +47,8 @@ class Schedules extends Component {
   }
 
   delete() {
-    let courseId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'course-service/courses/delete/' + courseId;
+    let scheduleId = this.state.tableData[this.state.selectedIndex].id;
+    const url = 'http://127.0.0.1:8083/schedules/delete/' + scheduleId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -51,13 +61,14 @@ class Schedules extends Component {
   }
 
   getSchedules() {
-    const url = baseUrl + 'course-service/courses';
+    //const url = baseUrl + 'course-service/courses';
+      const url = 'http://127.0.0.1:8083/schedules';
 
     axios.get(url)
       .then((response) => {
-        console.log(response);
-        this.props.getCourses(response.data);
         this.setState({tableData: response.data});
+          console.log('This is Schedule Data');
+          console.log(this.state.tableData);
       })
       .catch(function (error) {
         console.log(error);
@@ -84,7 +95,7 @@ class Schedules extends Component {
               <TableRow>
                 <TableHeaderColumn>ID</TableHeaderColumn>
                 <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Date Created</TableHeaderColumn>
+                <TableHeaderColumn>Entry</TableHeaderColumn>
                 <TableHeaderColumn>Status</TableHeaderColumn>
               </TableRow>
             </TableHeader>
@@ -95,9 +106,9 @@ class Schedules extends Component {
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.prereqCourse}</TableRowColumn>  /* TODO: Change to Date */
-                  <TableRowColumn>{row.entryBlock}</TableRowColumn>    /* TODO: Change to Status */
+                  <TableRowColumn>{'Draft Schedule'}</TableRowColumn>
+                  <TableRowColumn>{row.entry}</TableRowColumn> /* TODO: Dont now data */
+                  <TableRowColumn>{row.approved.toString()}</TableRowColumn>    /* TODO: Dont now data */
                 </TableRow>
               ))}
 
@@ -129,7 +140,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width: '60%',
+    width: '80%',
   },
   cardAction: {
     display: 'flex',
