@@ -4,12 +4,13 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
 import {browserHistory} from "react-router";
+import {consorseUrl} from "../../Const";
 
 class EditCourses extends Component {
   update() {
     let courseCode = this.refs.courseCode.getValue();
     let courseName = this.refs.courseName.getValue();
-    axios.put('courses/update', {
+    axios.put(consorseUrl + 'courses/update', {
       "id": this.props.course.edit_course.id,
       "courseCode": courseCode,
       "courseName": courseName,

@@ -3,7 +3,7 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
-import {baseUrl} from "../../Const";
+import {consorseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
 class CreateCourse extends Component {
@@ -11,7 +11,7 @@ class CreateCourse extends Component {
     let courseCode = this.refs.courseCode.getValue();
     let courseName = this.refs.courseName.getValue();
 
-    const url = baseUrl + 'courses/add';
+    const url = consorseUrl + 'courses/add';
     axios.post(url, {
       courseCode: courseCode,
       courseName: courseName,
