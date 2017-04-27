@@ -4,7 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import {baseUrl} from "../../Const";
+import {baseUrl2} from "../../Const";
 
 class Users extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class Users extends Component {
 
   delete() {
     let userId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + '/users/delete/' + userId;
+    const url = baseUrl2 + '/users/delete/' + userId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -63,7 +63,7 @@ class Users extends Component {
       }
   }
   getUsers() {
-    const url = baseUrl + 'users';
+    const url = baseUrl2 + 'users';
 
     axios.get(url)
       .then((response) => {

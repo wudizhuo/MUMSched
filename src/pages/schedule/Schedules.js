@@ -4,7 +4,9 @@ import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import {baseUrl} from "../../Const";
+import {baseUrl1} from "../../Const";
+import {baseUrl2} from "../../Const";
+import {baseUrl3} from "../../Const";
 
 class Schedules extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class Schedules extends Component {
   }
 
   create() {
-      const url = 'http://127.0.0.1:8083/schedule/generate/1';
+      const url = baseUrl3+ 'schedule/generate/3';
 
       axios.get(url)
           .then((response) => {
@@ -43,12 +45,31 @@ class Schedules extends Component {
   }
 
   approve() {
-      // TODO Something
+      if(this.state.tableData[this.state.selectedIndex] != null)
+      {
+          const url = baseUrl3 + '/schedules/update';
+          axios.put(url, {
+              id:this.state.tableData[this.state.selectedIndex].id,
+              name: 'Schedule ' + this.state.tableData[this.state.selectedIndex].entry,
+              entry: this.state.tableData[this.state.selectedIndex].entry,
+              approved: 'true',
+          })
+              .then(function (response) {
+                  //show snack bar
+                  console.log(response);
+                  window.location.reload();
+              })
+              .catch(function (error) {
+                  //show snack bar
+                  console.log("error----");
+                  console.log(error);
+              });
+      }
   }
 
   delete() {
     let scheduleId = this.state.tableData[this.state.selectedIndex].id;
-    const url = 'http://127.0.0.1:8083/schedules/delete/' + scheduleId;
+    const url = baseUrl3 + 'schedules/delete/' + scheduleId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
@@ -106,7 +127,7 @@ class Schedules extends Component {
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{'Draft Schedule'}</TableRowColumn>
+                  <TableRowColumn>{row.name}</TableRowColumn>
                   <TableRowColumn>{row.entry}</TableRowColumn> /* TODO: Dont now data */
                   <TableRowColumn>{row.approved.toString()}</TableRowColumn>    /* TODO: Dont now data */
                 </TableRow>

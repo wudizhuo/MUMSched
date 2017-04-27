@@ -1,6 +1,8 @@
 // action types
 export const LOGINED = 'Logined';
 export const LOGOUT = 'LOGOUT';
+export const GETUSERS = 'getUsers';
+export const EDITUSER = 'editUser';
 export const GETCOURSES = 'getCourses';
 export const EDITCOURSES = 'editcourses';
 export const EDITSECTIONS = 'editsections';
@@ -19,6 +21,14 @@ export function login(user, role) {
 
 export function logout() {
   return {type: LOGOUT}
+}
+
+export function getUsers(users) {
+    return {type: GETUSERS, users}
+}
+
+export function editUser(user) {
+    return {type: EDITUSER, user}
 }
 
 export function getCourses(courses) {
