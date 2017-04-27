@@ -86,7 +86,6 @@ class Courses extends Component {
                 <TableHeaderColumn>Code</TableHeaderColumn>
                 <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Prereq Courses</TableHeaderColumn>
-                <TableHeaderColumn>Entry & Blocks</TableHeaderColumn>
                 {/*<TableHeaderColumn>Faculty</TableHeaderColumn>*/}
               </TableRow>
             </TableHeader>
@@ -99,7 +98,6 @@ class Courses extends Component {
                   <TableRowColumn>{row.courseCode}</TableRowColumn>
                   <TableRowColumn>{row.courseName}</TableRowColumn>
                   <TableRowColumn>{row.preReqCourId === null ? ' ' : row.preReqCourId.courseName}</TableRowColumn>
-                  <TableRowColumn>{row.blockList}</TableRowColumn>
                   {/*<TableRowColumn>{row.faculty}</TableRowColumn>*/}
                 </TableRow>
               ))}
