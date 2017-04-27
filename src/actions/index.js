@@ -13,6 +13,7 @@ export const EDITENTRY = 'editEntry';
 export const OPENDRAWER = 'opendrawer';
 export const CLOSERAWER = 'closeDrawer';
 export const SHOW_SNACKBAR = 'show_snackbar';
+export const DETAILSCHEDULE= 'detailschedule';
 
 // action creators
 export function login(user, role) {
@@ -69,4 +70,8 @@ export function closeDrawer() {
 
 export function showSnackbar(message = '') {
   return {type: SHOW_SNACKBAR, message}
+}
+
+export function detailSchedule(schedule) {
+  return {type: DETAILSCHEDULE, schedule}
 }

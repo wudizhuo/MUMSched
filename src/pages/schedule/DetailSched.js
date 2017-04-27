@@ -5,14 +5,13 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import axios from "axios";
 import {browserHistory} from "react-router";
 import {baseUrl} from "../../Const";
+import {connect} from "react-redux";
 
 class DetailSched extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tableData: [],
-      selectedIndex: -1,
     };
   }
 
@@ -30,19 +29,6 @@ class DetailSched extends Component {
 
   approve() {
       // TODO Something
-  }
-
-  getSchedules() {
-    const url = 'http://127.0.0.1:8083/schedules/get/3';
-
-    axios.get(url)
-      .then((response) => {
-        console.log(response);
-        this.setState({tableData: response.data});
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   render() {
@@ -119,4 +105,10 @@ var styles = {
 
 }
 
-export default DetailSched;
+function mapStateToProps(state) {
+  return {
+    role: state.schedule.detailschedule,
+  }
+}
+
+export default connect(mapStateToProps)(DetailSched);

@@ -3,8 +3,10 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
-import {baseUrl3} from "../../Const";
 import {browserHistory} from "react-router";
+import * as actionCreators from "../../actions/index";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 import {baseUrl1} from "../../Const";
 import {baseUrl2} from "../../Const";
 import {baseUrl3} from "../../Const";
@@ -28,7 +30,11 @@ class Schedules extends Component {
   }
 
   detail() {
-    browserHistory.push('/detail_sched');
+    if(this.state.tableData[this.state.selectedIndex] != null)
+    {
+      this.props.detailSchedule(this.state.tableData[this.state.selectedIndex]);
+      browserHistory.push('/detail_sched');
+    }
   }
 
   create() {
@@ -174,4 +180,9 @@ var styles = {
 
 }
 
-export default Schedules;
+
+function mapDispachToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(null, mapDispachToProps)(Schedules);
