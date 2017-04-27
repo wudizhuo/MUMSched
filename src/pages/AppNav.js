@@ -34,11 +34,16 @@ class AppNav extends Component {
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/users')}>
           Users</MenuItem>
         }
+
+        {(this.props.role === role.Faculty || this.props.role === role.Admin) &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/faculty_profile')}>
           Faculty Profile</MenuItem>
+        }
 
+        {(this.props.role === role.Student || this.props.role === role.Admin) &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/student_profile')}>
           Student Profile</MenuItem>
+        }
       </Drawer>
     )
   }

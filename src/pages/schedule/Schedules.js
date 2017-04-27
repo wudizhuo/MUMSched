@@ -4,13 +4,12 @@ import FlatButton from "material-ui/FlatButton";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import TextField from "material-ui/TextField";
 import axios from "axios";
+import {role} from "../../Const";
 import {browserHistory} from "react-router";
 import * as actionCreators from "../../actions/index";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {baseUrl1} from "../../Const";
-import {baseUrl2} from "../../Const";
-import {baseUrl3} from "../../Const";
+import {baseUrl1, baseUrl3} from "../../Const";
 
 class Schedules extends Component {
   constructor(props) {
@@ -31,48 +30,46 @@ class Schedules extends Component {
   }
 
   detail() {
-    if(this.state.tableData[this.state.selectedIndex] != null)
-    {
+    if (this.state.tableData[this.state.selectedIndex] != null) {
       this.props.detailSchedule(this.state.tableData[this.state.selectedIndex]);
       browserHistory.push('/detail_sched');
     }
   }
 
   create() {
-      const url = baseUrl3+ 'schedule/generate/' + this.refs.entry.getValue();;
+    const url = baseUrl3 + 'schedule/generate/' + this.refs.entry.getValue();
 
-      axios.get(url)
-          .then((response) => {
-              console.log(response);
-              window.location.reload();
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
+    axios.get(url)
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
   }
 
   approve() {
-      if(this.state.tableData[this.state.selectedIndex] != null)
-      {
-          const url = baseUrl3 + '/schedules/update';
-          axios.put(url, {
-              id:this.state.tableData[this.state.selectedIndex].id,
-              name: 'Schedule ' + this.state.tableData[this.state.selectedIndex].entry,
-              entry: this.state.tableData[this.state.selectedIndex].entry,
-              approved: 'true',
-          })
-              .then(function (response) {
-                  //show snack bar
-                  console.log(response);
-                  window.location.reload();
-              })
-              .catch(function (error) {
-                  //show snack bar
-                  console.log("error----");
-                  console.log(error);
-              });
-      }
+    if (this.state.tableData[this.state.selectedIndex] != null) {
+      const url = baseUrl3 + '/schedules/update';
+      axios.put(url, {
+        id: this.state.tableData[this.state.selectedIndex].id,
+        name: 'Schedule ' + this.state.tableData[this.state.selectedIndex].entry,
+        entry: this.state.tableData[this.state.selectedIndex].entry,
+        approved: 'true',
+      })
+        .then(function (response) {
+          //show snack bar
+          console.log(response);
+          window.location.reload();
+        })
+        .catch(function (error) {
+          //show snack bar
+          console.log("error----");
+          console.log(error);
+        });
+    }
   }
 
   delete() {
@@ -137,7 +134,7 @@ class Schedules extends Component {
                   <TableRowColumn>{row.id}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
                   <TableRowColumn>{row.entry}</TableRowColumn> /* TODO: Dont now data */
-                  <TableRowColumn>{row.approved.toString()}</TableRowColumn>    /* TODO: Dont now data */
+                  <TableRowColumn>{row.approved.toString()}</TableRowColumn> /* TODO: Dont now data */
                 </TableRow>
               ))}
 
@@ -145,19 +142,25 @@ class Schedules extends Component {
           </Table>
 
           <CardActions style={styles.cardAction}>
+            {this.props.role === role.Admin &&
             <FlatButton label="Delete"
                         onClick={this.delete.bind(this)}/>
+            }
             <FlatButton label="Detail" secondary={true}
                         onClick={this.detail.bind(this)}/>
+            {this.props.role === role.Admin &&
             <FlatButton label="Approve" primary={true}
-                        onClick={this.approve.bind(this)}/> <br />
-
+                        onClick={this.approve.bind(this)}/>
+            }
+            <br />
           </CardActions>
+          {this.props.role === role.Admin &&
           <CardActions style={styles.cardAction}>
-              <TextField style={styles.content} ref="entry" hintText="Input Entry and create Schedule"/>
-              <FlatButton label="Create" primary={true}
-                          onClick={this.create.bind(this)}/>
+            <TextField style={styles.content} ref="entry" hintText="Input Entry and create Schedule"/>
+            <FlatButton label="Create" primary={true}
+                        onClick={this.create.bind(this)}/>
           </CardActions>
+          }
         </Card>
       </div>
     )
