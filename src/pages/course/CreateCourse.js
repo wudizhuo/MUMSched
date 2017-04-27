@@ -6,30 +6,17 @@ import axios from "axios";
 import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 
-let courseID = "";
-let courseName = "";
-let preCourseName = "";
-let targetBlock = "";
-let faculties = "";
-
 class CreateCourse extends Component {
   create() {
-    // courseID = this.refs.courseID.getValue();
-    courseName = this.refs.courseName.getValue();
-    preCourseName = this.refs.preCourseName.getValue();
-    targetBlock = this.refs.targetBlock.getValue();
-    // faculties = this.refs.faculties.getValue();
-
-    // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
+    let courseCode = this.refs.courseCode.getValue();
+    let courseName = this.refs.courseName.getValue();
 
     const url = baseUrl + 'courses/add';
     axios.post(url, {
-      name: courseName,
-      prereqCourse: preCourseName,
-      entryBlock: targetBlock,
+      courseCode: courseCode,
+      courseName: courseName,
     })
       .then(function (response) {
-        //show snack bar
         console.log(response);
         browserHistory.push('/courses');
       })
@@ -48,27 +35,16 @@ class CreateCourse extends Component {
                       title="Create Course"
           />
           <div style={styles.content}>
-            {/*<TextField style={styles.content}*/}
-                       {/*ref="courseID"*/}
-                       {/*hintText="Course ID"*/}
-            {/*/><br />*/}
+            <TextField style={styles.content}
+                       ref="courseCode"
+                       floatingLabelText="Course Code"
+                       hintText="Course Code"
+            /><br />
             <TextField style={styles.content}
                        ref="courseName"
+                       floatingLabelText="Course Name"
                        hintText="Course Name"
             /><br />
-            <TextField style={styles.content}
-                       ref="preCourseName"
-                       hintText="Prereq Course"
-            /><br />
-            <TextField style={styles.content}
-                       ref="targetBlock"
-                       hintText="Target Entry Block"
-            /><br />
-            {/*<TextField style={styles.content}*/}
-                       {/*ref="faculties"*/}
-                       {/*hintText="Faculty"*/}
-            {/*/><br />*/}
-
           </div>
 
           <CardActions style={styles.cardAction}>
