@@ -83,6 +83,7 @@ class Courses extends Component {
             >
               <TableRow>
                 <TableHeaderColumn>ID</TableHeaderColumn>
+                <TableHeaderColumn>Code</TableHeaderColumn>
                 <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Prereq Courses</TableHeaderColumn>
                 <TableHeaderColumn>Entry & Blocks</TableHeaderColumn>
@@ -95,6 +96,7 @@ class Courses extends Component {
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
+                  <TableRowColumn>{row.courseCode}</TableRowColumn>
                   <TableRowColumn>{row.courseName}</TableRowColumn>
                   <TableRowColumn>{row.preReqCourId === null ? ' ' : row.preReqCourId.courseName}</TableRowColumn>
                   <TableRowColumn>{row.blockList}</TableRowColumn>

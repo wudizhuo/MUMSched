@@ -3,31 +3,19 @@ import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import axios from "axios";
-import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
-
-let courseID = "";
-let courseName = "";
-let preCourseName = "";
-let targetBlock = "";
-let faculties = "";
 
 class EditCourses extends Component {
   update() {
-    courseID = this.refs.courseID.getValue();
-    courseName = this.refs.courseName.getValue();
-    preCourseName = this.refs.preCourseName.getValue();
-    targetBlock = this.refs.targetBlock.getValue();
-    // faculties = this.refs.faculties.getValue();
-
-    // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
-
-    const url = baseUrl + 'courses/update';
-    axios.put(url, {
-      id: courseID,
-      name: courseName,
-      prereqCourse: preCourseName,
-      entryBlock: targetBlock,
+    let courseCode = this.refs.courseCode.getValue();
+    let courseName = this.refs.courseName.getValue();
+    axios.put('courses/update', {
+      "id": this.props.course.edit_course.id,
+      "courseCode": courseCode,
+      "courseName": courseName,
+      "preReqCourId": this.props.course.edit_course.preReqCourId,
+      "sectionDefaultCapasity": this.props.course.edit_course.sectionDefaultCapasity,
+      "blockList": this.props.course.edit_course.blockList
     })
       .then(function (response) {
         console.log(response);
@@ -49,29 +37,28 @@ class EditCourses extends Component {
           <div style={styles.content}>
             <TextField style={styles.content}
                        ref="courseID"
-                       defaultValue = {this.props.course.edit_course.id}
-                       //hintText="Course ID"
+                       disabled={true}
+                       defaultValue={this.props.course.edit_course.id}
+            /><br />
+            <TextField style={styles.content}
+                       ref="courseCode"
+                       defaultValue={this.props.course.edit_course.courseCode}
+                       hintText="Course Code"
+                       floatingLabelText="Course Code"
             /><br />
             <TextField style={styles.content}
                        ref="courseName"
-                       defaultValue = {this.props.course.edit_course.name}
+                       defaultValue={this.props.course.edit_course.courseName}
+                       floatingLabelText="Course Name"
                        hintText="Course Name"
             /><br />
             <TextField style={styles.content}
                        ref="preCourseName"
                        hintText="Prereq Course"
-                       defaultValue = {this.props.course.edit_course.prereqCourse}
+                       floatingLabelText="Prereq Course"
+                       disabled={true}
+                       defaultValue={this.props.course.edit_course.prereqCourse}
             /><br />
-            <TextField style={styles.content}
-                       ref="targetBlock"
-                       hintText="Target Entry Block"
-                       defaultValue = {this.props.course.edit_course.entryBlock}
-            /><br />
-            {/*<TextField style={styles.content}*/}
-                       {/*ref="faculties"*/}
-                       {/*hintText="Faculty"*/}
-            {/*/><br />*/}
-
           </div>
 
           <CardActions style={styles.cardAction}>
