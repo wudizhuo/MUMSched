@@ -120,6 +120,8 @@ class StudentProfile extends Component {
                        value={this.state.studentID}/> <br />
             <TextField style={styles.content} floatingLabelText="First Name" ref="firstName"
                        value={this.state.firstName}/> <br />
+            <TextField style={styles.content} floatingLabelText="Last Name" ref="lastName"
+                       value={this.state.lastName}/> <br />
             <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
                        onChange={(event) => this.setState({email: event.target.value,})}/> <br />
             <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password}
