@@ -5,7 +5,7 @@ import TextField from "material-ui/TextField";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
-import {baseUrl} from "../../Const";
+import {baseUrl2} from "../../Const";
 import {browserHistory} from "react-router";
 import {connect} from "react-redux";
 
@@ -56,7 +56,7 @@ class EditUser extends Component {
         let password = this.refs.password.getValue();
         let role = this.state.value;
 
-        const url = baseUrl + '/users/update';
+        const url = baseUrl2 + '/users/update';
         axios.put(url, {
             id:id,
             loginId: userID,
