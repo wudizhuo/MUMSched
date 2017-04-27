@@ -29,12 +29,11 @@ class Courses extends Component {
   }
 
   edit() {
-      // Want to send id for Edit Form
-      if(this.state.tableData[this.state.selectedIndex] != null)
-      {
-        this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
-        browserHistory.push('/edit_course');
-      }
+    // Want to send id for Edit Form
+    if (this.state.tableData[this.state.selectedIndex] != null) {
+      this.props.editCourses(this.state.tableData[this.state.selectedIndex]);
+      browserHistory.push('/edit_course');
+    }
   }
 
   delete() {
@@ -96,9 +95,9 @@ class Courses extends Component {
               {this.state.tableData.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.id}</TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.prereqCourse}</TableRowColumn>
-                  <TableRowColumn>{row.entryBlock}</TableRowColumn>
+                  <TableRowColumn>{row.courseName}</TableRowColumn>
+                  <TableRowColumn>{row.preReqCourId === null ? ' ' : row.preReqCourId.courseName}</TableRowColumn>
+                  <TableRowColumn>{row.blockList}</TableRowColumn>
                   {/*<TableRowColumn>{row.faculty}</TableRowColumn>*/}
                 </TableRow>
               ))}
