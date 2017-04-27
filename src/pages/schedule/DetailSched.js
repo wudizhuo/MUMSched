@@ -1,22 +1,100 @@
 import React, {Component} from "react";
-import {Card, CardActions, CardHeader} from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 import axios from "axios";
 import {browserHistory} from "react-router";
-import {baseUrl} from "../../Const";
 import {connect} from "react-redux";
+import {Card, CardHeader} from "material-ui/Card";
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
 
+let blocks = [];
+let sections = [];
+let _ = require('lodash')
 class DetailSched extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {tableData: []};
   }
 
   componentWillMount() {
-    this.getSchedules();
+    this.getSections();
+  }
+
+  getSections() {
+    // const url = baseUrl + 'sections';
+    axios.get('sections')
+      .then((response) => {
+        console.log(response.data);
+        sections = response.data;
+        this.mapToData();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  mapToData() {
+    sections = sections.filter((section) => {
+      if (section.block === null) {
+        return false;
+      }
+      return section.block.id === this.props.detail_schedule.entry;
+    })
+
+    let groupByBlocks = _.groupBy(sections, function (section) {
+      return section.block.id
+    });
+    Object.keys(groupByBlocks).forEach((key) => {
+      console.log(key, groupByBlocks[key]);
+      blocks.push(this.generateCard(groupByBlocks[key]));
+    });
+    this.forceUpdate();
+  }
+
+  generateCard(sections) {
+    let block = sections[0].block;
+    return (
+      <Card style={styles.card}>
+        <CardHeader titleStyle={styles.header}
+                    title={"Block: " + block.name}
+                    subtitle={block.startDate + " - " + block.endDate}
+        />
+        <Table
+          onRowSelection={this.onRowSelection.bind(this)}
+        >
+          <TableHeader
+            height={'300px'}
+            fixedHeader={true}
+            fixedFooter={false}
+            selectable={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>Course Code</TableHeaderColumn>
+              <TableHeaderColumn>Course Name</TableHeaderColumn>
+              <TableHeaderColumn>ProfessorId</TableHeaderColumn>
+              <TableHeaderColumn>Capacity</TableHeaderColumn>
+              <TableHeaderColumn>Enrolled</TableHeaderColumn>
+              <TableHeaderColumn>Seats Available</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            deselectOnClickaway={false}
+          >
+            {sections.map((row, index) => (
+              <TableRow key={index} selected={row.selected}>
+                <TableRowColumn>{row.course === null ? '' : row.course.courseCode}</TableRowColumn>
+                <TableRowColumn>{row.course === null ? '' : row.course.courseName}</TableRowColumn>
+                <TableRowColumn>{row.facultyId}</TableRowColumn>
+                <TableRowColumn>{row.capacity}</TableRowColumn>
+                <TableRowColumn>{row.enrolled}</TableRowColumn>
+                <TableRowColumn>{(row.capacity) - (row.enrolled)}</TableRowColumn>
+              </TableRow>
+            ))}
+
+          </TableBody>
+        </Table>
+
+      </Card>
+    );
   }
 
   onRowSelection(items) {
@@ -28,57 +106,13 @@ class DetailSched extends Component {
   }
 
   approve() {
-      // TODO Something
+    // TODO Something
   }
 
   render() {
     return (
       <div style={styles.container}>
-        <Card style={styles.card}>
-          <CardHeader titleStyle={styles.header}
-                      title="Detail Schedule"
-          />
-          <Table
-            onRowSelection={this.onRowSelection.bind(this)}
-          >
-            <TableHeader
-              height={'300px'}
-              fixedHeader={true}
-              fixedFooter={false}
-              selectable={true}
-              multiSelectable={true}
-            >
-              <TableRow>
-                <TableHeaderColumn>Block</TableHeaderColumn>
-                <TableHeaderColumn>Course</TableHeaderColumn>
-                <TableHeaderColumn>Faculty</TableHeaderColumn>
-                <TableHeaderColumn>Capacity</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              deselectOnClickaway={false}
-              stripedRows = {true}
-              displayRowCheckbox = {false}
-            >
-              {this.state.tableData.map((row, index) => (
-                <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{0}</TableRowColumn>
-                  <TableRowColumn>{0}</TableRowColumn>
-                  <TableRowColumn>{0}</TableRowColumn>  /* TODO: Change to Date */
-                  <TableRowColumn>{0}</TableRowColumn>    /* TODO: Change to Status */
-                </TableRow>
-              ))}
-
-            </TableBody>
-          </Table>
-
-          <CardActions style={styles.cardAction}>
-            <FlatButton label="Back" primary={true}
-                        onClick={this.back.bind(this)}/>
-            <FlatButton label="Approve" primary={true}
-                        onClick={this.approve.bind(this)}/>
-          </CardActions>
-        </Card>
+        {blocks}
       </div>
     )
   }
@@ -93,7 +127,7 @@ var styles = {
     paddingTop: '2%',
   },
   card: {
-    width: '60%',
+    width: '80%',
   },
   cardAction: {
     display: 'flex',
@@ -107,7 +141,7 @@ var styles = {
 
 function mapStateToProps(state) {
   return {
-    role: state.schedule.detailschedule,
+    detail_schedule: state.schedule.detailschedule,
   }
 }
 
