@@ -20,7 +20,9 @@ class App extends Component {
   }
 
   componentWillMount() {
-    browserHistory.push('/login');
+    if (!this.props.isLogin) {
+      browserHistory.push('/login');
+    }
   }
 
   render() {
