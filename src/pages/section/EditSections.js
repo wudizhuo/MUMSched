@@ -94,7 +94,7 @@ class EditSections extends Component {
                                 primaryText={item.facultyId}/>)
 
 
-    axios.get(baseUrl2+'faculties')
+    axios.get(baseUrl2 + 'faculties')
       .then((response) => {
         console.log(response);
         this.setState({
@@ -168,8 +168,12 @@ class EditSections extends Component {
 
     axios.put('sections/update', {
       "id": this.props.section.edit_section.id,
-      "blockId": blockId,
-      "courseId": courseId,
+      "block": {
+        id: blockId
+      },
+      "course": {
+        id: courseId
+      },
       "facultyId": facultyId,
       "capacity": capacity,
       "enrolled": enrolled,
