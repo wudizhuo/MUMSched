@@ -39,7 +39,7 @@ class Sections extends Component {
 
   delete() {
     let sectionId = this.state.tableData[this.state.selectedIndex].id;
-    const url = baseUrl + 'section-service/sections/delete/' + sectionId;
+    const url = baseUrl + 'sections/delete/' + sectionId;
     axios.delete(url)
       .then((response) => {
         console.log(response);
