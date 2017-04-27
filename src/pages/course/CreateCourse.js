@@ -22,7 +22,7 @@ class CreateCourse extends Component {
 
     // console.log(courseID + courseName + preCourseName + targetBlock + faculties);
 
-    const url = baseUrl + 'course-service/courses/add';
+    const url = baseUrl + 'courses/add';
     axios.post(url, {
       name: courseName,
       prereqCourse: preCourseName,

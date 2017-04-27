@@ -7,6 +7,7 @@ import {browserHistory} from "react-router";
 import {connect} from "react-redux";
 import Dialog from "material-ui/Dialog";
 import Checkbox from "material-ui/Checkbox";
+import {baseUrl2} from "../../Const";
 
 let courses = [];
 let coursesCheckbox = [];
@@ -15,10 +16,6 @@ let blocksCheckbox = [];
 class FacultyProfile extends Component {
   constructor(props) {
     super(props);
-    // "specialization": "Math",
-    // "specializedCourses": [],
-    // "availableBlocks": [],
-    // "assignedSections": []
     this.state = {
       open_courses: false,
       open_blocks: false,
@@ -232,7 +229,7 @@ class FacultyProfile extends Component {
   }
 
   save() {
-    const url = 'http://10.10.52.10:8082/' + 'faculties/update';
+    const url = baseUrl2 + 'faculties/update';
     let coursesId = courses.filter(item => item.isChecked).map(item => item.id);
     let blocksId = blocks.filter(item => item.isChecked).map(item => item.id);
 
@@ -240,8 +237,8 @@ class FacultyProfile extends Component {
       "id": this.state.id,
       "loginId": this.props.user.loginId,
       "password": this.state.password,
-      "firstName": this.props.user.firstName,
-      "lastName": this.props.user.lastName,
+      "firstName": this.state.firstName,
+      "lastName": this.state.lastName,
       "email": this.state.email,
       "role": this.props.user.role,
       "specialization": this.state.specialization,
@@ -261,7 +258,7 @@ class FacultyProfile extends Component {
   }
 
   refresh() {
-    const url = 'http://10.10.52.10:8082/' + 'users/login/' + this.props.user.loginId + "/" + this.state.password;
+    const url = baseUrl2 + 'users/login/' + this.props.user.loginId + "/" + this.state.password;
     axios.get(url).then((response) => {
       console.log(response);
       this.props.login(response.data, response.data.role);

@@ -4,8 +4,8 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import axios from "axios";
-import {baseUrl} from "../../Const";
 import {connect} from "react-redux";
+import {baseUrl2} from "../../Const";
 import {browserHistory} from "react-router";
 import MenuItem from "material-ui/MenuItem";
 
@@ -93,11 +93,12 @@ class EditSections extends Component {
     facultyItems.push(<MenuItem value={item.facultyId} key={item.facultyId}
                                 primaryText={item.facultyId}/>)
 
-    axios.get('http://10.10.52.10:8082/faculties')
+
+    axios.get(baseUrl2+'faculties')
       .then((response) => {
         console.log(response);
         this.setState({
-          selectedFaculty: response.data.find((item)=>item.id === this.props.section.edit_section.facultyId)
+          selectedFaculty: response.data.find((item) => item.id === this.props.section.edit_section.facultyId)
         });
         facultyItems = [];
         response.data.forEach((item) => {
@@ -159,20 +160,16 @@ class EditSections extends Component {
   }
 
   update() {
-    let block = this.props.section.edit_section.block.id;
-    let course = this.props.section.edit_section.course.courseId;
+    let blockId = this.props.section.edit_section.block.id;
+    let courseId = this.props.section.edit_section.course.id;
     let facultyId = this.state.selectedFaculty.id;
-    // let facultyId = this.refs.faculty.id.getValue();
     let capacity = this.refs.capacity.getValue();
     let enrolled = this.refs.enrolled.getValue();
 
-    // console.log(block + course + faculty + capacity);
-
-    const url = baseUrl + 'sections/update';
-    axios.put(url, {
+    axios.put('sections/update', {
       "id": this.props.section.edit_section.id,
-      "blockId": block,
-      "courseId": course,
+      "blockId": blockId,
+      "courseId": courseId,
       "facultyId": facultyId,
       "capacity": capacity,
       "enrolled": enrolled,
@@ -185,8 +182,6 @@ class EditSections extends Component {
         console.log(error);
       });
   }
-
-
 }
 
 var styles = {

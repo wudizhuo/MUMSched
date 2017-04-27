@@ -1,274 +1,228 @@
-
 import React, {Component} from "react";
 import {Card, CardActions, CardHeader} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import axios from "axios";
-import {baseUrl} from "../../Const";
 import {browserHistory} from "react-router";
 import {connect} from "react-redux";
+import {baseUrl2} from "../../Const";
+import Dialog from "material-ui/Dialog";
+import Checkbox from "material-ui/Checkbox";
 
+let enrolledSections = [];
+let enrolledSectionsCheckbox = [];
 class StudentProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      id: this.props.user.id,
+      studentID: this.props.user.loginId,
+      firstName: this.props.user.firstName,
+      lastName: this.props.user.lastName,
+      email: this.props.user.email,
+      password: this.props.user.password,
+      takens: this.props.user.takenSections,
+      enrolls: this.props.user.enrolledSections,
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            takenInfo:[],
-            selectedSection:'',
-            enrollInfo: [],
-            sectionInfo: [],
-            studentID: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            password:'',
-            entry: '',
-            takens:'',
-            enrolls:'',
-            isFixSchedule:'',
-        };
+      enrollInfo: [],
+      isFixSchedule: '',
+      enrolledSectionsText: '',
     };
+  };
 
-    componentWillMount() {
-        this.getPreInfo();
-        //this.getTakens();
-        //this.getEnrolls();
-        this.getSections();
-    }
+  componentWillMount() {
+    this.getSections();
+  }
 
-    getPreInfo(){
-        let id = 0;
-        try {
-            if(this.props.user.edit_user.loginId != null) {
-                console.log('Move from User Management');
-                id = this.props.user.edit_user.loginId;
+  handleDialogOpen() {
+    this.setState({open: true});
+  };
+
+  handleDialogClose() {
+    this.setState({open: false});
+  };
+
+  getSections() {
+    axios.get('sections')
+      .then((response) => {
+        enrolledSections = response.data;
+        let text = '';
+        enrolledSections.forEach((item) => {
+          if (this.props.user.enrolledSections.some(data => data === item.id)) {
+            item.isChecked = true;
+            if (item.course !== null) {
+              text = text + " " + item.course.courseName;
             }
-        } catch (error) {
-            console.log('User want to edit his self');
-            // We will use ID to get Infomation of User
-            // const url = baseUrl + 'students/get/' +id; //  TODO: Need Update
-            id = 7;
-        }
+          } else {
+            item.isChecked = false;
+          }
+          this.setState({enrolledSectionsText: text});
+          enrolledSectionsCheckbox.push(
+            <Checkbox
+              key={item.id}
+              label={item.course === null ? 'Secret Course' : item.course.courseName}
+              style={styles.checkbox}
+              defaultChecked={item.isChecked}
+              onCheck={(event, isInputChecked) => {
+                item.isChecked = isInputChecked
+              }}
+            />
+          );
+          this.forceUpdate();
+        });
 
-        const url = 'http://127.0.0.1:8082/students/get/' + id;
-        axios.get(url)
-            .then((response) => {
-                this._mapData(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
-    _mapData(data) {
-        console.log(data);
-        this.setState({id: data.id});
-        this.setState({studentID: data.loginId});
-        this.setState({firstName: data.firstName});
-        this.setState({lastName: data.lastNam});
-        this.setState({email: data.email});
-        //this.setState({password:data.password});
-        this.setState({entry: data.entry});
-        this.setState({takens: data.takens});
-        this.setState({enrolls: data.enrolls});
-    }
+  _updateEnrolledSections() {
+    this.setState({enrolledSectionsText: enrolledSections.filter(item => item.isChecked).map(item => item.course === null ? 'Secret Course' : item.course.courseName).join(", ")});
+    this.handleDialogClose();
+  };
 
+  enrolledSectionsDialog() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleDialogClose.bind(this)}
+      />,
+      <FlatButton
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this._updateEnrolledSections.bind(this)}
+      />,
+    ];
+    return (<Dialog
+      title="Enrolled Sections"
+      actions={actions}
+      modal={false}
+      open={this.state.open}
+      bodyStyle={styles.customContentStyle}
+      onRequestClose={this.handleDialogClose.bind(this)}
+    >
+      {enrolledSectionsCheckbox}
+    </Dialog>);
+  }
 
-    handleChangeEnroll(event, index, selectedSection) {
-        this.setState({selectedSection:selectedSection});
-    }
+  render() {
+    return (
+      <div style={styles.container}>
+        <Card style={styles.card}>
+          <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
 
-/*
-    getTakens() {
-        const url = baseUrl + 'user/takens/' + studentID;
+          <div style={styles.content}>
+            <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID"
+                       value={this.state.studentID}/> <br />
+            <TextField style={styles.content} floatingLabelText="First Name" ref="firstName"
+                       value={this.state.firstName}/> <br />
+            <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
+                       onChange={(event) => this.setState({email: event.target.value,})}/> <br />
+            <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password}
+                       hintText="A12345$"
+                       onChange={(event) => this.setState({password: event.target.value,})}/> <br />
+            <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens}/>
+            <br />
+            <TextField style={styles.content} floatingLabelText="EnrolledSections List" ref="enrolledSections"
+                       value={this.state.enrolledSectionsText}
+                       hintText="Select one or more above sections"/> <br />
+            {this.enrolledSectionsDialog()}
+            <FlatButton label="Change Enrolled Sections" primary={true}
+                        onTouchTap={this.handleDialogOpen.bind(this)}
+            />
+          </div>
+          <CardActions style={styles.cardAction}>
+            <FlatButton label="Save" primary={true} onClick={this.save.bind(this)}/>
+          </CardActions>
+        </Card>
+      </div>
+    )
+  }
 
-        axios.get(url)
-            .then((response) => {
-                console.log(response);
-                this.props.getTakens(response.data);
-                this.setState({takenInfo: response.data});
-                console.log('This is Taken Infor');
-                console.log(this.state.takenInfo);
-                this.setState({takens: this.mergeTaken()});
+  refresh() {
+    const url = baseUrl2 + 'users/login/' + this.props.user.loginId + "/" + this.state.password;
+    axios.get(url).then((response) => {
+      console.log(response);
+      this.props.login(response.data, response.data.role);
+      browserHistory.push('/');
+    })
+      .catch((error) => {
+        console.log(error);
+        this.props.showSnackbar("Login Failed");
+      });
+  }
 
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-    mergeTaken(){
-        console.log("---test Taken---");
-        return this.state.takenInfo.map(function(item) {
-            return item.name;
-        })
-    }
-
-
-    getEnrolls() {
-        const url = baseUrl + 'user/enrolls/' + studentID;
-
-        axios.get(url)
-            .then((response) => {
-                console.log(response);
-                this.props.getEnrolls(response.data);
-                this.setState({enrollInfo: response.data});
-                this.setState({enrolls: this.mergeEnroll()});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-    mergeEnroll(){
-        console.log("---test---");
-        let enrolls = '';
-        return this.state.enrollInfo.map(function(item) {
-            return item.name;
-        })
-    }
- */
-
-
-    getSections() {
-        //const url = baseUrl + 'sections';
-        const url = 'http://127.0.0.1:8081/sections/';
-
-        axios.get(url)
-            .then((response) => {
-                console.log(response.data);
-                this.setState({sectionInfo: response.data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-    menuSection(sectionInfo) {
-        return sectionInfo.map((section) => (
-            <MenuItem
-        key={section.name}
-        value={section.name}
-        primaryText={section.name}
-    />
-    ));
-    }
-
-
-    render() {
-        return (
-            <div style={styles.container}>
-                <Card style={styles.card}>
-                    <CardHeader titleStyle={styles.header} title="Update Student Profile"/>
-
-                    <div style={styles.content}>
-                        <TextField style={styles.content} floatingLabelText="Student ID" ref="studentID" value={this.state.studentID} /> <br />
-                        <TextField style={styles.content} floatingLabelText="First Name" ref="firstName" value={this.state.firstName} /> <br />
-                        <TextField style={styles.content} floatingLabelText="Email" ref="email" value={this.state.email}
-                                   onChange={(event) => this.setState({ email: event.target.value, })}/> <br />
-                        <TextField style={styles.content} floatingLabelText="Password" ref="password" value={this.state.password} hintText="A12345$"
-                                   onChange={(event) => this.setState({ password: event.target.value, })}/> <br />
-                        <TextField style={styles.content} floatingLabelText="Entry" ref="entry" value={this.state.entry} hintText="January"/> <br />
-                        <TextField style={styles.content} floatingLabelText="Taken List" ref="takens" value={this.state.takens} /> <br />
-                        <SelectField
-                            floatingLabelText={'Select Section'}
-                            value={this.state.selectedSection}
-                            style={styles.content}
-                            onChange={this.handleChangeEnroll.bind(this)} >
-                                {this.menuSection(this.state.sectionInfo)}
-                        </SelectField>
-
-                        <FlatButton label="Add Enroll" primary={true} onClick={this.addEnroll.bind(this)}/>
-                        <TextField style={styles.content} floatingLabelText="Enrolls List" ref="enrolls" value={this.state.enrolls} hintText="Select one or more above sections"/> <br />
-
-                        </div>
-
-                    <CardActions style={styles.cardAction}>
-                        <FlatButton label="Save" primary={true} onClick={this.save.bind(this)}/>
-                    </CardActions>
-                </Card>
-            </div>
-        )
-    }
-
-    addEnroll() {
-        if(enrolls == '')
-            this.setState({enrolls: this.refs.enrolls.getValue() + this.state.selectedSection});
-        else
-            this.setState({enrolls:', ' + this.refs.enrolls.getValue() + this.state.selectedSection});
-
-        console.log(this.refs.enrolls.getValue());
-    }
-
-
-    save() {
-        //const url = baseUrl + 'students/update';
-        const url = 'http://127.0.0.1:8081/students/update/';
-        axios.post(url, {
-            id: this.state.studentID,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            password: this.state.password,
-            enrolledSections: enrolls,
-            //takenSections:
-        })
-            .then(function (response) {
-                //show snack bar
-                console.log(response);
-                browserHistory.push('/student_profile');
-            })
-            .catch(function (error) {
-                //show snack bar
-                console.log("error----");
-                console.log(error);
-            });
-    }
-
-
+  save() {
+    const url = baseUrl2 + 'students/update/';
+    let enrolledSectionIds = enrolledSections.filter(item => item.isChecked).map(item => item.id);
+    axios.put(url, {
+      "id": this.state.id,
+      "loginId": this.props.user.loginId,
+      "password": this.state.password,
+      "firstName": this.state.firstName,
+      "lastName": this.state.lastName,
+      "email": this.state.email,
+      "role": this.props.user.role,
+      "fixed": this.props.user.fixed,
+      "takenSections": this.props.user.takenSections,
+      "enrolledSections": enrolledSectionIds,
+    })
+      .then((response) => {
+        //show snack bar
+        console.log(response);
+        this.refresh();
+      })
+      .catch(function (error) {
+        //show snack bar
+        console.log("error----");
+        console.log(error);
+      });
+  }
 }
 
 var styles = {
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: '2%',
-    },
-    card: {
-        width: '60%',
-    },
-    content: {
-        width: '98%',
-        paddingLeft: '2%',
-        fontSize: '14',
-        paddingRight: '2%',
-    },
-    listItem: {
-        width: '60vw',
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    header: {
-        fontSize: '20px',
-    },
-    cardAction: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    customWidth: {
-        width: 150,
-    },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '2%',
+  },
+  card: {
+    width: '60%',
+  },
+  content: {
+    width: '98%',
+    paddingLeft: '2%',
+    fontSize: '14',
+    paddingRight: '2%',
+  },
+  listItem: {
+    width: '60vw',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  header: {
+    fontSize: '20px',
+  },
+  cardAction: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  customWidth: {
+    width: 150,
+  },
 
 }
 
 function mapStateToProps(state) {
-    return {
-        user: state.user,
-    }
+  return {
+    user: state.login.user,
+  }
 }
 
 export default connect(mapStateToProps)(StudentProfile);
