@@ -316,7 +316,7 @@ var styles = {
 
 function mapStateToProps(state) {
   return {
-    user: state.login.user,
+    user: state.user.edit_user,
   }
 }
 

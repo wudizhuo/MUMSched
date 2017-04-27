@@ -44,6 +44,7 @@ class Login extends Component {
     axios.get(url).then((response) => {
       console.log(response);
       this.props.login(response.data, response.data.role);
+      this.props.editUser(response.data);
       browserHistory.push('/');
     })
       .catch((error) => {

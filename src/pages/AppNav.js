@@ -35,12 +35,12 @@ class AppNav extends Component {
           Users</MenuItem>
         }
 
-        {(this.props.role === role.Faculty || this.props.role === role.Admin) &&
+        {(this.props.role === role.Faculty) &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/faculty_profile')}>
           Faculty Profile</MenuItem>
         }
 
-        {(this.props.role === role.Student || this.props.role === role.Admin) &&
+        {(this.props.role === role.Student) &&
         <MenuItem style={styles.item} onTouchTap={() => browserHistory.push('/student_profile')}>
           Student Profile</MenuItem>
         }
